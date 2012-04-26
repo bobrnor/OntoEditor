@@ -1,6 +1,7 @@
 #include "NodeItem.h"
 
 #include <QDebug>
+#include <QBrush>
 
 #include "RelationItem.h"
 
@@ -10,6 +11,10 @@ NodeItem::NodeItem(QGraphicsItem *parent) :
   setFlag(ItemIsMovable);
   setFlag(ItemIsSelectable);
   setFlag(ItemSendsGeometryChanges);
+
+  QBrush brush = QBrush(Qt::SolidPattern);
+  brush.setColor(Qt::white);
+  setBrush(brush);
 
   setData(kIDTType, kITNode);
 }

@@ -5,6 +5,8 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
 
+#include <math.h>
+
 #include "NodeItem.h"
 
 RelationItem::RelationItem(QGraphicsItem *parent) :
@@ -77,6 +79,24 @@ void RelationItem::adjust() {
 
 void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
+  qreal Pi = 3.14;
+  QPointF sourcePos(line().p1());
+  QPointF destinationPos(line().p2());
+  double angle = ::acos(line().dx() / line().length());
+  if (line().dy() >= 0)
+    angle = (Pi * 2) - angle;
+  QPointF arrowP1 = line().p2() - QPointF(sin(angle + Pi / 3) * 10,
+                                          cos(angle + Pi / 3) * 10);
+  QPointF arrowP2 = line().p2() - QPointF(sin(angle + Pi - Pi / 3) * 10,
+                                          cos(angle + Pi - Pi / 3) * 10);
+
+  QPainterPath path;
+  path.moveTo(sourcePos);
+  path.lineTo(destinationPos);
+  path.lineTo(arrowP1);
+  path.moveTo(destinationPos);
+  path.lineTo(arrowP2);
+
   QPen pen = this->pen();
 
   if (isSelected()) {
@@ -88,5 +108,5 @@ void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
   }
 
   painter->setPen(pen);
-  painter->drawLine(line());
+  painter->drawPath(path);
 }
