@@ -3,6 +3,9 @@
 
 #include <QGraphicsRectItem>
 
+#include "ItemDataKey.h"
+#include "ItemType.h"
+
 class RelationItem;
 
 class NodeItem : public QGraphicsRectItem {

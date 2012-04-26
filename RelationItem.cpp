@@ -1,5 +1,6 @@
 #include "RelationItem.h"
 
+#include <QGraphicsSceneMouseEvent>
 #include <QPen>
 #include <QPainter>
 #include "NodeItem.h"
@@ -7,10 +8,21 @@
 RelationItem::RelationItem(QGraphicsItem *parent) :
   QGraphicsLineItem(parent), m_sourceNode(NULL), m_destinationNode(NULL) {
 
-  setPen(QPen(Qt::black, 2));
+  setPen(QPen(Qt::black, 5));
   setZValue(-1);
 
   setFlag(ItemIsSelectable);
+
+  setData(kIDTType, kITRelation);
+}
+
+void RelationItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+
+  if (event->button() != Qt::LeftButton) {
+    event->accept();
+    return;
+  }
+  QGraphicsLineItem::mousePressEvent(event);
 }
 
 void RelationItem::setSourceNode(NodeItem *node) {

@@ -3,6 +3,9 @@
 
 #include <QGraphicsLineItem>
 
+#include "ItemDataKey.h"
+#include "ItemType.h"
+
 class NodeItem;
 
 class RelationItem : public QGraphicsLineItem {
@@ -12,6 +15,8 @@ class RelationItem : public QGraphicsLineItem {
 
   protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
   public:
     explicit RelationItem(QGraphicsItem *parent = 0);

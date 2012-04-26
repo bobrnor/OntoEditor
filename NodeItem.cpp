@@ -8,6 +8,8 @@ NodeItem::NodeItem(QGraphicsItem *parent) :
   setFlag(ItemIsMovable);
   setFlag(ItemIsSelectable);
   setFlag(ItemSendsGeometryChanges);
+
+  setData(kIDTType, kITNode);
 }
 
 void NodeItem::appendRelation(RelationItem *relation) {
