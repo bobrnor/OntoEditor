@@ -50,6 +50,7 @@ void RelationVisualizedLine::removeFromNodes() {
 
   if (m_sourceNode != NULL) {
     m_sourceNode->removeRelation(this);
+    m_sourceNode = NULL;
   }
 }
 
@@ -64,6 +65,5 @@ void RelationVisualizedLine::paint(QPainter *painter, const QStyleOptionGraphics
   pen.setColor(Qt::lightGray);
 
   painter->setPen(pen);
-  qDebug() << line();
   painter->drawLine(line());
 }

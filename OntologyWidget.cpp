@@ -132,6 +132,20 @@ void OntologyWidget::setRelation(NodeItem *sourceNode, NodeItem *destinationNode
   m_ontologyView->scene()->addItem(relationItem);
 }
 
+void OntologyWidget::validateItems() {
+
+  QList<QGraphicsItem *> items = m_ontologyView->scene()->items();
+  foreach (QGraphicsItem *item, items) {
+    if (item->data(kIDTType) == kITRelation) {
+      RelationItem *relationItem = static_cast<RelationItem *>(item);
+      if (relationItem->sourceNode() == NULL && relationItem->destinationNode() == NULL) {
+        m_ontologyView->scene()->removeItem(relationItem);
+        delete relationItem;
+      }
+    }
+  }
+}
+
 void OntologyWidget::setRelationSlot() {
 
   QList<QGraphicsItem *> selectedItems = m_ontologyView->scene()->selectedItems();
@@ -166,6 +180,20 @@ void OntologyWidget::editRelationSlot() {
 
 void OntologyWidget::removeSelectedSlot() {
 
+  QList<QGraphicsItem *> selectedItems = m_ontologyView->scene()->selectedItems();
+  foreach (QGraphicsItem *item, selectedItems) {
+    if (item->data(kIDTType) == kITNode) {
+      NodeItem *nodeItem = static_cast<NodeItem *>(item);
+      nodeItem->removeAllRelations();
+    }
+    else if (item->data(kIDTType) == kITRelation) {
+      RelationItem *relationItem = static_cast<RelationItem *>(item);
+      relationItem->removeFromNodes();
+    }
+    m_ontologyView->scene()->removeItem(item);
+    delete item;
+  }
+  validateItems();
 }
 
 void OntologyWidget::sceneSelectionChangedSlot() {

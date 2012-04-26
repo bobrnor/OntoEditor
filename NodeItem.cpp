@@ -1,5 +1,7 @@
 #include "NodeItem.h"
 
+#include <QDebug>
+
 #include "RelationItem.h"
 
 NodeItem::NodeItem(QGraphicsItem *parent) :
@@ -12,6 +14,11 @@ NodeItem::NodeItem(QGraphicsItem *parent) :
   setData(kIDTType, kITNode);
 }
 
+NodeItem::~NodeItem() {
+
+  qDebug() << "NodeItem destructor";
+}
+
 void NodeItem::appendRelation(RelationItem *relation) {
 
   if (!m_relations.contains(relation)) {
@@ -22,6 +29,13 @@ void NodeItem::appendRelation(RelationItem *relation) {
 void NodeItem::removeRelation(RelationItem *relation) {
 
   m_relations.removeAll(relation);
+}
+
+void NodeItem::removeAllRelations() {
+
+  foreach (RelationItem *item, m_relations) {
+    item->removeFromNodes();
+  }
 }
 
 QVariant NodeItem::itemChange(GraphicsItemChange change, const QVariant &value) {

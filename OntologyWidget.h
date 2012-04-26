@@ -29,6 +29,8 @@ class OntologyWidget : public QWidget {
     void setEditRelationMode(bool on);
     void setRelation(NodeItem *sourceNode, NodeItem *destinationNode);
 
+    void validateItems();
+
   public slots:
     void showContextMenuSlot(const QPoint &pos);
 

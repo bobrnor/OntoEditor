@@ -17,10 +17,12 @@ class NodeItem : public QGraphicsRectItem {
 
   public:
     explicit NodeItem(QGraphicsItem *parent = 0);
+    ~NodeItem();
 
     void appendRelation(RelationItem *relation);
     void removeRelation(RelationItem *relation);
     
+    void removeAllRelations();
 };
 
 #endif // NODEITEM_H

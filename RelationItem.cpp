@@ -59,10 +59,12 @@ void RelationItem::removeFromNodes() {
 
   if (m_sourceNode != NULL) {
     m_sourceNode->removeRelation(this);
+    m_sourceNode = NULL;
   }
 
   if (m_destinationNode != NULL) {
     m_destinationNode->removeRelation(this);
+    m_destinationNode = NULL;
   }
 }
 
