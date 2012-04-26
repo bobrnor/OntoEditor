@@ -19,6 +19,11 @@ void NodeItem::appendRelation(RelationItem *relation) {
   }
 }
 
+void NodeItem::removeRelation(RelationItem *relation) {
+
+  m_relations.removeAll(relation);
+}
+
 QVariant NodeItem::itemChange(GraphicsItemChange change, const QVariant &value) {
 
   if (change == ItemPositionHasChanged) {

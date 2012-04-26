@@ -1,9 +1,10 @@
 #ifndef ONTOLOGYWIDGET_H
 #define ONTOLOGYWIDGET_H
 
-#include <QWidget>
-#include <QGraphicsView>
-#include <QGraphicsRectItem>
+#include "OntologyGraphicsView.h"
+
+class RelationVisualizedLine;
+class NodeItem;
 
 namespace Ui {
   class OntologyWidget;
@@ -19,16 +20,27 @@ class OntologyWidget : public QWidget {
   private:
     Ui::OntologyWidget *ui;
 
+    OntologyGraphicsView *m_ontologyView;
     QPointF m_lastRightClickScenePosition;
+    RelationVisualizedLine *m_relationVisualizedLine;
+
+    bool m_editRelationMode;
+
+    void setEditRelationMode(bool on);
+    void setRelation(NodeItem *sourceNode, NodeItem *destinationNode);
 
   public slots:
     void showContextMenuSlot(const QPoint &pos);
 
     void addNodeSlot();
-    void addRelationSlot();
+    void setRelationSlot();
     void editNodeSlot();
     void editRelationSlot();
     void removeSelectedSlot();
+
+    void sceneSelectionChangedSlot();
+
+    void ontologyViewMousePositionChangedSlot(const QPoint &pos);
 };
 
 #endif // ONTOLOGYWIDGET_H

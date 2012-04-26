@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2012-04-26T10:43:37
+# Project created by QtCreator 2012-04-26T21:38:04
 #
 #-------------------------------------------------
 
@@ -9,16 +9,20 @@ QT       += core gui
 TARGET = OntoEditor
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
-        OntologyWidget.cpp \
+    RelationVisualizedLine.cpp \
     RelationItem.cpp \
+    OntologyWidget.cpp \
+    OntologyGraphicsView.cpp \
     NodeItem.cpp
 
-HEADERS  += OntologyWidget.h \
+HEADERS  += RelationVisualizedLine.h \
     RelationItem.h \
+    OntologyWidget.h \
+    OntologyGraphicsView.h \
     NodeItem.h \
-    ItemDataKey.h \
-    ItemType.h
+    ItemType.h \
+    ItemDataKey.h
 
-FORMS    += OntologyWidget.ui
+FORMS += \
+    OntologyWidget.ui

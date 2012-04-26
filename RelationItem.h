@@ -21,18 +21,15 @@ class RelationItem : public QGraphicsLineItem {
   public:
     explicit RelationItem(QGraphicsItem *parent = 0);
 
-    void adjust();
+    virtual void adjust();
 
-    void setSourceNode(NodeItem *node);
-    NodeItem *sourceNode() const;
+    virtual void removeFromNodes();
 
-    void setDestinationNode(NodeItem *node);
-    NodeItem *destinationNode() const;
-    
-  signals:
-    
-  public slots:
-    
+    virtual void setSourceNode(NodeItem *node);
+    virtual NodeItem *sourceNode() const;
+
+    virtual void setDestinationNode(NodeItem *node);
+    virtual NodeItem *destinationNode() const;
 };
 
 #endif // RELATIONITEM_H

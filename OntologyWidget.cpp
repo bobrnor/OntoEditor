@@ -6,6 +6,7 @@
 
 #include "NodeItem.h"
 #include "RelationItem.h"
+#include "RelationVisualizedLine.h"
 
 OntologyWidget::OntologyWidget(QWidget *parent) :
   QWidget(parent),
@@ -13,21 +14,23 @@ OntologyWidget::OntologyWidget(QWidget *parent) :
 
   ui->setupUi(this);
 
-  ui->ontologyView->setDragMode(QGraphicsView::RubberBandDrag);
+  m_ontologyView = new OntologyGraphicsView(this);
+  m_ontologyView->setDragMode(QGraphicsView::RubberBandDrag);
+  m_ontologyView->setContextMenuPolicy(Qt::CustomContextMenu);
 
-  QGraphicsView *graphicsView = ui->ontologyView;
-  QGraphicsScene *scene = new QGraphicsScene(graphicsView);
-//  scene->setSceneRect(0, 0, 800, 600);
-
+  QGraphicsScene *scene = new QGraphicsScene(m_ontologyView);
   QBrush bgBrush = QBrush(Qt::Dense7Pattern);
   bgBrush.setColor(Qt::lightGray);
-
   scene->setBackgroundBrush(bgBrush);
 
-  graphicsView->setScene(scene);
+  m_ontologyView->setScene(scene);
 
-  graphicsView->setContextMenuPolicy(Qt::CustomContextMenu);
-  connect(graphicsView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(showContextMenuSlot(QPoint)));
+  connect(m_ontologyView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(showContextMenuSlot(QPoint)));
+
+  m_relationVisualizedLine = NULL;
+  m_editRelationMode = false;
+
+  ui->verticalLayout->addWidget(m_ontologyView);
 }
 
 OntologyWidget::~OntologyWidget() {
@@ -37,15 +40,21 @@ OntologyWidget::~OntologyWidget() {
 
 void OntologyWidget::showContextMenuSlot(const QPoint &pos) {
 
+  QList<QGraphicsItem *> selectedItems = m_ontologyView->scene()->selectedItems();
+
   QMenu contextMenu;
   QAction *addNodeAction = contextMenu.addAction(tr("Add node..."));
-  QAction *addRelationAction = contextMenu.addAction(tr("Add relation..."));
+
+  if (selectedItems.count() == 1) {
+    QGraphicsItem *selectedItem = selectedItems.at(0);
+    if (selectedItem->data(kIDTType).toInt() == kITNode) {
+      QAction *addRelationAction = contextMenu.addAction(tr("Set relation with..."));
+      connect(addRelationAction, SIGNAL(triggered()), SLOT(setRelationSlot()));
+    }
+  }
   contextMenu.addSeparator();
 
   connect(addNodeAction, SIGNAL(triggered()), SLOT(addNodeSlot()));
-  connect(addRelationAction, SIGNAL(triggered()), SLOT(addRelationSlot()));
-
-  QList<QGraphicsItem *> selectedItems = ui->ontologyView->scene()->selectedItems();
 
   if (selectedItems.count() == 1) {
     QGraphicsItem *selectedItem = selectedItems.at(0);
@@ -74,23 +83,77 @@ void OntologyWidget::showContextMenuSlot(const QPoint &pos) {
     connect(removeAction, SIGNAL(triggered()), SLOT(removeSelectedSlot()));
   }
 
-  m_lastRightClickScenePosition = ui->ontologyView->mapToScene(pos);
-  QPoint globalPos = ui->ontologyView->mapToGlobal(pos);
+  m_lastRightClickScenePosition = m_ontologyView->mapToScene(pos);
+  QPoint globalPos = m_ontologyView->mapToGlobal(pos);
   contextMenu.exec(globalPos);
+}
+
+void OntologyWidget::setEditRelationMode(bool on) {
+
+  if (on) {
+    m_ontologyView->scene()->clearSelection();
+    m_editRelationMode = true;
+    m_ontologyView->setMouseTracking(true);
+    m_ontologyView->setDragMode(QGraphicsView::NoDrag);
+    connect(m_ontologyView, SIGNAL(mousePositionChangedSignal(QPoint)), SLOT(ontologyViewMousePositionChangedSlot(QPoint)));
+    connect(m_ontologyView->scene(), SIGNAL(selectionChanged()), SLOT(sceneSelectionChangedSlot()));
+  }
+  else {
+    m_editRelationMode = false;
+    m_ontologyView->setMouseTracking(false);
+    m_ontologyView->setDragMode(QGraphicsView::RubberBandDrag);
+    disconnect(this, SLOT(ontologyViewMousePositionChangedSlot(QPoint)));
+
+    if (m_relationVisualizedLine != NULL) {
+      m_relationVisualizedLine->removeFromNodes();
+      m_ontologyView->scene()->removeItem(m_relationVisualizedLine);
+      delete m_relationVisualizedLine;
+      m_relationVisualizedLine = NULL;
+    }
+  }
 }
 
 void OntologyWidget::addNodeSlot() {
 
-  QPointF scenePos = m_lastRightClickScenePosition - QPointF(75, 25);
-  QRectF sceneRect(scenePos, QSizeF(150, 50));
+  QPointF scenePos = m_lastRightClickScenePosition;
+  QRectF sceneRect(QPointF(-75, -25), QSizeF(150, 50));
 
   NodeItem *newNode = new NodeItem(NULL);
+  newNode->setPos(scenePos);
   newNode->setRect(sceneRect);
-  ui->ontologyView->scene()->addItem(newNode);
+  m_ontologyView->scene()->addItem(newNode);
 }
 
-void OntologyWidget::addRelationSlot() {
+void OntologyWidget::setRelation(NodeItem *sourceNode, NodeItem *destinationNode) {
 
+  RelationItem *relationItem = new RelationItem();
+  relationItem->setSourceNode(sourceNode);
+  relationItem->setDestinationNode(destinationNode);
+  m_ontologyView->scene()->addItem(relationItem);
+}
+
+void OntologyWidget::setRelationSlot() {
+
+  QList<QGraphicsItem *> selectedItems = m_ontologyView->scene()->selectedItems();
+  if (selectedItems.count() == 1) {
+    QGraphicsItem *selectedItem = selectedItems.at(0);
+    if (selectedItem->data(kIDTType).toInt() == kITNode) {
+      NodeItem *sourceNodeItem = static_cast<NodeItem *>(selectedItem);
+
+      if (m_relationVisualizedLine != NULL) {
+        m_relationVisualizedLine->removeFromNodes();
+        m_ontologyView->scene()->removeItem(m_relationVisualizedLine);
+        delete m_relationVisualizedLine;
+        m_relationVisualizedLine = NULL;
+      }
+
+      m_relationVisualizedLine = new RelationVisualizedLine();
+      m_relationVisualizedLine->setSourceNode(sourceNodeItem);
+      m_ontologyView->scene()->addItem(m_relationVisualizedLine);
+
+      setEditRelationMode(true);
+    }
+  }
 }
 
 void OntologyWidget::editNodeSlot() {
@@ -103,4 +166,29 @@ void OntologyWidget::editRelationSlot() {
 
 void OntologyWidget::removeSelectedSlot() {
 
+}
+
+void OntologyWidget::sceneSelectionChangedSlot() {
+
+  if (m_editRelationMode) {
+    QList<QGraphicsItem *> selectedItems = m_ontologyView->scene()->selectedItems();
+    if (selectedItems.count() == 1) {
+      QGraphicsItem *selectedItem = selectedItems.at(0);
+      if (selectedItem->data(kIDTType) == kITNode) {
+        setRelation(m_relationVisualizedLine->sourceNode(), static_cast<NodeItem *>(selectedItem));
+        setEditRelationMode(false);
+      }
+      else {
+        m_ontologyView->scene()->clearSelection();
+      }
+    }
+  }
+}
+
+void OntologyWidget::ontologyViewMousePositionChangedSlot(const QPoint &pos) {
+
+  if (m_relationVisualizedLine != NULL) {
+    QPointF scenePos = m_ontologyView->mapToScene(pos);
+    m_relationVisualizedLine->setEndPoint(scenePos);
+  }
 }

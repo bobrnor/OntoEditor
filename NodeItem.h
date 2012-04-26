@@ -19,10 +19,7 @@ class NodeItem : public QGraphicsRectItem {
     explicit NodeItem(QGraphicsItem *parent = 0);
 
     void appendRelation(RelationItem *relation);
-    
-  signals:
-    
-  public slots:
+    void removeRelation(RelationItem *relation);
     
 };
 

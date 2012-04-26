@@ -1,14 +1,16 @@
 #include "RelationItem.h"
 
-#include <QGraphicsSceneMouseEvent>
 #include <QPen>
 #include <QPainter>
+#include <QGraphicsSceneMouseEvent>
+#include <QDebug>
+
 #include "NodeItem.h"
 
 RelationItem::RelationItem(QGraphicsItem *parent) :
   QGraphicsLineItem(parent), m_sourceNode(NULL), m_destinationNode(NULL) {
 
-  setPen(QPen(Qt::black, 5));
+  setPen(QPen(Qt::black, 2));
   setZValue(-1);
 
   setFlag(ItemIsSelectable);
@@ -53,11 +55,22 @@ NodeItem *RelationItem::destinationNode() const {
   return m_destinationNode;
 }
 
+void RelationItem::removeFromNodes() {
+
+  if (m_sourceNode != NULL) {
+    m_sourceNode->removeRelation(this);
+  }
+
+  if (m_destinationNode != NULL) {
+    m_destinationNode->removeRelation(this);
+  }
+}
+
 void RelationItem::adjust() {
 
-    if (m_sourceNode != NULL && m_destinationNode != NULL) {
-        setLine(QLineF(m_sourceNode->pos(), m_destinationNode->pos()));
-    }
+  if (m_sourceNode != NULL && m_destinationNode != NULL) {
+    setLine(QLineF(m_sourceNode->pos(), m_destinationNode->pos()));
+  }
 }
 
 void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
