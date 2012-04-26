@@ -10,7 +10,7 @@ RelationItem::RelationItem(QGraphicsItem *parent) :
   setPen(QPen(Qt::black, 2));
   setZValue(-1);
 
-//  setFlag(ItemIsSelectable);
+  setFlag(ItemIsSelectable);
 }
 
 void RelationItem::setSourceNode(NodeItem *node) {
@@ -22,7 +22,7 @@ void RelationItem::setSourceNode(NodeItem *node) {
   adjust();
 }
 
-NodeItem *RelationItem::getSourceNode() const {
+NodeItem *RelationItem::sourceNode() const {
 
   return m_sourceNode;
 }
@@ -36,7 +36,7 @@ void RelationItem::setDestinationNode(NodeItem *node) {
   adjust();
 }
 
-NodeItem *RelationItem::getDestinationNode() const {
+NodeItem *RelationItem::destinationNode() const {
 
   return m_destinationNode;
 }
@@ -48,9 +48,9 @@ void RelationItem::adjust() {
     }
 }
 
-/*void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
-  QPen pen;
+  QPen pen = this->pen();
 
   if (isSelected()) {
     QVector<qreal> dashPattern;
@@ -59,10 +59,7 @@ void RelationItem::adjust() {
     pen.setDashPattern(dashPattern);
     pen.setColor(Qt::blue);
   }
-  else {
-    pen.setColor(Qt::black);
-  }
 
   painter->setPen(pen);
   painter->drawLine(line());
-}*/
+}

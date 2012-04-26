@@ -11,7 +11,7 @@ class RelationItem : public QGraphicsLineItem {
     NodeItem *m_destinationNode;
 
   protected:
-//    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
   public:
     explicit RelationItem(QGraphicsItem *parent = 0);
@@ -19,10 +19,10 @@ class RelationItem : public QGraphicsLineItem {
     void adjust();
 
     void setSourceNode(NodeItem *node);
-    NodeItem *getSourceNode() const;
+    NodeItem *sourceNode() const;
 
     void setDestinationNode(NodeItem *node);
-    NodeItem *getDestinationNode() const;
+    NodeItem *destinationNode() const;
     
   signals:
     
