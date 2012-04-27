@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QInputDialog>
 
+#include "lib_json/json/json.h"
+
 #include "NodeItem.h"
 #include "RelationItem.h"
 #include "RelationVisualizedLine.h"
@@ -52,6 +54,8 @@ IOntologyWidgetDelegate *OntologyWidget::delegate() const {
 }
 
 void OntologyWidget::showContextMenuSlot(const QPoint &pos) {
+
+  serialize();
 
   QList<QGraphicsItem *> selectedItems = m_ontologyView->scene()->selectedItems();
 
@@ -300,3 +304,28 @@ void OntologyWidget::ontologyViewMousePositionChangedSlot(const QPoint &pos) {
     m_relationVisualizedLine->setEndPoint(scenePos);
   }
 }
+
+Json::Value OntologyWidget::serialize() const {
+
+  Json::Value value;
+  Json::Value itemsJson(Json::arrayValue);
+  foreach (QGraphicsItem *item, m_ontologyView->scene()->items()) {
+    if (item->data(kIDTType) != kITNode) {
+      NodeItem *nodeItem = static_cast<NodeItem *>(item);
+      itemsJson.append(nodeItem->jsonRepresentation());
+    }
+    else if (item->data(kIDTType) != kITRelation) {
+      RelationItem *relationItem = static_cast<RelationItem *>(item);
+      itemsJson.append(relationItem->jsonRepresentation());
+    }
+  }
+  value["items"] = itemsJson;
+
+  qDebug() << QString::fromStdString(value.toStyledString());
+
+  return value;
+}
+void OntologyWidget::deserialize(const Json::Value &json) {
+
+}
+

@@ -1,6 +1,8 @@
 #ifndef ONTOLOGYWIDGET_H
 #define ONTOLOGYWIDGET_H
 
+#include "lib_json/json/json.h"
+
 #include "OntologyGraphicsView.h"
 #include "IOntologyWidgetDelegate.h"
 
@@ -20,6 +22,9 @@ class OntologyWidget : public QWidget {
 
     void setDelegate(IOntologyWidgetDelegate *delegate);
     IOntologyWidgetDelegate *delegate() const;
+
+    Json::Value serialize() const;
+    void deserialize(const Json::Value &json);
     
   private:
     Ui::OntologyWidget *ui;
