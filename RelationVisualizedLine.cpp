@@ -9,6 +9,7 @@
 RelationVisualizedLine::RelationVisualizedLine(QGraphicsItem *parent) :
   RelationItem(parent), m_sourceNode(NULL) {
 
+  setData(kIDTType, kITOther);
   setPen(QPen(Qt::black, 2));
   m_endPointEmpty = true;
 }

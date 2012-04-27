@@ -5,10 +5,11 @@
 
 #include "ItemDataKey.h"
 #include "ItemType.h"
+#include "OntologyGraphElement.h"
 
 class NodeItem;
 
-class RelationItem : public QGraphicsLineItem {
+class RelationItem : public QGraphicsLineItem, OntologyGraphElement {
   private:
     NodeItem *m_sourceNode;
     NodeItem *m_destinationNode;
@@ -20,6 +21,9 @@ class RelationItem : public QGraphicsLineItem {
 
   public:
     explicit RelationItem(QGraphicsItem *parent = 0);
+    ~RelationItem();
+
+    QRectF boundingRect() const;
 
     virtual void adjust();
 

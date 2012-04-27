@@ -5,14 +5,16 @@
 
 #include "ItemDataKey.h"
 #include "ItemType.h"
+#include "OntologyGraphElement.h"
 
 class RelationItem;
 
-class NodeItem : public QGraphicsRectItem {
+class NodeItem : public QGraphicsRectItem, OntologyGraphElement {
   private:
     QList<RelationItem *> m_relations;
 
   protected:
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
   public:

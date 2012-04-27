@@ -17,6 +17,7 @@ OntologyWidget::OntologyWidget(QWidget *parent) :
   m_ontologyView = new OntologyGraphicsView(this);
   m_ontologyView->setDragMode(QGraphicsView::RubberBandDrag);
   m_ontologyView->setContextMenuPolicy(Qt::CustomContextMenu);
+  m_ontologyView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
   QGraphicsScene *scene = new QGraphicsScene(m_ontologyView);
   QBrush bgBrush = QBrush(Qt::Dense7Pattern);

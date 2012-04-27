@@ -4,20 +4,51 @@
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
+#include <QApplication>
+#include <QFont>
+#include <QFontMetrics>
 
 #include <math.h>
 
 #include "NodeItem.h"
 
 RelationItem::RelationItem(QGraphicsItem *parent) :
-  QGraphicsLineItem(parent), m_sourceNode(NULL), m_destinationNode(NULL) {
+  QGraphicsLineItem(parent), OntologyGraphElement(), m_sourceNode(NULL), m_destinationNode(NULL) {
 
-  setPen(QPen(Qt::black, 2));
+  setPen(QPen(Qt::black, 1));
   setZValue(-1);
 
   setFlag(ItemIsSelectable);
 
   setData(kIDTType, kITRelation);
+}
+
+RelationItem::~RelationItem() {
+
+  qDebug() << "Relation destructor";
+}
+
+QRectF RelationItem::boundingRect() const {
+
+  QRectF boundingRect = QGraphicsLineItem::boundingRect();
+
+  QFontMetrics metrics = QFontMetrics(QFont());
+  QRect textRect = metrics.boundingRect(m_name);
+
+  boundingRect.setX(boundingRect.x() - 10.0);
+  boundingRect.setY(boundingRect.y() - 10.0);
+  boundingRect.setWidth(boundingRect.width() + 10.0);
+  boundingRect.setHeight(boundingRect.height() + 10.0);
+
+  if (boundingRect.width() / 2 < textRect.width()) {
+    boundingRect.setWidth(textRect.width() * 2);
+  }
+
+  if (boundingRect.height() / 2 < textRect.height()) {
+    boundingRect.setHeight(textRect.height() * 2);
+  }
+
+  return boundingRect;
 }
 
 void RelationItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
@@ -82,19 +113,22 @@ void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
   qreal Pi = 3.14;
   QPointF sourcePos(line().p1());
   QPointF destinationPos(line().p2());
+  QPointF middlePos = (sourcePos + destinationPos) / 2.0;
+
   double angle = ::acos(line().dx() / line().length());
   if (line().dy() >= 0)
     angle = (Pi * 2) - angle;
-  QPointF arrowP1 = line().p2() - QPointF(sin(angle + Pi / 3) * 10,
+  QPointF arrowP1 = middlePos - QPointF(sin(angle + Pi / 3) * 10,
                                           cos(angle + Pi / 3) * 10);
-  QPointF arrowP2 = line().p2() - QPointF(sin(angle + Pi - Pi / 3) * 10,
+  QPointF arrowP2 = middlePos - QPointF(sin(angle + Pi - Pi / 3) * 10,
                                           cos(angle + Pi - Pi / 3) * 10);
 
   QPainterPath path;
   path.moveTo(sourcePos);
   path.lineTo(destinationPos);
+  path.moveTo(middlePos);
   path.lineTo(arrowP1);
-  path.moveTo(destinationPos);
+  path.moveTo(middlePos);
   path.lineTo(arrowP2);
 
   QPen pen = this->pen();
@@ -109,4 +143,5 @@ void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
   painter->setPen(pen);
   painter->drawPath(path);
+  painter->drawText(middlePos, m_name);
 }

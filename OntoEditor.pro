@@ -14,7 +14,8 @@ SOURCES += main.cpp\
     RelationItem.cpp \
     OntologyWidget.cpp \
     OntologyGraphicsView.cpp \
-    NodeItem.cpp
+    NodeItem.cpp \
+    OntologyGraphElement.cpp
 
 HEADERS  += RelationVisualizedLine.h \
     RelationItem.h \
@@ -22,7 +23,8 @@ HEADERS  += RelationVisualizedLine.h \
     OntologyGraphicsView.h \
     NodeItem.h \
     ItemType.h \
-    ItemDataKey.h
+    ItemDataKey.h \
+    OntologyGraphElement.h
 
 FORMS += \
     OntologyWidget.ui

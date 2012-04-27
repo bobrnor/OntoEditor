@@ -2,11 +2,12 @@
 
 #include <QDebug>
 #include <QBrush>
+#include <QPainter>
 
 #include "RelationItem.h"
 
 NodeItem::NodeItem(QGraphicsItem *parent) :
-  QGraphicsRectItem(parent, NULL) {
+  QGraphicsRectItem(parent, NULL), OntologyGraphElement() {
 
   setFlag(ItemIsMovable);
   setFlag(ItemIsSelectable);
@@ -52,4 +53,11 @@ QVariant NodeItem::itemChange(GraphicsItemChange change, const QVariant &value) 
   }
 
   return QGraphicsRectItem::itemChange(change, value);
+}
+
+void NodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+
+  QGraphicsRectItem::paint(painter, option, widget);
+
+  painter->drawText(boundingRect(), Qt::AlignCenter, m_name);
 }
