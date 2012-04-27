@@ -3,7 +3,7 @@
 OntologyGraphElement::OntologyGraphElement() {
 
   m_id = -1;
-  m_name = "TEST ELEMENT NAME";
+  m_name = "";
 }
 
 void OntologyGraphElement::setId(long id) {

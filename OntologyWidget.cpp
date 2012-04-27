@@ -29,6 +29,7 @@ OntologyWidget::OntologyWidget(QWidget *parent) :
 
   connect(m_ontologyView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(showContextMenuSlot(QPoint)));
 
+  m_delegate = NULL;
   m_relationVisualizedLine = NULL;
   m_editRelationMode = false;
 
@@ -38,6 +39,16 @@ OntologyWidget::OntologyWidget(QWidget *parent) :
 OntologyWidget::~OntologyWidget() {
 
   delete ui;
+}
+
+void OntologyWidget::setDelegate(IOntologyWidgetDelegate *delegate) {
+
+  m_delegate = delegate;
+}
+
+IOntologyWidgetDelegate *OntologyWidget::delegate() const {
+
+  return m_delegate;
 }
 
 void OntologyWidget::showContextMenuSlot(const QPoint &pos) {
@@ -120,7 +131,13 @@ void OntologyWidget::addNodeSlot() {
   QPointF scenePos = m_lastRightClickScenePosition;
   QRectF sceneRect(QPointF(-75, -25), QSizeF(150, 50));
 
+  long newNodeId = -1;
+  if (m_delegate != NULL) {
+    newNodeId = m_delegate->nodeCreated();
+  }
+
   NodeItem *newNode = new NodeItem(NULL);
+  newNode->setId(newNodeId);
   newNode->setPos(scenePos);
   newNode->setRect(sceneRect);
   m_ontologyView->scene()->addItem(newNode);
@@ -128,7 +145,13 @@ void OntologyWidget::addNodeSlot() {
 
 void OntologyWidget::setRelation(NodeItem *sourceNode, NodeItem *destinationNode) {
 
+  long newRelationId = -1;
+  if (m_delegate != NULL) {
+    newRelationId = m_delegate->relatoinCreated(sourceNode->id(), destinationNode->id());
+  }
+
   RelationItem *relationItem = new RelationItem();
+  relationItem->setId(newRelationId);
   relationItem->setSourceNode(sourceNode);
   relationItem->setDestinationNode(destinationNode);
   m_ontologyView->scene()->addItem(relationItem);
@@ -142,6 +165,11 @@ void OntologyWidget::validateItems() {
       RelationItem *relationItem = static_cast<RelationItem *>(item);
       if (relationItem->sourceNode() == NULL && relationItem->destinationNode() == NULL) {
         m_ontologyView->scene()->removeItem(relationItem);
+
+        if (m_delegate != NULL) {
+          m_delegate->relatoinRemoved(relationItem->id());
+        }
+
         delete relationItem;
       }
     }
@@ -188,6 +216,9 @@ void OntologyWidget::editNodeSlot() {
                                               nodeItem->name(),
                                               &ok);
       if (ok) {
+        if (m_delegate != NULL) {
+          m_delegate->nodeNameChanged(nodeItem->id(), newName);
+        }
         nodeItem->setName(newName);
         m_ontologyView->scene()->invalidate();
       }
@@ -211,6 +242,9 @@ void OntologyWidget::editRelationSlot() {
                                               relationItem->name(),
                                               &ok);
       if (ok) {
+        if (m_delegate != NULL) {
+          m_delegate->relationNameChanged(relationItem->id(), newName);
+        }
         relationItem->setName(newName);
         m_ontologyView->scene()->invalidate();
       }
@@ -225,10 +259,16 @@ void OntologyWidget::removeSelectedSlot() {
     if (item->data(kIDTType) == kITNode) {
       NodeItem *nodeItem = static_cast<NodeItem *>(item);
       nodeItem->removeAllRelations();
+      if (m_delegate != NULL) {
+        m_delegate->nodeRemoved(nodeItem->id());
+      }
     }
     else if (item->data(kIDTType) == kITRelation) {
       RelationItem *relationItem = static_cast<RelationItem *>(item);
       relationItem->removeFromNodes();
+      if (m_delegate != NULL) {
+        m_delegate->relatoinRemoved(relationItem->id());
+      }
     }
     m_ontologyView->scene()->removeItem(item);
     delete item;

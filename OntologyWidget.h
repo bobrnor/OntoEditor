@@ -2,6 +2,7 @@
 #define ONTOLOGYWIDGET_H
 
 #include "OntologyGraphicsView.h"
+#include "IOntologyWidgetDelegate.h"
 
 class RelationVisualizedLine;
 class NodeItem;
@@ -16,6 +17,9 @@ class OntologyWidget : public QWidget {
   public:
     explicit OntologyWidget(QWidget *parent = 0);
     ~OntologyWidget();
+
+    void setDelegate(IOntologyWidgetDelegate *delegate);
+    IOntologyWidgetDelegate *delegate() const;
     
   private:
     Ui::OntologyWidget *ui;
@@ -23,6 +27,7 @@ class OntologyWidget : public QWidget {
     OntologyGraphicsView *m_ontologyView;
     QPointF m_lastRightClickScenePosition;
     RelationVisualizedLine *m_relationVisualizedLine;
+    IOntologyWidgetDelegate *m_delegate;
 
     bool m_editRelationMode;
 

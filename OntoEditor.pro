@@ -24,7 +24,8 @@ HEADERS  += RelationVisualizedLine.h \
     NodeItem.h \
     ItemType.h \
     ItemDataKey.h \
-    OntologyGraphElement.h
+    OntologyGraphElement.h \
+    IOntologyWidgetDelegate.h
 
 FORMS += \
     OntologyWidget.ui
