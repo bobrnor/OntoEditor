@@ -9,7 +9,7 @@
 
 class RelationItem;
 
-class NodeItem : public QGraphicsRectItem, OntologyGraphElement {
+class NodeItem : public QGraphicsRectItem, public OntologyGraphElement {
   private:
     QList<RelationItem *> m_relations;
 

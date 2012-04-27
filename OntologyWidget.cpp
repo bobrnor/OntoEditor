@@ -3,6 +3,7 @@
 
 #include <QMenu>
 #include <QDebug>
+#include <QInputDialog>
 
 #include "NodeItem.h"
 #include "RelationItem.h"
@@ -173,10 +174,48 @@ void OntologyWidget::setRelationSlot() {
 
 void OntologyWidget::editNodeSlot() {
 
+  QList<QGraphicsItem *> selectedItems = m_ontologyView->scene()->selectedItems();
+  if (selectedItems.count() == 1) {
+    QGraphicsItem *selectedItem = selectedItems.at(0);
+    if (selectedItem->data(kIDTType).toInt() == kITNode) {
+      NodeItem *nodeItem = static_cast<NodeItem *>(selectedItem);
+
+      bool ok = false;
+      QString newName = QInputDialog::getText(this,
+                                              tr("Enter new node name"),
+                                              tr("Name: "),
+                                              QLineEdit::Normal,
+                                              nodeItem->name(),
+                                              &ok);
+      if (ok) {
+        nodeItem->setName(newName);
+        m_ontologyView->scene()->invalidate();
+      }
+    }
+  }
 }
 
 void OntologyWidget::editRelationSlot() {
 
+  QList<QGraphicsItem *> selectedItems = m_ontologyView->scene()->selectedItems();
+  if (selectedItems.count() == 1) {
+    QGraphicsItem *selectedItem = selectedItems.at(0);
+    if (selectedItem->data(kIDTType).toInt() == kITRelation) {
+      RelationItem *relationItem = static_cast<RelationItem *>(selectedItem);
+
+      bool ok = false;
+      QString newName = QInputDialog::getText(this,
+                                              tr("Enter new node name"),
+                                              tr("Name: "),
+                                              QLineEdit::Normal,
+                                              relationItem->name(),
+                                              &ok);
+      if (ok) {
+        relationItem->setName(newName);
+        m_ontologyView->scene()->invalidate();
+      }
+    }
+  }
 }
 
 void OntologyWidget::removeSelectedSlot() {
