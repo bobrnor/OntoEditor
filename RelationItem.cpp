@@ -23,6 +23,17 @@ RelationItem::RelationItem(QGraphicsItem *parent) :
   setData(kIDTType, kITRelation);
 }
 
+RelationItem::RelationItem(const Json::Value &jsonValue) :
+  QGraphicsLineItem(NULL), OntologyGraphElement(jsonValue), m_sourceNode(NULL), m_destinationNode(NULL) {
+
+  setPen(QPen(Qt::black, 1));
+  setZValue(-1);
+
+  setFlag(ItemIsSelectable);
+
+  setData(kIDTType, kITRelation);
+}
+
 RelationItem::~RelationItem() {
 
   qDebug() << "Relation destructor";
@@ -144,4 +155,17 @@ void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
   painter->setPen(pen);
   painter->drawPath(path);
   painter->drawText(middlePos, m_name);
+}
+
+Json::Value RelationItem::jsonRepresentation() const {
+
+  Json::Value value = OntologyGraphElement::jsonRepresentation();
+  value["source_node"] = (m_sourceNode != NULL)
+                         ? Json::Value((Json::Int64)m_sourceNode->id())
+                         : Json::Value(Json::nullValue);
+
+  value["destination_node"] = (m_destinationNode != NULL)
+                              ? Json::Value((Json::Int64)m_destinationNode->id())
+                              : Json::Value(Json::nullValue);
+  return value;
 }

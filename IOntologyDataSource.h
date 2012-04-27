@@ -1,0 +1,8 @@
+#ifndef IONTOLOGYDATASOURCE_H
+#define IONTOLOGYDATASOURCE_H
+
+class IOntologyDataSource {
+
+};
+
+#endif // IONTOLOGYDATASOURCE_H

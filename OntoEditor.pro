@@ -21,7 +21,9 @@ SOURCES += main.cpp\
     lib_json/json_internalarray.inl \
     lib_json/json_writer.cpp \
     lib_json/json_value.cpp \
-    lib_json/json_reader.cpp
+    lib_json/json_reader.cpp \
+    OntologyDataController.cpp \
+    MainWindow.cpp
 
 HEADERS  += RelationVisualizedLine.h \
     RelationItem.h \
@@ -41,7 +43,11 @@ HEADERS  += RelationVisualizedLine.h \
     lib_json/json/forwards.h \
     lib_json/json/features.h \
     lib_json/json/config.h \
-    lib_json/json/autolink.h
+    lib_json/json/autolink.h \
+    IOntologyDataSource.h \
+    OntologyDataController.h \
+    MainWindow.h
 
 FORMS += \
-    OntologyWidget.ui
+    OntologyWidget.ui \
+    MainWindow.ui

@@ -9,6 +9,9 @@
 NodeItem::NodeItem(QGraphicsItem *parent) :
   QGraphicsRectItem(parent, NULL), OntologyGraphElement() {
 
+  QRectF rect(QPointF(-75, -25), QSizeF(150, 50));
+  setRect(rect);
+
   setFlag(ItemIsMovable);
   setFlag(ItemIsSelectable);
   setFlag(ItemSendsGeometryChanges);
@@ -18,6 +21,29 @@ NodeItem::NodeItem(QGraphicsItem *parent) :
   setBrush(brush);
 
   setData(kIDTType, kITNode);
+}
+
+NodeItem::NodeItem(const Json::Value &jsonValue) :
+  QGraphicsRectItem(NULL, NULL), OntologyGraphElement(jsonValue) {
+
+  QRectF rect(QPointF(-75, -25), QSizeF(150, 50));
+  setRect(rect);
+
+  setFlag(ItemIsMovable);
+  setFlag(ItemIsSelectable);
+  setFlag(ItemSendsGeometryChanges);
+
+  QBrush brush = QBrush(Qt::SolidPattern);
+  brush.setColor(Qt::white);
+  setBrush(brush);
+
+  setData(kIDTType, kITNode);
+
+  int x = jsonValue["pos_x"].asDouble();
+  int y = jsonValue["pos_y"].asDouble();
+
+  QPointF pos(x, y);
+  setPos(pos);
 }
 
 NodeItem::~NodeItem() {
@@ -60,4 +86,12 @@ void NodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   QGraphicsRectItem::paint(painter, option, widget);
 
   painter->drawText(boundingRect(), Qt::AlignCenter, m_name);
+}
+
+Json::Value NodeItem::jsonRepresentation() const {
+
+  Json::Value value = OntologyGraphElement::jsonRepresentation();
+  value["pos_x"] = Json::Value(pos().x());
+  value["pos_y"] = Json::Value(pos().y());
+  return value;
 }

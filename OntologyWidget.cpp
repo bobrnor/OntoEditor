@@ -55,8 +55,6 @@ IOntologyWidgetDelegate *OntologyWidget::delegate() const {
 
 void OntologyWidget::showContextMenuSlot(const QPoint &pos) {
 
-  serialize();
-
   QList<QGraphicsItem *> selectedItems = m_ontologyView->scene()->selectedItems();
 
   QMenu contextMenu;
@@ -133,7 +131,6 @@ void OntologyWidget::setEditRelationMode(bool on) {
 void OntologyWidget::addNodeSlot() {
 
   QPointF scenePos = m_lastRightClickScenePosition;
-  QRectF sceneRect(QPointF(-75, -25), QSizeF(150, 50));
 
   long newNodeId = -1;
   if (m_delegate != NULL) {
@@ -143,7 +140,6 @@ void OntologyWidget::addNodeSlot() {
   NodeItem *newNode = new NodeItem(NULL);
   newNode->setId(newNodeId);
   newNode->setPos(scenePos);
-  newNode->setRect(sceneRect);
   m_ontologyView->scene()->addItem(newNode);
 }
 
@@ -308,18 +304,21 @@ void OntologyWidget::ontologyViewMousePositionChangedSlot(const QPoint &pos) {
 Json::Value OntologyWidget::serialize() const {
 
   Json::Value value;
-  Json::Value itemsJson(Json::arrayValue);
+  Json::Value nodesJson(Json::arrayValue);
+  Json::Value relationsJson(Json::arrayValue);
+
   foreach (QGraphicsItem *item, m_ontologyView->scene()->items()) {
-    if (item->data(kIDTType) != kITNode) {
+    if (item->data(kIDTType) == kITNode) {
       NodeItem *nodeItem = static_cast<NodeItem *>(item);
-      itemsJson.append(nodeItem->jsonRepresentation());
+      nodesJson.append(nodeItem->jsonRepresentation());
     }
-    else if (item->data(kIDTType) != kITRelation) {
+    else if (item->data(kIDTType) == kITRelation) {
       RelationItem *relationItem = static_cast<RelationItem *>(item);
-      itemsJson.append(relationItem->jsonRepresentation());
+      relationsJson.append(relationItem->jsonRepresentation());
     }
   }
-  value["items"] = itemsJson;
+  value["nodes"] = nodesJson;
+  value["relations"] = relationsJson;
 
   qDebug() << QString::fromStdString(value.toStyledString());
 
@@ -327,5 +326,31 @@ Json::Value OntologyWidget::serialize() const {
 }
 void OntologyWidget::deserialize(const Json::Value &json) {
 
-}
+  Json::Value nodesJson = json["nodes"];
+  Json::Value relationsJson = json["relations"];
 
+  QMap<long, NodeItem *> nodes;
+
+  for (int i = 0; i < nodesJson.size(); ++i) {
+    Json::Value nodeJson = nodesJson[i];
+    NodeItem *nodeItem = new NodeItem(nodeJson);
+    nodes.insert(nodeItem->id(), nodeItem);
+    m_ontologyView->scene()->addItem(nodeItem);
+  }
+
+  for (int i = 0; i < relationsJson.size(); ++i) {
+    Json::Value relationJson = relationsJson[i];
+    long sourceNodeId = relationJson["source_node"].asInt64();
+    long destinationNodeId = relationJson["destination_node"].asInt64();
+
+    NodeItem *sourceNode = nodes[sourceNodeId];
+    NodeItem *destinationNode = nodes[destinationNodeId];
+
+    if (sourceNode != NULL && destinationNode != NULL) {
+      RelationItem *relationItem = new RelationItem();
+      relationItem->setSourceNode(sourceNode);
+      relationItem->setDestinationNode(destinationNode);
+      m_ontologyView->scene()->addItem(relationItem);
+    }
+  }
+}
