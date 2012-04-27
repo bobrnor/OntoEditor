@@ -48,6 +48,7 @@ void MainWindow::saveSlot() {
   }
 
   Json::Value jsonState = m_ontologyWidget->serialize();
+  jsonState["data_source"] = m_dataController.serialize();
 
   QTextStream stream(&file);
   stream << QString::fromStdString(jsonState.toStyledString());
@@ -64,6 +65,7 @@ void MainWindow::loadSlot() {
     Json::Value jsonState;
     bool ok = reader.parse(fileStream, jsonState);
     if (ok) {
+      m_dataController = OntologyDataController(jsonState["data_source"]);
       m_ontologyWidget->deserialize(jsonState);
     }
   }
