@@ -19,12 +19,11 @@ class NodeItem : public QGraphicsRectItem, public OntologyGraphElement {
 
   public:
     explicit NodeItem(QGraphicsItem *parent = 0);
-    explicit NodeItem(const Json::Value &jsonValue);
     ~NodeItem();
 
     void appendRelation(RelationItem *relation);
     void removeRelation(RelationItem *relation);
-    
+
     void removeAllRelations();
 
     Json::Value jsonRepresentation() const;

@@ -11,7 +11,7 @@ class IOntologyWidgetDelegate {
     virtual void nodeNameChanged(long nodeId, const QString &name) = 0;
     virtual void relationNameChanged(long relationId, const QString &name) = 0;
     virtual void nodeRemoved(long nodeId) = 0;
-    virtual void relatoinRemoved(long relatoinId) = 0;
+    virtual void relationRemoved(long relationId) = 0;
 };
 
 #endif // ONTOLOGYWIDGETDELEGATE_H

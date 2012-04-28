@@ -9,13 +9,7 @@ QT       += core gui
 TARGET = OntoEditor
 TEMPLATE = app
 
-SOURCES += main.cpp\
-    RelationVisualizedLine.cpp \
-    RelationItem.cpp \
-    OntologyWidget.cpp \
-    OntologyGraphicsView.cpp \
-    NodeItem.cpp \
-    OntologyGraphElement.cpp \
+SOURCES += main.cpp \
     lib_json/json_valueiterator.inl \
     lib_json/json_internalmap.inl \
     lib_json/json_internalarray.inl \
@@ -29,18 +23,9 @@ SOURCES += main.cpp\
     onto_widget/OntologyWidget.cpp \
     onto_widget/OntologyGraphicsView.cpp \
     onto_widget/OntologyGraphElement.cpp \
-    onto_widget/OntologyDataController.cpp \
     onto_widget/NodeItem.cpp
 
-HEADERS  += RelationVisualizedLine.h \
-    RelationItem.h \
-    OntologyWidget.h \
-    OntologyGraphicsView.h \
-    NodeItem.h \
-    ItemType.h \
-    ItemDataKey.h \
-    OntologyGraphElement.h \
-    IOntologyWidgetDelegate.h \
+HEADERS  += \
     lib_json/json_tool.h \
     lib_json/json_batchallocator.h \
     lib_json/json/writer.h \
@@ -59,7 +44,6 @@ HEADERS  += RelationVisualizedLine.h \
     onto_widget/OntologyWidget.h \
     onto_widget/OntologyGraphicsView.h \
     onto_widget/OntologyGraphElement.h \
-    onto_widget/OntologyDataController.h \
     onto_widget/NodeItem.h \
     onto_widget/ItemType.h \
     onto_widget/ItemDataKey.h \
@@ -67,6 +51,5 @@ HEADERS  += RelationVisualizedLine.h \
     onto_widget/IOntologyDataSource.h
 
 FORMS += \
-    OntologyWidget.ui \
     MainWindow.ui \
     onto_widget/OntologyWidget.ui

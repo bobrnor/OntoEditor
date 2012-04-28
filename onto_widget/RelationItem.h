@@ -21,7 +21,6 @@ class RelationItem : public QGraphicsLineItem, public OntologyGraphElement {
 
   public:
     explicit RelationItem(QGraphicsItem *parent = 0);
-    explicit RelationItem(const Json::Value &jsonValue);
     ~RelationItem();
 
     QRectF boundingRect() const;
@@ -35,8 +34,6 @@ class RelationItem : public QGraphicsLineItem, public OntologyGraphElement {
 
     virtual void setDestinationNode(NodeItem *node);
     virtual NodeItem *destinationNode() const;
-
-    Json::Value jsonRepresentation() const;
 };
 
 #endif // RELATIONITEM_H

@@ -6,24 +6,38 @@
 
 #include "lib_json/json/json.h"
 
-#include "IOntologyDataSource.h"
-#include "IOntologyWidgetDelegate.h"
+#include "onto_widget/IOntologyDataSource.h"
+#include "onto_widget/IOntologyWidgetDelegate.h"
 
 class OntologyDataController : public IOntologyDataSource, public IOntologyWidgetDelegate {
   private:
     long m_lastId;
-    QMap<long, QString> m_ontologyItems;
+    // mapping
+    QMap<long, NodeData *> m_nodesMap;
+    QMap<long, RelationData *> m_relationsMap;
+    // listing
+    QList<NodeData *> m_nodesList;
+    QList<RelationData *> m_relationsList;
+
+    void removeRelatedRelations(NodeData *nodeData);
 
   public:
     OntologyDataController();
     OntologyDataController(const Json::Value &json);
 
+    // data source
+    int nodeCount();
+    int relationCount();
+    NodeData *node(int index);
+    RelationData *relation(int index);
+
+    // delegate
     long nodeCreated();
     long relatoinCreated(long sourceNodeId, long destinationNodeId);
     void nodeNameChanged(long nodeId, const QString &name);
     void relationNameChanged(long relationId, const QString &name);
     void nodeRemoved(long nodeId);
-    void relatoinRemoved(long relatoinId);
+    void relationRemoved(long relationId);
 
     Json::Value serialize();
 };

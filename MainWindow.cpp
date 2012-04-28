@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->setupUi(this);
 
   m_ontologyWidget = new OntologyWidget(this);
+  m_ontologyWidget->setDataSource(&m_dataController);
   m_ontologyWidget->setDelegate(&m_dataController);
   ui->verticalLayout->addWidget(m_ontologyWidget);
 

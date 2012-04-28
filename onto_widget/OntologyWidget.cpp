@@ -31,6 +31,7 @@ OntologyWidget::OntologyWidget(QWidget *parent) :
 
   connect(m_ontologyView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(showContextMenuSlot(QPoint)));
 
+  m_dataSource = NULL;
   m_delegate = NULL;
   m_relationVisualizedLine = NULL;
   m_editRelationMode = false;
@@ -41,6 +42,16 @@ OntologyWidget::OntologyWidget(QWidget *parent) :
 OntologyWidget::~OntologyWidget() {
 
   delete ui;
+}
+
+void OntologyWidget::setDataSource(IOntologyDataSource *dataSource) {
+
+  m_dataSource = dataSource;
+}
+
+IOntologyDataSource *OntologyWidget::dataSource() const {
+
+  return m_dataSource;
 }
 
 void OntologyWidget::setDelegate(IOntologyWidgetDelegate *delegate) {
@@ -157,22 +168,80 @@ void OntologyWidget::setRelation(NodeItem *sourceNode, NodeItem *destinationNode
   m_ontologyView->scene()->addItem(relationItem);
 }
 
-void OntologyWidget::validateItems() {
+void OntologyWidget::updateData() {
+
+  QMap<long, NodeItem *> invalidatedNodesMap;
+  QMap<long, RelationItem *> invalidatedRelationsMap;
 
   QList<QGraphicsItem *> items = m_ontologyView->scene()->items();
   foreach (QGraphicsItem *item, items) {
-    if (item->data(kIDTType) == kITRelation) {
+    if (item->data(kIDTType) == kITNode) {
+      NodeItem *nodeItem = static_cast<NodeItem *>(item);
+      invalidatedNodesMap.insert(nodeItem->id(), nodeItem);
+    }
+    else if (item->data(kIDTType) == kITRelation) {
       RelationItem *relationItem = static_cast<RelationItem *>(item);
-      if (relationItem->sourceNode() == NULL && relationItem->destinationNode() == NULL) {
-        m_ontologyView->scene()->removeItem(relationItem);
+      invalidatedRelationsMap.insert(relationItem->id(), relationItem);
+    }
+  }
 
-        if (m_delegate != NULL) {
-          m_delegate->relatoinRemoved(relationItem->id());
+  if (m_dataSource != NULL) {
+    QMap<long, NodeItem *> existedNodes;
+    int nodeCount = m_dataSource->nodeCount();
+    for (int i = 0; i < nodeCount; ++i) {
+      NodeData *nodeData = m_dataSource->node(i);
+      if (invalidatedNodesMap.contains(nodeData->id)) {
+        NodeItem *nodeItem = invalidatedNodesMap.value(nodeData->id);
+        nodeItem->setName(nodeData->name);
+        invalidatedNodesMap.remove(nodeItem->id());
+        existedNodes.insert(nodeItem->id(), nodeItem);
+      }
+      else {
+        QPointF pos(0.0, 0.0);
+        if (m_nodePositions.contains(nodeData->id)) {
+          pos = m_nodePositions.value(nodeData->id);
         }
-
-        delete relationItem;
+        NodeItem *nodeItem = new NodeItem();
+        nodeItem->setId(nodeData->id);
+        nodeItem->setName(nodeData->name);
+        nodeItem->setPos(pos);
+        m_ontologyView->scene()->addItem(nodeItem);
+        existedNodes.insert(nodeItem->id(), nodeItem);
       }
     }
+
+    int relationCount = m_dataSource->relationCount();
+    for (int i = 0; i < relationCount; ++i) {
+      RelationData *relationData = m_dataSource->relation(i);
+      if (invalidatedRelationsMap.contains(relationData->id)) {
+        RelationItem *relationItem = invalidatedRelationsMap.value(relationData->id);
+        relationItem->setName(relationData->name);
+        invalidatedRelationsMap.remove(relationItem->id());
+      }
+      else {
+        RelationItem *relationItem = new RelationItem();
+        relationItem->setId(relationData->id);
+        relationItem->setName(relationData->name);
+
+        NodeItem *sourceNode = existedNodes.value(relationData->sourceNodeId);
+        NodeItem *destinationNode = existedNodes.value(relationData->destinationNodeId);
+
+        relationItem->setSourceNode(sourceNode);
+        relationItem->setDestinationNode(destinationNode);
+
+        m_ontologyView->scene()->addItem(relationItem);
+      }
+    }
+  }
+
+  foreach (NodeItem *invalidNode, invalidatedNodesMap.values()) {
+    m_ontologyView->scene()->removeItem(invalidNode);
+    delete invalidNode;
+  }
+
+  foreach (RelationItem *invalidRelation, invalidatedRelationsMap.values()) {
+    m_ontologyView->scene()->removeItem(invalidRelation);
+    delete invalidRelation;
   }
 }
 
@@ -267,13 +336,13 @@ void OntologyWidget::removeSelectedSlot() {
       RelationItem *relationItem = static_cast<RelationItem *>(item);
       relationItem->removeFromNodes();
       if (m_delegate != NULL) {
-        m_delegate->relatoinRemoved(relationItem->id());
+        m_delegate->relationRemoved(relationItem->id());
       }
     }
     m_ontologyView->scene()->removeItem(item);
     delete item;
   }
-  validateItems();
+  updateData();
 }
 
 void OntologyWidget::sceneSelectionChangedSlot() {
@@ -305,52 +374,29 @@ Json::Value OntologyWidget::serialize() const {
 
   Json::Value value;
   Json::Value nodesJson(Json::arrayValue);
-  Json::Value relationsJson(Json::arrayValue);
-
   foreach (QGraphicsItem *item, m_ontologyView->scene()->items()) {
     if (item->data(kIDTType) == kITNode) {
       NodeItem *nodeItem = static_cast<NodeItem *>(item);
       nodesJson.append(nodeItem->jsonRepresentation());
     }
-    else if (item->data(kIDTType) == kITRelation) {
-      RelationItem *relationItem = static_cast<RelationItem *>(item);
-      relationsJson.append(relationItem->jsonRepresentation());
-    }
   }
   value["nodes"] = nodesJson;
-  value["relations"] = relationsJson;
-
-  qDebug() << QString::fromStdString(value.toStyledString());
 
   return value;
 }
 void OntologyWidget::deserialize(const Json::Value &json) {
 
+  m_ontologyView->scene()->clear();
+
   Json::Value nodesJson = json["nodes"];
-  Json::Value relationsJson = json["relations"];
-
-  QMap<long, NodeItem *> nodes;
-
   for (int i = 0; i < nodesJson.size(); ++i) {
     Json::Value nodeJson = nodesJson[i];
-    NodeItem *nodeItem = new NodeItem(nodeJson);
-    nodes.insert(nodeItem->id(), nodeItem);
-    m_ontologyView->scene()->addItem(nodeItem);
+    long nodeId = nodeJson["id"].asInt64();
+    double x = nodeJson["pos_x"].asDouble();
+    double y = nodeJson["pos_y"].asDouble();
+    QPointF pos(x, y);
+    m_nodePositions.insert(nodeId, pos);
   }
 
-  for (int i = 0; i < relationsJson.size(); ++i) {
-    Json::Value relationJson = relationsJson[i];
-    long sourceNodeId = relationJson["source_node"].asInt64();
-    long destinationNodeId = relationJson["destination_node"].asInt64();
-
-    NodeItem *sourceNode = nodes[sourceNodeId];
-    NodeItem *destinationNode = nodes[destinationNodeId];
-
-    if (sourceNode != NULL && destinationNode != NULL) {
-      RelationItem *relationItem = new RelationItem();
-      relationItem->setSourceNode(sourceNode);
-      relationItem->setDestinationNode(destinationNode);
-      m_ontologyView->scene()->addItem(relationItem);
-    }
-  }
+  updateData();
 }

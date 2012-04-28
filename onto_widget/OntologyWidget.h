@@ -5,6 +5,7 @@
 
 #include "OntologyGraphicsView.h"
 #include "IOntologyWidgetDelegate.h"
+#include "IOntologyDataSource.h"
 
 class RelationVisualizedLine;
 class NodeItem;
@@ -23,6 +24,9 @@ class OntologyWidget : public QWidget {
     void setDelegate(IOntologyWidgetDelegate *delegate);
     IOntologyWidgetDelegate *delegate() const;
 
+    void setDataSource(IOntologyDataSource *dataSource);
+    IOntologyDataSource *dataSource() const;
+
     Json::Value serialize() const;
     void deserialize(const Json::Value &json);
     
@@ -32,14 +36,16 @@ class OntologyWidget : public QWidget {
     OntologyGraphicsView *m_ontologyView;
     QPointF m_lastRightClickScenePosition;
     RelationVisualizedLine *m_relationVisualizedLine;
+    IOntologyDataSource *m_dataSource;
     IOntologyWidgetDelegate *m_delegate;
+    QMap<long, QPointF> m_nodePositions;
 
     bool m_editRelationMode;
 
     void setEditRelationMode(bool on);
     void setRelation(NodeItem *sourceNode, NodeItem *destinationNode);
 
-    void validateItems();
+    void updateData();
 
   public slots:
     void showContextMenuSlot(const QPoint &pos);

@@ -11,7 +11,6 @@ class OntologyGraphElement {
 
   public:
     OntologyGraphElement();
-    OntologyGraphElement(const Json::Value &jsonValue);
 
     void setId(long id);
     long id() const;

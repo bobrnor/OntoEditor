@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 
-#include "OntologyWidget.h"
+#include "onto_widget/OntologyWidget.h"
 #include "OntologyDataController.h"
 
 namespace Ui {

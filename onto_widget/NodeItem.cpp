@@ -23,29 +23,6 @@ NodeItem::NodeItem(QGraphicsItem *parent) :
   setData(kIDTType, kITNode);
 }
 
-NodeItem::NodeItem(const Json::Value &jsonValue) :
-  QGraphicsRectItem(NULL, NULL), OntologyGraphElement(jsonValue) {
-
-  QRectF rect(QPointF(-75, -25), QSizeF(150, 50));
-  setRect(rect);
-
-  setFlag(ItemIsMovable);
-  setFlag(ItemIsSelectable);
-  setFlag(ItemSendsGeometryChanges);
-
-  QBrush brush = QBrush(Qt::SolidPattern);
-  brush.setColor(Qt::white);
-  setBrush(brush);
-
-  setData(kIDTType, kITNode);
-
-  int x = jsonValue["pos_x"].asDouble();
-  int y = jsonValue["pos_y"].asDouble();
-
-  QPointF pos(x, y);
-  setPos(pos);
-}
-
 NodeItem::~NodeItem() {
 
   qDebug() << "NodeItem destructor";
