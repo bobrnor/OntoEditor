@@ -18,12 +18,13 @@ SOURCES += main.cpp \
     lib_json/json_reader.cpp \
     OntologyDataController.cpp \
     MainWindow.cpp \
-    onto_widget/RelationVisualizedLine.cpp \
-    onto_widget/RelationItem.cpp \
-    onto_widget/OntologyWidget.cpp \
-    onto_widget/OntologyGraphicsView.cpp \
-    onto_widget/OntologyGraphElement.cpp \
-    onto_widget/NodeItem.cpp
+    ontology/graph/RelationVisualizedLine.cpp \
+    ontology/graph/RelationItem.cpp \
+    ontology/graph/OntologyWidget.cpp \
+    ontology/graph/OntologyGraphicsView.cpp \
+    ontology/graph/OntologyGraphElement.cpp \
+    ontology/graph/NodeItem.cpp \
+    ontology/treeview/OntologyTreeViewController.cpp
 
 HEADERS  += \
     lib_json/json_tool.h \
@@ -39,17 +40,18 @@ HEADERS  += \
     IOntologyDataSource.h \
     OntologyDataController.h \
     MainWindow.h \
-    onto_widget/RelationVisualizedLine.h \
-    onto_widget/RelationItem.h \
-    onto_widget/OntologyWidget.h \
-    onto_widget/OntologyGraphicsView.h \
-    onto_widget/OntologyGraphElement.h \
-    onto_widget/NodeItem.h \
-    onto_widget/ItemType.h \
-    onto_widget/ItemDataKey.h \
-    onto_widget/IOntologyWidgetDelegate.h \
-    onto_widget/IOntologyDataSource.h
+    ontology/graph/RelationVisualizedLine.h \
+    ontology/graph/RelationItem.h \
+    ontology/graph/OntologyWidget.h \
+    ontology/graph/OntologyGraphicsView.h \
+    ontology/graph/OntologyGraphElement.h \
+    ontology/graph/NodeItem.h \
+    ontology/graph/ItemType.h \
+    ontology/graph/ItemDataKey.h \
+    ontology/treeview/OntologyTreeViewController.h \
+    ontology/IOntologyDelegate.h \
+    ontology/IOntologyDataSource.h
 
 FORMS += \
     MainWindow.ui \
-    onto_widget/OntologyWidget.ui
+    ontology/graph/OntologyWidget.ui

@@ -1,15 +1,14 @@
 #ifndef ONTOLOGYDATACONTROLLER_H
 #define ONTOLOGYDATACONTROLLER_H
 
-#include <QMap>
-#include <QString>
+#include <QtGui>
 
 #include "lib_json/json/json.h"
 
-#include "onto_widget/IOntologyDataSource.h"
-#include "onto_widget/IOntologyWidgetDelegate.h"
+#include "ontology/IOntologyDataSource.h"
+#include "ontology/IOntologyDelegate.h"
 
-class OntologyDataController : public IOntologyDataSource, public IOntologyWidgetDelegate {
+class OntologyDataController : public IOntologyDataSource, public IOntologyDelegate {
   private:
     long m_lastId;
     // mapping

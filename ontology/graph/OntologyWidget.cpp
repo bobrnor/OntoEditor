@@ -54,12 +54,12 @@ IOntologyDataSource *OntologyWidget::dataSource() const {
   return m_dataSource;
 }
 
-void OntologyWidget::setDelegate(IOntologyWidgetDelegate *delegate) {
+void OntologyWidget::setDelegate(IOntologyDelegate *delegate) {
 
   m_delegate = delegate;
 }
 
-IOntologyWidgetDelegate *OntologyWidget::delegate() const {
+IOntologyDelegate *OntologyWidget::delegate() const {
 
   return m_delegate;
 }
@@ -146,6 +146,7 @@ void OntologyWidget::addNodeSlot() {
   long newNodeId = -1;
   if (m_delegate != NULL) {
     newNodeId = m_delegate->nodeCreated();
+    emit dataChangedSignal();
   }
 
   NodeItem *newNode = new NodeItem(NULL);
@@ -159,6 +160,7 @@ void OntologyWidget::setRelation(NodeItem *sourceNode, NodeItem *destinationNode
   long newRelationId = -1;
   if (m_delegate != NULL) {
     newRelationId = m_delegate->relatoinCreated(sourceNode->id(), destinationNode->id());
+    emit dataChangedSignal();
   }
 
   RelationItem *relationItem = new RelationItem();
@@ -287,6 +289,7 @@ void OntologyWidget::editNodeSlot() {
       if (ok) {
         if (m_delegate != NULL) {
           m_delegate->nodeNameChanged(nodeItem->id(), newName);
+          emit dataChangedSignal();
         }
         nodeItem->setName(newName);
         m_ontologyView->scene()->invalidate();
@@ -313,6 +316,7 @@ void OntologyWidget::editRelationSlot() {
       if (ok) {
         if (m_delegate != NULL) {
           m_delegate->relationNameChanged(relationItem->id(), newName);
+          emit dataChangedSignal();
         }
         relationItem->setName(newName);
         m_ontologyView->scene()->invalidate();
@@ -343,6 +347,7 @@ void OntologyWidget::removeSelectedSlot() {
     delete item;
   }
   updateData();
+  emit dataChangedSignal();
 }
 
 void OntologyWidget::sceneSelectionChangedSlot() {
@@ -399,4 +404,31 @@ void OntologyWidget::deserialize(const Json::Value &json) {
   }
 
   updateData();
+}
+
+void OntologyWidget::dataChangedSlot() {
+
+  updateData();
+}
+
+void OntologyWidget::itemSelectedSlot(long id) {
+
+  m_ontologyView->scene()->clearSelection();
+
+  foreach (QGraphicsItem *item, m_ontologyView->scene()->items()) {
+    if (item->data(kIDTType) == kITNode) {
+      NodeItem *nodeItem = static_cast<NodeItem *>(item);
+      if (nodeItem->id() == id) {
+        item->setSelected(true);
+        m_ontologyView->centerOn(item);
+      }
+    }
+    else if (item->data(kIDTType) == kITRelation) {
+      RelationItem *relationItem = static_cast<RelationItem *>(item);
+      if (relationItem->id() == id) {
+        item->setSelected(true);
+        m_ontologyView->centerOn(item);
+      }
+    }
+  }
 }

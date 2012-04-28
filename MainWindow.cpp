@@ -19,7 +19,19 @@ MainWindow::MainWindow(QWidget *parent) :
   m_ontologyWidget = new OntologyWidget(this);
   m_ontologyWidget->setDataSource(&m_dataController);
   m_ontologyWidget->setDelegate(&m_dataController);
-  ui->verticalLayout->addWidget(m_ontologyWidget);
+  ui->contentLayout->addWidget(m_ontologyWidget);
+
+  m_ontologyTreeViewController = new OntologyTreeViewController();
+  m_ontologyTreeViewController->setDataSource(&m_dataController);
+  m_ontologyTreeViewController->setDelegate(&m_dataController);
+  ui->treeViewLayout->addWidget(m_ontologyTreeViewController->treeView());
+
+  ui->splitter->setStretchFactor(0, 1);
+  ui->splitter->setStretchFactor(1, 10);
+
+  connect(m_ontologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
+  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_ontologyWidget, SLOT(dataChangedSlot()));
+  connect(m_ontologyTreeViewController, SIGNAL(itemSelectedSignal(long)), m_ontologyWidget, SLOT(itemSelectedSlot(long)));
 
   setupMenu();
 }
@@ -68,6 +80,7 @@ void MainWindow::loadSlot() {
     if (ok) {
       m_dataController = OntologyDataController(jsonState["data_source"]);
       m_ontologyWidget->deserialize(jsonState);
+      m_ontologyTreeViewController->updateData();
     }
   }
 }

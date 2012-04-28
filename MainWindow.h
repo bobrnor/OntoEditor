@@ -3,7 +3,8 @@
 
 #include <QMainWindow>
 
-#include "onto_widget/OntologyWidget.h"
+#include "ontology/graph/OntologyWidget.h"
+#include "ontology/treeview/OntologyTreeViewController.h"
 #include "OntologyDataController.h"
 
 namespace Ui {
@@ -21,6 +22,7 @@ class MainWindow : public QMainWindow {
     Ui::MainWindow *ui;
 
     OntologyWidget *m_ontologyWidget;
+    OntologyTreeViewController *m_ontologyTreeViewController;
     OntologyDataController m_dataController;
 
     void setupMenu();

@@ -1,8 +1,6 @@
 #ifndef IONTOLOGYDATASOURCE_H
 #define IONTOLOGYDATASOURCE_H
 
-#include "OntologyGraphElement.h"
-
 typedef struct {
     long id;
     QString name;

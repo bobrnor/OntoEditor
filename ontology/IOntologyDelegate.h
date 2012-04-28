@@ -3,7 +3,7 @@
 
 #include <QString>
 
-class IOntologyWidgetDelegate {
+class IOntologyDelegate {
 
   public:
     virtual long nodeCreated() = 0;
