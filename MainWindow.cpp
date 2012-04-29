@@ -33,7 +33,19 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_ontologyWidget, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(itemSelectedSignal(long)), m_ontologyWidget, SLOT(itemSelectedSlot(long)));
 
+  m_logicalInference = new LogicalInference(&m_dataController);
+
   setupMenu();
+
+  m_zoomInShortcut = new QShortcut(this);
+  m_zoomInShortcut->setKey(QKeySequence("Ctrl+="));
+  m_zoomInShortcut->setEnabled(true);
+  connect(m_zoomInShortcut, SIGNAL(activated()), m_ontologyWidget, SLOT(zoomInSlot()));
+
+  m_zoomOutShortcut = new QShortcut(this);
+  m_zoomOutShortcut->setKey(QKeySequence("Ctrl+-"));
+  m_zoomOutShortcut->setEnabled(true);
+  connect(m_zoomOutShortcut, SIGNAL(activated()), m_ontologyWidget, SLOT(zoomOutSlot()));
 }
 
 MainWindow::~MainWindow() {
@@ -46,9 +58,11 @@ void MainWindow::setupMenu() {
   QMenu *menu = ui->menubar->addMenu(tr("File"));
   QAction *saveAction = menu->addAction(tr("Save..."));
   QAction *loadAction = menu->addAction(tr("Load..."));
+  QAction *consultAction = menu->addAction(tr("Consult..."));
 
   connect(saveAction, SIGNAL(triggered()), SLOT(saveSlot()));
   connect(loadAction, SIGNAL(triggered()), SLOT(loadSlot()));
+  connect(consultAction, SIGNAL(triggered()), SLOT(consultSlot()));
 }
 
 void MainWindow::saveSlot() {
@@ -64,6 +78,8 @@ void MainWindow::saveSlot() {
   jsonState["data_source"] = m_dataController.serialize();
 
   QTextStream stream(&file);
+  stream.setCodec("UTF-8");
+  stream.setAutoDetectUnicode(true);
   stream << QString::fromStdString(jsonState.toStyledString());
 }
 
@@ -81,6 +97,30 @@ void MainWindow::loadSlot() {
       m_dataController = OntologyDataController(jsonState["data_source"]);
       m_ontologyWidget->deserialize(jsonState);
       m_ontologyTreeViewController->updateData();
+      if (m_logicalInference != NULL) {
+        delete m_logicalInference;
+      }
+      m_logicalInference = new LogicalInference(&m_dataController);
+    }
+  }
+}
+
+void MainWindow::consultSlot() {
+
+  bool ok = false;
+  QString query = QInputDialog::getText(this,
+                                          tr("Enter query"),
+                                          tr("Query: "),
+                                          QLineEdit::Normal,
+                                          "",
+                                          &ok);
+  if (ok) {
+    QString result = m_logicalInference->inference(query);
+    if (result.isNull()) {
+      QMessageBox::information(this, tr("Consult result"), tr("No result"));
+    }
+    else {
+      QMessageBox::information(this, tr("Consult result"), result);
     }
   }
 }

@@ -392,6 +392,7 @@ Json::Value OntologyWidget::serialize() const {
 void OntologyWidget::deserialize(const Json::Value &json) {
 
   m_ontologyView->scene()->clear();
+  m_nodePositions.clear();
 
   Json::Value nodesJson = json["nodes"];
   for (int i = 0; i < nodesJson.size(); ++i) {
@@ -431,4 +432,14 @@ void OntologyWidget::itemSelectedSlot(long id) {
       }
     }
   }
+}
+
+void OntologyWidget::zoomInSlot() {
+
+  m_ontologyView->scale(1.2, 1.2);
+}
+
+void OntologyWidget::zoomOutSlot() {
+
+  m_ontologyView->scale(0.8, 0.8);
 }

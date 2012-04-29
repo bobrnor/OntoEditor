@@ -24,7 +24,8 @@ SOURCES += main.cpp \
     ontology/graph/OntologyGraphicsView.cpp \
     ontology/graph/OntologyGraphElement.cpp \
     ontology/graph/NodeItem.cpp \
-    ontology/treeview/OntologyTreeViewController.cpp
+    ontology/treeview/OntologyTreeViewController.cpp \
+    LogicalInference.cpp
 
 HEADERS  += \
     lib_json/json_tool.h \
@@ -50,7 +51,8 @@ HEADERS  += \
     ontology/graph/ItemDataKey.h \
     ontology/treeview/OntologyTreeViewController.h \
     ontology/IOntologyDelegate.h \
-    ontology/IOntologyDataSource.h
+    ontology/IOntologyDataSource.h \
+    LogicalInference.h
 
 FORMS += \
     MainWindow.ui \

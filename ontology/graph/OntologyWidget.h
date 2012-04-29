@@ -66,6 +66,9 @@ class OntologyWidget : public QWidget {
     void dataChangedSlot();
 
     void itemSelectedSlot(long id);
+
+    void zoomInSlot();
+    void zoomOutSlot();
 };
 
 #endif // ONTOLOGYWIDGET_H
