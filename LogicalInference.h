@@ -11,7 +11,9 @@ typedef struct {
     QList<RelationData *> relations;
 } LINodeData;
 
-class LogicalInference {
+class LogicalInference : public QObject {
+    Q_OBJECT
+
   private:
     IOntologyDataSource *m_dataSource;
     QMap<long, LINodeData *> m_nodes;
@@ -22,7 +24,11 @@ class LogicalInference {
   public:
     LogicalInference(IOntologyDataSource *dataSource);
 
+    void updateData();
     QString inference(const QString &query) const;
+
+  public slots:
+    void dataChangedSlot();
 };
 
 #endif // LOGICALINFERENCE_H

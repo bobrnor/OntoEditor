@@ -29,11 +29,13 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->splitter->setStretchFactor(0, 1);
   ui->splitter->setStretchFactor(1, 10);
 
+  m_logicalInference = new LogicalInference(&m_dataController);
+
   connect(m_ontologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_ontologyWidget, SLOT(dataChangedSlot()));
+  connect(m_ontologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
+  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(itemSelectedSignal(long)), m_ontologyWidget, SLOT(itemSelectedSlot(long)));
-
-  m_logicalInference = new LogicalInference(&m_dataController);
 
   setupMenu();
 
@@ -98,9 +100,12 @@ void MainWindow::loadSlot() {
       m_ontologyWidget->deserialize(jsonState);
       m_ontologyTreeViewController->updateData();
       if (m_logicalInference != NULL) {
+        disconnect(m_logicalInference);
         delete m_logicalInference;
       }
       m_logicalInference = new LogicalInference(&m_dataController);
+      connect(m_ontologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
+      connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
     }
   }
 }

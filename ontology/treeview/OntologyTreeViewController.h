@@ -6,6 +6,11 @@
 #include "../IOntologyDataSource.h"
 #include "../IOntologyDelegate.h"
 
+struct TVNodeData {
+    NodeData *nodeData;
+    QMap<QString, QList<TVNodeData> > *childNodes;
+};
+
 class OntologyTreeViewController : public QObject {
     Q_OBJECT
 
@@ -14,6 +19,11 @@ class OntologyTreeViewController : public QObject {
     QStandardItemModel *m_objectsModel;
     IOntologyDataSource *m_dataSource;
     IOntologyDelegate *m_delegate;
+
+    QMap<long, TVNodeData> m_treeData;
+
+    void updateTreeData();
+    void buildNodesTree(QStandardItem *rootItem, QList<TVNodeData> nodes, QSet<long> *seenNodeIds);
 
   public:
     OntologyTreeViewController();

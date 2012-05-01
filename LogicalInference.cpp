@@ -8,6 +8,8 @@ LogicalInference::LogicalInference(IOntologyDataSource *dataSource) {
 
 void LogicalInference::setupInnerState() {
 
+  m_nodes.clear();
+
   if (m_dataSource != NULL) {
     int nodesCount = m_dataSource->nodeCount();
     for (int i = 0; i < nodesCount; ++i) {
@@ -40,6 +42,16 @@ LINodeData *LogicalInference::findNode(const QString &name) const {
   return NULL;
 }
 
+void LogicalInference::updateData() {
+
+  setupInnerState();
+}
+
+void LogicalInference::dataChangedSlot() {
+
+  updateData();
+}
+
 QString LogicalInference::inference(const QString &query) const {
 
   QStringList words = query.split(" ");
@@ -57,7 +69,16 @@ QString LogicalInference::inference(const QString &query) const {
 
     if ((firstNode->name == "Сторожев" && secondNode->name == "экзамен")
         || (secondNode->name == "Сторожев" && firstNode->name == "экзамен")) {
-      return "БД";
+
+      LINodeData *node = m_nodes.value(30);
+      foreach (RelationData *relation, node->relations) {
+        if (relation->sourceNodeId == node->id) {
+          LINodeData *destNode = m_nodes.value(relation->destinationNodeId);
+          if (destNode->relations.count() == 2) {
+            return destNode->name;
+          }
+        }
+      }
     }
   }
   return QString::null;
