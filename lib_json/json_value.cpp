@@ -462,11 +462,12 @@ Value::~Value()
       break;
 #endif
    default:
-      JSON_ASSERT_UNREACHABLE;
+//      JSON_ASSERT_UNREACHABLE;
+       break;
    }
 
-   if ( comments_ )
-      delete[] comments_;
+//   if ( comments_ )
+//      delete[] comments_;
 }
 
 Value &

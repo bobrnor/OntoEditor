@@ -29,12 +29,17 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->splitter->setStretchFactor(0, 1);
   ui->splitter->setStretchFactor(1, 10);
 
-  m_logicalInference = new LogicalInference(&m_dataController);
+  m_logicalInference = new LogicalInference(&m_dataController, &m_dataController);
 
   connect(m_ontologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_ontologyWidget, SLOT(dataChangedSlot()));
+
   connect(m_ontologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
+
+  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_ontologyWidget, SLOT(dataChangedSlot()));
+  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
+
   connect(m_ontologyTreeViewController, SIGNAL(itemSelectedSignal(long)), m_ontologyWidget, SLOT(itemSelectedSlot(long)));
 
   setupMenu();
@@ -103,29 +108,40 @@ void MainWindow::loadSlot() {
         disconnect(m_logicalInference);
         delete m_logicalInference;
       }
-      m_logicalInference = new LogicalInference(&m_dataController);
+      m_logicalInference = new LogicalInference(&m_dataController, &m_dataController);
       connect(m_ontologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
       connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
+      connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_ontologyWidget, SLOT(dataChangedSlot()));
+      connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
     }
   }
 }
 
 void MainWindow::consultSlot() {
 
-  bool ok = false;
-  QString query = QInputDialog::getText(this,
-                                          tr("Enter query"),
-                                          tr("Query: "),
-                                          QLineEdit::Normal,
-                                          "",
-                                          &ok);
-  if (ok) {
-    QString result = m_logicalInference->inference(query);
-    if (result.isNull()) {
-      QMessageBox::information(this, tr("Consult result"), tr("No result"));
-    }
-    else {
-      QMessageBox::information(this, tr("Consult result"), result);
+  QString filePath = QFileDialog::getOpenFileName(this, tr("Open dialog"), QString(), "*");
+  if (QFile::exists(filePath)) {
+    Json::Reader reader;
+    std::ifstream fileStream;
+    fileStream.open(filePath.toStdString().c_str());
+
+    Json::Value jsonState;
+    bool ok = reader.parse(fileStream, jsonState);
+    if (ok) {
+      Json::Value json = m_logicalInference->process(jsonState);
+      qDebug() << QString::fromStdString(json.toStyledString());
+
+      QString filePath = QFileDialog::getSaveFileName(this, tr("Save dialog"), QString(), "*");
+      QFile file(filePath);
+
+      if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        return;
+      }
+
+      QTextStream stream(&file);
+      stream.setCodec("UTF-8");
+      stream.setAutoDetectUnicode(true);
+      stream << QString::fromStdString(json.toStyledString());
     }
   }
 }
