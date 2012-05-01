@@ -9,7 +9,7 @@
 NodeItem::NodeItem(QGraphicsItem *parent) :
   QGraphicsRectItem(parent, NULL), OntologyGraphElement() {
 
-  QRectF rect(QPointF(-75, -25), QSizeF(150, 50));
+  QRectF rect(QPointF(-75, -40), QSizeF(150, 80));
   setRect(rect);
 
   setFlag(ItemIsMovable);
@@ -62,7 +62,10 @@ void NodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
   QGraphicsRectItem::paint(painter, option, widget);
 
-  painter->drawText(boundingRect(), Qt::AlignCenter, m_name);
+  QTextOption textOption;
+  textOption.setAlignment(Qt::AlignCenter);
+  textOption.setWrapMode(QTextOption::WordWrap);
+  painter->drawText(boundingRect(), m_name, textOption);
 }
 
 Json::Value NodeItem::jsonRepresentation() const {
