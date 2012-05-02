@@ -29,6 +29,7 @@ class MainWindow : public QMainWindow {
 
     QShortcut *m_zoomInShortcut;
     QShortcut *m_zoomOutShortcut;
+    QShortcut *m_removeShortcut;
 
     void setupMenu();
 

@@ -53,6 +53,11 @@ MainWindow::MainWindow(QWidget *parent) :
   m_zoomOutShortcut->setKey(QKeySequence("Ctrl+-"));
   m_zoomOutShortcut->setEnabled(true);
   connect(m_zoomOutShortcut, SIGNAL(activated()), m_ontologyWidget, SLOT(zoomOutSlot()));
+
+  m_removeShortcut = new QShortcut(this);
+  m_removeShortcut->setKey(QKeySequence::Delete);
+  m_removeShortcut->setEnabled(true);
+  connect(m_removeShortcut, SIGNAL(activated()), m_ontologyWidget, SLOT(removeSelectedSlot()));
 }
 
 MainWindow::~MainWindow() {
