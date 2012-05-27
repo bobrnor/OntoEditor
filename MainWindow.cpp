@@ -71,10 +71,12 @@ void MainWindow::setupMenu() {
   QAction *saveAction = menu->addAction(tr("Save..."));
   QAction *loadAction = menu->addAction(tr("Load..."));
   QAction *consultAction = menu->addAction(tr("Consult..."));
+  QAction *screenshotAction = menu->addAction(tr("Screenshot..."));
 
   connect(saveAction, SIGNAL(triggered()), SLOT(saveSlot()));
   connect(loadAction, SIGNAL(triggered()), SLOT(loadSlot()));
   connect(consultAction, SIGNAL(triggered()), SLOT(consultSlot()));
+  connect(screenshotAction, SIGNAL(triggered()), SLOT(screenshotSlot()));
 }
 
 void MainWindow::saveSlot() {
@@ -132,6 +134,9 @@ void MainWindow::consultSlot() {
 
     Json::Value jsonState;
     bool ok = reader.parse(fileStream, jsonState);
+
+    Q_ASSERT(ok);
+
     if (ok) {
       Json::Value json = m_logicalInference->process(jsonState);
       qDebug() << QString::fromStdString(json.toStyledString());
@@ -149,4 +154,11 @@ void MainWindow::consultSlot() {
       stream << QString::fromStdString(json.toStyledString());
     }
   }
+}
+
+void MainWindow::screenshotSlot() {
+
+  QString filePath = QFileDialog::getSaveFileName(this, tr("Save dialog"), QString(), "*.png");
+  QImage screenshot = m_ontologyWidget->makeScreenshot();
+  screenshot.save(filePath);
 }

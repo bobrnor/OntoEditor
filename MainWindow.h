@@ -37,6 +37,7 @@ class MainWindow : public QMainWindow {
     void saveSlot();
     void loadSlot();
     void consultSlot();
+    void screenshotSlot();
 };
 
 #endif // MAINWINDOW_H

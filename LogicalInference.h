@@ -6,12 +6,7 @@
 #include "lib_json/json/json.h"
 #include "ontology/IOntologyDataSource.h"
 #include "ontology/IOntologyDelegate.h"
-
-typedef struct {
-    long id;
-    QString name;
-    QList<RelationData *> relations;
-} LINodeData;
+#include "LINodeData.h"
 
 class LogicalInference : public QObject {
     Q_OBJECT

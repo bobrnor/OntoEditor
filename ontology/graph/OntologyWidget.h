@@ -30,6 +30,8 @@ class OntologyWidget : public QWidget {
     Json::Value serialize() const;
     void deserialize(const Json::Value &json);
 
+    QImage makeScreenshot() const;
+
     void updateData();
     
   private:

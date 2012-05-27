@@ -1,0 +1,24 @@
+{
+	"class interface" : {
+		"class interface declaration begin keyword" : "@interface", 
+		"class name" : "MyObjCClass", 
+		"base class designation" : {
+			"base class designation begin keyword" : ":",
+			"base class name" : "MyBaseObjCClass"
+		},
+		"protocols designation" : {
+			"protocols designation begin keyword" : "<", 
+			"protocol name separator" : ",",
+			"protocol designation list" : [
+				{
+					"protocol name" : "MyFirstObjCProtocol"
+				},
+				{
+					"protocol name" : "MySecondObjCProtocol"
+				}
+			],
+			"protocols designation end keyword" : ">"
+		},
+		"class interface declaration end keyword" : "@end"
+	}
+}

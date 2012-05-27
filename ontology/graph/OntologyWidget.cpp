@@ -191,7 +191,7 @@ void OntologyWidget::updateData() {
     QMap<long, NodeItem *> existedNodes;
     int nodeCount = m_dataSource->nodeCount();
     for (int i = 0; i < nodeCount; ++i) {
-      NodeData *nodeData = m_dataSource->node(i);
+      NodeData *nodeData = m_dataSource->nodeByIndex(i);
       if (invalidatedNodesMap.contains(nodeData->id)) {
         NodeItem *nodeItem = invalidatedNodesMap.value(nodeData->id);
         nodeItem->setName(nodeData->name);
@@ -214,7 +214,7 @@ void OntologyWidget::updateData() {
 
     int relationCount = m_dataSource->relationCount();
     for (int i = 0; i < relationCount; ++i) {
-      RelationData *relationData = m_dataSource->relation(i);
+      RelationData *relationData = m_dataSource->relationByIndex(i);
       if (invalidatedRelationsMap.contains(relationData->id)) {
         RelationItem *relationItem = invalidatedRelationsMap.value(relationData->id);
         relationItem->setName(relationData->name);
@@ -442,4 +442,12 @@ void OntologyWidget::zoomInSlot() {
 void OntologyWidget::zoomOutSlot() {
 
   m_ontologyView->scale(0.8, 0.8);
+}
+
+QImage OntologyWidget::makeScreenshot() const {
+
+  QImage image(m_ontologyView->scene()->width(), m_ontologyView->scene()->height(), QImage::Format_ARGB32_Premultiplied);
+  QPainter painter(&image);
+  m_ontologyView->scene()->render(&painter);
+  return image;
 }

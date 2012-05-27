@@ -29,6 +29,12 @@ OntologyDataController::OntologyDataController(const Json::Value &json) {
     relationData->destinationNodeId = itemJson["destination_node_id"].asInt64();
     m_relationsMap.insert(relationData->id, relationData);
     m_relationsList.append(relationData);
+
+    NodeData *sourceNode = m_nodesMap.value(relationData->sourceNodeId);
+    sourceNode->relations.append(relationData->id);
+
+    NodeData *destinationNode = m_nodesMap.value(relationData->destinationNodeId);
+    destinationNode->relations.append(relationData->id);
   }
 }
 
@@ -72,14 +78,71 @@ int OntologyDataController::relationCount() {
   return m_relationsList.count();
 }
 
-NodeData *OntologyDataController::node(int index) {
+NodeData *OntologyDataController::nodeByIndex(int index) {
 
   return m_nodesList.at(index);
 }
 
-RelationData *OntologyDataController::relation(int index) {
+RelationData *OntologyDataController::relationByIndex(int index) {
 
   return m_relationsList.at(index);
+}
+
+NodeData *OntologyDataController::nodeById(long id) {
+
+  return m_nodesMap.value(id);
+}
+
+RelationData *OntologyDataController::relationById(long id) {
+
+  return m_relationsMap.value(id);
+}
+
+RelationData *OntologyDataController::relationByNodes(long sourceNodeId, long destinationNodeId) {
+
+  QPair<long, long> nodesPair(sourceNodeId, destinationNodeId);
+  return m_relationsMapByNodes.value(nodesPair);
+}
+
+NodeData *OntologyDataController::findNode(const QString &nodeName) const {
+
+  foreach (NodeData *nodeData, m_nodesList) {
+    if (nodeData->name.compare(nodeName, Qt::CaseInsensitive) == 0) {
+      return nodeData;
+    }
+  }
+  return NULL;
+}
+
+NodeData *OntologyDataController::findNode(const QString &nodeName, NodeData *startNode) const {
+
+  if (startNode == NULL) {
+    return findNode(nodeName);
+  }
+
+  foreach (long relationId, startNode->relations) {
+    RelationData *relation = m_relationsMap.value(relationId);
+    if (relation->name.compare("transform", Qt::CaseInsensitive) != 0) {
+      NodeData *node = otherNode(relation, startNode);
+      if (node->name.compare(nodeName, Qt::CaseInsensitive) == 0) {
+        return node;
+      }
+    }
+  }
+
+  qDebug() << QString("Can not find node `%1` from node `%2`").arg(nodeName, startNode->name);
+
+  return NULL;
+}
+
+NodeData *OntologyDataController::otherNode(RelationData *relation, NodeData *node) const {
+
+  if (relation->sourceNodeId == node->id) {
+    return m_nodesMap.value(relation->destinationNodeId);
+  }
+  else {
+    return m_nodesMap.value(relation->sourceNodeId);
+  }
 }
 
 // delegate

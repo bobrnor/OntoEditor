@@ -60,11 +60,22 @@ QVariant NodeItem::itemChange(GraphicsItemChange change, const QVariant &value) 
 
 void NodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
-  QGraphicsRectItem::paint(painter, option, widget);
+  QPen pen = this->pen();
+
+  if (isSelected()) {
+    QVector<qreal> dashPattern;
+    dashPattern.append(2.0);
+    dashPattern.append(2.0);
+    pen.setDashPattern(dashPattern);
+    pen.setColor(Qt::blue);
+  }
 
   QTextOption textOption;
   textOption.setAlignment(Qt::AlignCenter);
   textOption.setWrapMode(QTextOption::WordWrap);
+  painter->setPen(pen);
+  painter->drawRect(this->rect());
+  painter->fillRect(this->rect(), this->brush());
   painter->drawText(boundingRect(), m_name, textOption);
 }
 

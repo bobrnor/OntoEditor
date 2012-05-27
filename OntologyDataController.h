@@ -14,11 +14,13 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
     // mapping
     QMap<long, NodeData *> m_nodesMap;
     QMap<long, RelationData *> m_relationsMap;
+    QMap<QPair<long, long>, RelationData *> m_relationsMapByNodes;
     // listing
     QList<NodeData *> m_nodesList;
     QList<RelationData *> m_relationsList;
 
     void removeRelatedRelations(NodeData *nodeData);
+    NodeData *otherNode(RelationData *relation, NodeData *node) const;
 
   public:
     OntologyDataController();
@@ -27,8 +29,17 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
     // data source
     int nodeCount();
     int relationCount();
-    NodeData *node(int index);
-    RelationData *relation(int index);
+
+    NodeData *nodeByIndex(int index);
+    RelationData *relationByIndex(int index);
+
+    NodeData *nodeById(long id);
+    RelationData *relationById(long id);
+
+    RelationData *relationByNodes(long sourceNodeId, long destinationNodeId);
+
+    NodeData *findNode(const QString &nodeName) const;
+    NodeData *findNode(const QString &nodeName, NodeData *startNode) const;
 
     // delegate
     long nodeCreated();
