@@ -2,6 +2,7 @@
 
 #include "lib_json/json/value.h"
 #include "JsonToOntoHelper.h"
+#include "OntoToJsonHelper.h"
 
 LogicalInference::LogicalInference(IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
 
@@ -18,7 +19,7 @@ void LogicalInference::setupInnerState() {
     int nodesCount = m_dataSource->nodeCount();
     for (int i = 0; i < nodesCount; ++i) {
       LINodeData *liNodeData = new LINodeData();
-      NodeData *nodeData = m_dataSource->nodeByIndex(i);
+      NodeData *nodeData = m_dataSource->getNodeByIndex(i);
       liNodeData->id = nodeData->id;
       liNodeData->name = nodeData->name;
       m_nodes.insert(liNodeData->id, liNodeData);
@@ -26,38 +27,13 @@ void LogicalInference::setupInnerState() {
 
     int relationsCount = m_dataSource->relationCount();
     for (int i = 0; i < relationsCount; ++i) {
-      RelationData *relationData = m_dataSource->relationByIndex(i);
+      RelationData *relationData = m_dataSource->getRelationByIndex(i);
       LINodeData *sourceNodeData = m_nodes.value(relationData->sourceNodeId);
       LINodeData *destinationNodeData = m_nodes.value(relationData->destinationNodeId);
       sourceNodeData->relations.append(relationData);
       destinationNodeData->relations.append(relationData);
     }
   }
-}
-
-LINodeData *LogicalInference::findNode(const QString &name) const {
-
-  foreach (LINodeData *nodeData, m_nodes.values()) {
-    if (QString::compare(nodeData->name, name, Qt::CaseInsensitive) == 0) {
-      return nodeData;
-    }
-  }
-  return NULL;
-}
-
-LINodeData *LogicalInference::findNode(const QString &name, LINodeData *nearestNode) const {
-
-  foreach (RelationData *relationData, nearestNode->relations) {
-    LINodeData *sourceNode = m_nodes.value(relationData->sourceNodeId);
-    LINodeData *destinationNode = m_nodes.value(relationData->destinationNodeId);
-    LINodeData *testNode = (sourceNode == nearestNode) ? destinationNode : sourceNode;
-
-    if (QString::compare(testNode->name, name, Qt::CaseInsensitive) == 0) {
-      return testNode;
-    }
-  }
-
-  return NULL;
 }
 
 void LogicalInference::updateData() {
@@ -70,38 +46,6 @@ void LogicalInference::dataChangedSlot() {
   updateData();
 }
 
-QString LogicalInference::inference(const QString &query) const {
-
-  QStringList words = query.split(" ");
-  QList<LINodeData *> activeNodes;
-  foreach (QString word, words) {
-    LINodeData *nodeData = findNode(word);
-    if (nodeData != NULL) {
-      activeNodes.append(nodeData);
-    }
-  }
-
-  if (activeNodes.count() == 2) {
-    LINodeData *firstNode = activeNodes.at(0);
-    LINodeData *secondNode = activeNodes.at(1);
-
-    if ((firstNode->name == "Сторожев" && secondNode->name == "экзамен")
-        || (secondNode->name == "Сторожев" && firstNode->name == "экзамен")) {
-
-      LINodeData *node = m_nodes.value(30);
-      foreach (RelationData *relation, node->relations) {
-        if (relation->sourceNodeId == node->id) {
-          LINodeData *destNode = m_nodes.value(relation->destinationNodeId);
-          if (destNode->relations.count() == 2) {
-            return destNode->name;
-          }
-        }
-      }
-    }
-  }
-  return QString::null;
-}
-
 Json::Value LogicalInference::process(const Json::Value &value) {
 
   JsonToOntoHelper jtoHelper(m_delegate, m_dataSource);
@@ -110,73 +54,11 @@ Json::Value LogicalInference::process(const Json::Value &value) {
   transform();
   updateData();
 
+  OntoToJsonHelper otjHelper(m_dataSource);
+  Json::Value newJson = otjHelper.generateJson();
+
   emit dataChangedSignal();
   return value;
-
-
-//  std::vector<std::string> valueMembers = value.getMemberNames();
-//  for (int i = 0; i < valueMembers.size(); ++i) {
-//    qDebug() << "i: " << i;
-//    QString nodeName = QString::fromStdString(valueMembers.at(i));
-
-//    qDebug() << "Find node name: " << nodeName;
-
-//    LINodeData *nodeData = findNode(nodeName);
-//    if (nodeData != NULL) {
-//      Json::Value memberValue = value[valueMembers.at(i)];
-//      if (memberValue.isArray()) {
-//        qDebug() << "Element is array with size: " << memberValue.size();
-
-//        for (int j = 0; j < memberValue.size(); ++j) {
-//          qDebug() << "j: " << j;
-
-//          Json::Value arrayElementJson = memberValue[j];
-//          std::vector<std::string> arrayElementMembers = arrayElementJson.getMemberNames();
-//          for (int k = 0; k < arrayElementMembers.size(); ++k) {
-//            qDebug() << "k: " << k;
-//            QString arrayElementMemberName = QString::fromStdString(arrayElementMembers.at(k));
-
-//            qDebug() << "Find node name: " << arrayElementMemberName;
-
-//            LINodeData *elementNode = findNode(arrayElementMemberName, nodeData);
-//            if (elementNode != NULL) {
-//              QString nodeInstanceName = QString::fromStdString(arrayElementJson[arrayElementMembers.at(k)].asString());
-//              LINodeData *instanceNode = findNode(nodeInstanceName, elementNode);
-//              if (instanceNode == NULL) {
-//                qDebug() << "Create node with name: " << nodeInstanceName;
-
-//                long newNodeId = m_delegate->nodeCreated();
-//                m_delegate->nodeNameChanged(newNodeId, nodeInstanceName);
-//                long newRelatoinId = m_delegate->relatoinCreated(newNodeId, elementNode->id);
-//                m_delegate->relationNameChanged(newRelatoinId, "is_instance");
-//              }
-//            }
-//          }
-//        }
-//      }
-//      else {
-//        QString instanceName = QString::fromStdString(value[valueMembers.at(i)].asString());
-//        LINodeData *instanceNode = findNode(instanceName, nodeData);
-//        if (instanceNode == NULL) {
-//          qDebug() << "Create node with name: " << instanceName;
-
-//          long newNodeId = m_delegate->nodeCreated();
-//          m_delegate->nodeNameChanged(newNodeId, instanceName);
-//          long newRelationId = m_delegate->relatoinCreated(newNodeId, nodeData->id);
-//          m_delegate->relationNameChanged(newRelationId, "is_instance");
-//        }
-//      }
-//    }
-//  }
-
-//  updateData();
-//  transform();
-//  updateData();
-//  Json::Value json = generate();
-
-//  emit dataChangedSignal();
-
-//  return json;
 }
 
 void LogicalInference::transform() {
@@ -184,7 +66,7 @@ void LogicalInference::transform() {
   if (m_dataSource != NULL) {
     int relationsCount = m_dataSource->relationCount();
     for (int i = 0; i < relationsCount; ++i) {
-      RelationData *relationData = m_dataSource->relationByIndex(i);
+      RelationData *relationData = m_dataSource->getRelationByIndex(i);
       if (relationData->name == "transform") {
         LINodeData *sourceNode = m_nodes.value(relationData->sourceNodeId);
         LINodeData *destinationNode = m_nodes.value(relationData->destinationNodeId);
@@ -212,7 +94,7 @@ Json::Value LogicalInference::generate() {
 
     int relationsCount = m_dataSource->relationCount();
     for (int i = 0; i < relationsCount; ++i) {
-      RelationData *relationData = m_dataSource->relationByIndex(i);
+      RelationData *relationData = m_dataSource->getRelationByIndex(i);
       if (relationData->name == "transform") {
         LINodeData *destinationNode = m_nodes.value(relationData->destinationNodeId);
         destinationBaseNode = baseNode(destinationNode);
@@ -228,7 +110,7 @@ Json::Value LogicalInference::generate() {
     }
 
     for (int i = 0; i < relationsCount; ++i) {
-      RelationData *relationData = m_dataSource->relationByIndex(i);
+      RelationData *relationData = m_dataSource->getRelationByIndex(i);
       if (relationData->name == "is_instance") {
         LINodeData *sourceNode = m_nodes.value(relationData->sourceNodeId);
         LINodeData *destinationNode = m_nodes.value(relationData->destinationNodeId);

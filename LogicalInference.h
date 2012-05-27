@@ -17,8 +17,6 @@ class LogicalInference : public QObject {
     QMap<long, LINodeData *> m_nodes;
 
     void setupInnerState();
-    LINodeData *findNode(const QString &name) const;
-    LINodeData *findNode(const QString &name, LINodeData *nearestNode) const;
 
     void transform();
     Json::Value generate();
@@ -28,7 +26,6 @@ class LogicalInference : public QObject {
     LogicalInference(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
 
     void updateData();
-    QString inference(const QString &query) const;
     Json::Value process(const Json::Value &value);
 
   signals:

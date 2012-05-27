@@ -191,7 +191,7 @@ void OntologyWidget::updateData() {
     QMap<long, NodeItem *> existedNodes;
     int nodeCount = m_dataSource->nodeCount();
     for (int i = 0; i < nodeCount; ++i) {
-      NodeData *nodeData = m_dataSource->nodeByIndex(i);
+      NodeData *nodeData = m_dataSource->getNodeByIndex(i);
       if (invalidatedNodesMap.contains(nodeData->id)) {
         NodeItem *nodeItem = invalidatedNodesMap.value(nodeData->id);
         nodeItem->setName(nodeData->name);
@@ -214,7 +214,7 @@ void OntologyWidget::updateData() {
 
     int relationCount = m_dataSource->relationCount();
     for (int i = 0; i < relationCount; ++i) {
-      RelationData *relationData = m_dataSource->relationByIndex(i);
+      RelationData *relationData = m_dataSource->getRelationByIndex(i);
       if (invalidatedRelationsMap.contains(relationData->id)) {
         RelationItem *relationItem = invalidatedRelationsMap.value(relationData->id);
         relationItem->setName(relationData->name);

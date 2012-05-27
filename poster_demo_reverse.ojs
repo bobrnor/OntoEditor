@@ -1,6 +1,6 @@
 {
    "data_source" : {
-      "last_id" : 116,
+      "last_id" : 119,
       "nodes" : [
          {
             "id" : 1,
@@ -410,12 +410,6 @@
          },
          {
             "destination_node_id" : 48,
-            "id" : 86,
-            "name" : "transform",
-            "source_node_id" : 4
-         },
-         {
-            "destination_node_id" : 48,
             "id" : 89,
             "name" : "is_a",
             "source_node_id" : 57
@@ -449,18 +443,6 @@
             "id" : 94,
             "name" : "is_a",
             "source_node_id" : 84
-         },
-         {
-            "destination_node_id" : 60,
-            "id" : 95,
-            "name" : "transform",
-            "source_node_id" : 30
-         },
-         {
-            "destination_node_id" : 68,
-            "id" : 96,
-            "name" : "transform",
-            "source_node_id" : 40
          },
          {
             "destination_node_id" : 14,
@@ -521,6 +503,24 @@
             "id" : 116,
             "name" : "is_instance",
             "source_node_id" : 115
+         },
+         {
+            "destination_node_id" : 4,
+            "id" : 117,
+            "name" : "transform",
+            "source_node_id" : 48
+         },
+         {
+            "destination_node_id" : 30,
+            "id" : 118,
+            "name" : "transform",
+            "source_node_id" : 60
+         },
+         {
+            "destination_node_id" : 40,
+            "id" : 119,
+            "name" : "transform",
+            "source_node_id" : 68
          }
       ]
    },

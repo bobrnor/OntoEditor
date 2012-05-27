@@ -1,24 +1,27 @@
 {
-	"class interface" : {
-		"class interface declaration begin keyword" : "@interface", 
-		"class name" : "MyObjCClass", 
-		"base class designation" : {
-			"base class designation begin keyword" : ":",
-			"base class name" : "MyBaseObjCClass"
-		},
-		"protocols designation" : {
-			"protocols designation begin keyword" : "<", 
-			"protocol name separator" : ",",
-			"protocol designation list" : [
-				{
-					"protocol name" : "MyFirstObjCProtocol"
-				},
-				{
-					"protocol name" : "MySecondObjCProtocol"
-				}
-			],
-			"protocols designation end keyword" : ">"
-		},
-		"class interface declaration end keyword" : "@end"
-	}
+   "class declaration" : {
+      "class declaration begin keyword" : "class",
+      "class modifiers" : {
+         "composite class modifier" : {
+            "class modifiers separator" : ","
+         },
+         "single class modifier" : "public"
+      },
+      "class name" : "MyJavaClass",
+      "interfaces designation" : {
+         "interface type list" : {
+            "interface type" : {
+               "type name" : [ "IMyFirstJavaInterface", "IMySecondJavaInterface" ]
+            },
+            "interface types separator" : ","
+         },
+         "interfaces designation begin keyword" : "implements"
+      },
+      "super class designation" : {
+         "class type" : {
+            "type name" : "MySuperJavaClass"
+         },
+         "super class designation begin keyword" : "extends"
+      }
+   }
 }

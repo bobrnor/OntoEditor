@@ -9,13 +9,13 @@ class IOntologyDataSource {
     virtual int nodeCount() = 0;
     virtual int relationCount() = 0;
 
-    virtual NodeData *nodeByIndex(int index) = 0;
-    virtual RelationData *relationByIndex(int index) = 0;
+    virtual NodeData *getNodeByIndex(int index) = 0;
+    virtual RelationData *getRelationByIndex(int index) = 0;
 
-    virtual NodeData *nodeById(long id) = 0;
-    virtual RelationData *relationById(long id) = 0;
+    virtual NodeData *getNodeById(long id) = 0;
+    virtual RelationData *getRelationById(long id) = 0;
 
-    virtual RelationData *relationByNodes(long sourceNodeId, long destinationNodeId) = 0;
+    virtual RelationData *getRelationByNodes(long sourceNodeId, long destinationNodeId) = 0;
 
     virtual NodeData *findNode(const QString &nodeName) const = 0;
     virtual NodeData *findNode(const QString &nodeName, NodeData *startNode) const = 0;

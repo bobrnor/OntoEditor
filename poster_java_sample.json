@@ -4,9 +4,7 @@
 			"composite class modifier" : {
 				"class modifiers separator" : ","
 			},
-			"single class modifier" : [
-				"public"
-			]
+			"single class modifier" : "public"
 		},
 		"class declaration begin keyword" : "class",
 		"class name" : "MyJavaClass",

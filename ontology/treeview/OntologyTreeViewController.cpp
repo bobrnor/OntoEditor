@@ -73,7 +73,7 @@ void OntologyTreeViewController::updateTreeDataBottomToTop() {
 
     int nodesCount = m_dataSource->nodeCount();
     for (int i = 0; i < nodesCount; ++i) {
-      NodeData *nodeData = m_dataSource->nodeByIndex(i);
+      NodeData *nodeData = m_dataSource->getNodeByIndex(i);
       TVNodeData tvNodeData;
       tvNodeData.nodeData = nodeData;
       // FIX: leak
@@ -85,7 +85,7 @@ void OntologyTreeViewController::updateTreeDataBottomToTop() {
 
     int relationsCount = m_dataSource->relationCount();
     for (int i = 0; i < relationsCount; ++i) {
-      RelationData *relationData = m_dataSource->relationByIndex(i);
+      RelationData *relationData = m_dataSource->getRelationByIndex(i);
       TVNodeData sourceNodeData = m_treeData.value(relationData->sourceNodeId);
       TVNodeData destinationNodeData = m_treeData.value(relationData->destinationNodeId);
 
@@ -130,7 +130,7 @@ void OntologyTreeViewController::updateTreeDataTopToBottom() {
 
     int nodesCount = m_dataSource->nodeCount();
     for (int i = 0; i < nodesCount; ++i) {
-      NodeData *nodeData = m_dataSource->nodeByIndex(i);
+      NodeData *nodeData = m_dataSource->getNodeByIndex(i);
       TVNodeData tvNodeData;
       tvNodeData.nodeData = nodeData;
       // FIX: leak
@@ -142,7 +142,7 @@ void OntologyTreeViewController::updateTreeDataTopToBottom() {
 
     int relationsCount = m_dataSource->relationCount();
     for (int i = 0; i < relationsCount; ++i) {
-      RelationData *relationData = m_dataSource->relationByIndex(i);
+      RelationData *relationData = m_dataSource->getRelationByIndex(i);
       TVNodeData sourceNodeData = m_treeData.value(relationData->sourceNodeId);
       TVNodeData destinationNodeData = m_treeData.value(relationData->destinationNodeId);
 
@@ -229,7 +229,7 @@ void OntologyTreeViewController::updateData() {
 
     for (int i = 0; i < nodesCount; ++i) {
       QModelIndex index = m_objectsModel->index(i, 0, nodesIndex);
-      NodeData *nodeData = m_dataSource->nodeByIndex(i);
+      NodeData *nodeData = m_dataSource->getNodeByIndex(i);
       m_objectsModel->setData(index, nodeData->name + "[" + QString::number(nodeData->id) + "]");
       m_objectsModel->setData(index, (qlonglong)nodeData->id, Qt::UserRole);
     }
@@ -248,7 +248,7 @@ void OntologyTreeViewController::updateData() {
 
     for (int i = 0; i < relationsCount; ++i) {
       QModelIndex index = m_objectsModel->index(i, 0, relationsIndex);
-      RelationData *relationData = m_dataSource->relationByIndex(i);
+      RelationData *relationData = m_dataSource->getRelationByIndex(i);
       m_objectsModel->setData(index, relationData->name + "[" + QString::number(relationData->id) + "]");
       m_objectsModel->setData(index, (qlonglong)relationData->id, Qt::UserRole);
     }

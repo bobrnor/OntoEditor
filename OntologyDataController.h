@@ -30,13 +30,13 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
     int nodeCount();
     int relationCount();
 
-    NodeData *nodeByIndex(int index);
-    RelationData *relationByIndex(int index);
+    NodeData *getNodeByIndex(int index);
+    RelationData *getRelationByIndex(int index);
 
-    NodeData *nodeById(long id);
-    RelationData *relationById(long id);
+    NodeData *getNodeById(long id);
+    RelationData *getRelationById(long id);
 
-    RelationData *relationByNodes(long sourceNodeId, long destinationNodeId);
+    RelationData *getRelationByNodes(long sourceNodeId, long destinationNodeId);
 
     NodeData *findNode(const QString &nodeName) const;
     NodeData *findNode(const QString &nodeName, NodeData *startNode) const;

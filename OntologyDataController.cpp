@@ -78,27 +78,27 @@ int OntologyDataController::relationCount() {
   return m_relationsList.count();
 }
 
-NodeData *OntologyDataController::nodeByIndex(int index) {
+NodeData *OntologyDataController::getNodeByIndex(int index) {
 
   return m_nodesList.at(index);
 }
 
-RelationData *OntologyDataController::relationByIndex(int index) {
+RelationData *OntologyDataController::getRelationByIndex(int index) {
 
   return m_relationsList.at(index);
 }
 
-NodeData *OntologyDataController::nodeById(long id) {
+NodeData *OntologyDataController::getNodeById(long id) {
 
   return m_nodesMap.value(id);
 }
 
-RelationData *OntologyDataController::relationById(long id) {
+RelationData *OntologyDataController::getRelationById(long id) {
 
   return m_relationsMap.value(id);
 }
 
-RelationData *OntologyDataController::relationByNodes(long sourceNodeId, long destinationNodeId) {
+RelationData *OntologyDataController::getRelationByNodes(long sourceNodeId, long destinationNodeId) {
 
   QPair<long, long> nodesPair(sourceNodeId, destinationNodeId);
   return m_relationsMapByNodes.value(nodesPair);
@@ -173,6 +173,12 @@ long OntologyDataController::relatoinCreated(long sourceNodeId, long destination
 
   m_relationsMap.insert(relation->id, relation);
   m_relationsList.append(relation);
+
+  NodeData *sourceNode = m_nodesMap.value(relation->sourceNodeId);
+  sourceNode->relations.append(relation->id);
+
+  NodeData *destinationNode = m_nodesMap.value(relation->destinationNodeId);
+  destinationNode->relations.append(relation->id);
 
   return relation->id;
 }
