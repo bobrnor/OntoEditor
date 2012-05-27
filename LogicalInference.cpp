@@ -106,6 +106,9 @@ Json::Value LogicalInference::process(const Json::Value &value) {
 
   JsonToOntoHelper jtoHelper(m_delegate, m_dataSource);
   jtoHelper.fillOntology(value);
+  updateData();
+  transform();
+  updateData();
 
   emit dataChangedSignal();
   return value;

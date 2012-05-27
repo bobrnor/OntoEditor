@@ -1,6 +1,6 @@
 {
    "data_source" : {
-      "last_id" : 94,
+      "last_id" : 96,
       "nodes" : [
          {
             "id" : 1,
@@ -395,18 +395,6 @@
             "source_node_id" : 4
          },
          {
-            "destination_node_id" : 60,
-            "id" : 87,
-            "name" : "transform",
-            "source_node_id" : 31
-         },
-         {
-            "destination_node_id" : 68,
-            "id" : 88,
-            "name" : "transform",
-            "source_node_id" : 41
-         },
-         {
             "destination_node_id" : 48,
             "id" : 89,
             "name" : "is_a",
@@ -441,6 +429,18 @@
             "id" : 94,
             "name" : "is_a",
             "source_node_id" : 84
+         },
+         {
+            "destination_node_id" : 60,
+            "id" : 95,
+            "name" : "transform",
+            "source_node_id" : 30
+         },
+         {
+            "destination_node_id" : 68,
+            "id" : 96,
+            "name" : "transform",
+            "source_node_id" : 40
          }
       ]
    },
@@ -582,8 +582,8 @@
       },
       {
          "id" : 30,
-         "pos_x" : -852.5529977502515,
-         "pos_y" : -964.7678810088223
+         "pos_x" : -854.5061227502515,
+         "pos_y" : -966.7210060088223
       },
       {
          "id" : 27,
