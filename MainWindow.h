@@ -22,9 +22,18 @@ class MainWindow : public QMainWindow {
   private:
     Ui::MainWindow *ui;
 
-    OntologyWidget *m_ontologyWidget;
+    OntologyWidget *m_domainSpecificOntologyWidget;
+    OntologyWidget *m_javaOntologyWidget;
+    OntologyWidget *m_objcOntologyWidget;
+    OntologyWidget *m_problemsOntologyWidget;
+
     OntologyTreeViewController *m_ontologyTreeViewController;
-    OntologyDataController m_dataController;
+
+    OntologyDataController m_domainSpecificOntologyController;
+    OntologyDataController m_javaOntologyController;
+    OntologyDataController m_objcOntologyController;
+    OntologyDataController m_problemsOntologyController;
+
     LogicalInference *m_logicalInference;
 
     QShortcut *m_zoomInShortcut;
@@ -33,11 +42,24 @@ class MainWindow : public QMainWindow {
 
     void setupMenu();
 
+    void setupDomainSpecificOntology();
+    void setupJavaOntology();
+    void setupObjcOntology();
+    void setupProblemsOntology();
+
+    void onDomainSpecificOntologyWidgetShow();
+    void onJavaOntologyWidgetShow();
+    void onObjcOntologyWidgetShow();
+    void onProblemsOntologyWidgetShow();
+
+    void clearConnections();
+
   private slots:
     void saveSlot();
     void loadSlot();
     void consultSlot();
     void screenshotSlot();
+    void currentTabChangedSlot(int index);
 };
 
 #endif // MAINWINDOW_H

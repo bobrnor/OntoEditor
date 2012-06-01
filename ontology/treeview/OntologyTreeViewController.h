@@ -25,6 +25,7 @@ class OntologyTreeViewController : public QObject {
     void updateTreeDataBottomToTop();
     void updateTreeDataTopToBottom();
     void buildNodesTree(QStandardItem *rootItem, QList<TVNodeData> nodes, QSet<long> *seenNodeIds);
+    void clearTreeView();
 
   public:
     OntologyTreeViewController();

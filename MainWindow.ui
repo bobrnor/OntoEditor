@@ -24,7 +24,38 @@
        <layout class="QVBoxLayout" name="treeViewLayout"/>
       </widget>
       <widget class="QWidget" name="verticalLayoutWidget">
-       <layout class="QVBoxLayout" name="contentLayout"/>
+       <layout class="QVBoxLayout" name="contentLayout">
+        <item>
+         <widget class="QTabWidget" name="tabWidget">
+          <property name="tabShape">
+           <enum>QTabWidget::Rounded</enum>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="domainSpecificOntologyTab">
+           <attribute name="title">
+            <string>D-S Ontology</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="javaOntologyTab">
+           <attribute name="title">
+            <string>Java Ontology</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="objcObtologyTab">
+           <attribute name="title">
+            <string>Objective C Ontology</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="problemsOntology">
+           <attribute name="title">
+            <string>Problem's Ontology</string>
+           </attribute>
+          </widget>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>

@@ -13,10 +13,27 @@ OntologyTreeViewController::OntologyTreeViewController() {
   m_objectsTreeView->setHeaderHidden(true);
   m_objectsTreeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-  m_objectsModel = new QStandardItemModel(3, 1);
+  m_objectsModel = new QStandardItemModel();
   m_objectsTreeView->setModel(m_objectsModel);
   m_dataSource = NULL;
   m_delegate = NULL;
+
+  clearTreeView();
+
+  connect(m_objectsTreeView, SIGNAL(activated(QModelIndex)), SLOT(itemSelectedSlot(QModelIndex)));
+}
+
+OntologyTreeViewController::~OntologyTreeViewController() {
+
+  delete m_objectsTreeView;
+  delete m_objectsModel;
+}
+
+void OntologyTreeViewController::clearTreeView() {
+
+  m_objectsModel->clear();
+  m_objectsModel->insertColumns(0, 1);
+  m_objectsModel->insertRows(0, 3);
 
   QModelIndex nodeTreeIndex = m_objectsModel->index(0, 0);
   m_objectsModel->insertColumn(0, nodeTreeIndex);
@@ -29,14 +46,6 @@ OntologyTreeViewController::OntologyTreeViewController() {
   QModelIndex relationIndex = m_objectsModel->index(2, 0);
   m_objectsModel->insertColumn(0, relationIndex);
   m_objectsModel->setData(relationIndex, tr("Relations"));
-
-  connect(m_objectsTreeView, SIGNAL(activated(QModelIndex)), SLOT(itemSelectedSlot(QModelIndex)));
-}
-
-OntologyTreeViewController::~OntologyTreeViewController() {
-
-  delete m_objectsTreeView;
-  delete m_objectsModel;
 }
 
 QTreeView *OntologyTreeViewController::treeView() const {
@@ -213,6 +222,8 @@ void OntologyTreeViewController::buildNodesTree(QStandardItem *rootItem, QList<T
 }
 
 void OntologyTreeViewController::updateData() {
+
+  clearTreeView();
 
   if (m_dataSource != NULL) {
     QModelIndex nodesIndex = m_objectsModel->index(1, 0);
