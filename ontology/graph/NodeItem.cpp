@@ -53,6 +53,8 @@ QVariant NodeItem::itemChange(GraphicsItemChange change, const QVariant &value) 
     foreach (RelationItem *relation, m_relations) {
       relation->adjust();
     }
+
+    emit nodeItemPositionChangedSignal(this->id(), value.toPointF());
   }
 
   return QGraphicsRectItem::itemChange(change, value);

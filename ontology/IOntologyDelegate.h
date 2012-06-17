@@ -2,6 +2,7 @@
 #define ONTOLOGYWIDGETDELEGATE_H
 
 #include <QString>
+#include <QPointF>
 
 class IOntologyDelegate {
 
@@ -12,6 +13,9 @@ class IOntologyDelegate {
     virtual void relationNameChanged(long relationId, const QString &name) = 0;
     virtual void nodeRemoved(long nodeId) = 0;
     virtual void relationRemoved(long relationId) = 0;
+
+    virtual QPointF nodePosition(long nodeId) const = 0;
+    virtual void setNodePosition(long nodeId, const QPointF &position) = 0;
 };
 
 #endif // ONTOLOGYWIDGETDELEGATE_H

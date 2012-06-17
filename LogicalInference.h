@@ -12,21 +12,41 @@ class LogicalInference : public QObject {
     Q_OBJECT
 
   private:
-    IOntologyDelegate *m_delegate;
-    IOntologyDataSource *m_dataSource;
-    QMap<long, LINodeData *> m_nodes;
+    QMap<QString, IOntologyDelegate *> m_languageDelegates;
+    QMap<QString, IOntologyDataSource *> m_languageDataSources;
 
-    void setupInnerState();
+    IOntologyDelegate *m_sourceDelegate;
+    IOntologyDataSource *m_sourceDataSource;
+
+    IOntologyDelegate *m_destinationDelegate;
+    IOntologyDataSource *m_destinationDataSource;
+
+//    QMap<long, LINodeData *> m_nodes;
+
+    QString findCorrenspondingLanguage(const QString &term) const;
+//    void setupInnerState();
 
     void transform();
     Json::Value generate();
     LINodeData *baseNode(LINodeData *node);
 
   public:
-    LogicalInference(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
+    LogicalInference();
 
     void updateData();
     Json::Value process(const Json::Value &value);
+
+    void addLanguage(const QString &name, IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
+    void removeLanguage(const QString &name);
+    QList<QString> availableLanguages() const;
+
+    void setSourceOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
+    IOntologyDataSource *sourceDataSource() const;
+    IOntologyDelegate *sourceDelegate() const;
+
+    void setDestinationOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
+    IOntologyDataSource *destinationDataSource() const;
+    IOntologyDelegate *destinationDelegate() const;
 
   signals:
     void dataChangedSignal();

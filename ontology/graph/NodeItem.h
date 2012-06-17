@@ -9,7 +9,9 @@
 
 class RelationItem;
 
-class NodeItem : public QGraphicsRectItem, public OntologyGraphElement {
+class NodeItem : public QObject, public QGraphicsRectItem, public OntologyGraphElement {
+    Q_OBJECT
+
   private:
     QList<RelationItem *> m_relations;
 
@@ -27,6 +29,9 @@ class NodeItem : public QGraphicsRectItem, public OntologyGraphElement {
     void removeAllRelations();
 
     Json::Value jsonRepresentation() const;
+
+  signals:
+    void nodeItemPositionChangedSignal(long id, const QPointF &newPosition);
 };
 
 #endif // NODEITEM_H

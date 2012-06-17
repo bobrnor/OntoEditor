@@ -7,6 +7,8 @@ OntologyDataController::OntologyDataController() {
 
 OntologyDataController::OntologyDataController(const Json::Value &json) {
 
+  qDebug() << QString::fromStdString(json.toStyledString());
+
   m_lastId = json["last_id"].asInt64();
 
   Json::Value nodesJson = json["nodes"];
@@ -15,6 +17,11 @@ OntologyDataController::OntologyDataController(const Json::Value &json) {
     NodeData *nodeData = new NodeData();
     nodeData->id = itemJson["id"].asInt64();
     nodeData->name = QString::fromStdString(itemJson["name"].asString());
+    if (itemJson.getMemberNames().size() == 4) {
+      double x = itemJson["position_x"].asDouble();
+      double y = itemJson["position_y"].asDouble();
+      setNodePosition(nodeData->id, QPointF(x, y));
+    }
     m_nodesMap.insert(nodeData->id, nodeData);
     m_nodesList.append(nodeData);
   }
@@ -48,6 +55,8 @@ Json::Value OntologyDataController::serialize() {
     Json::Value itemJson;
     itemJson["id"] = Json::Value((Json::Int64)nodeData->id);
     itemJson["name"] = Json::Value(nodeData->name.toStdString());
+    itemJson["position_x"] = Json::Value(nodePosition(nodeData->id).x());
+    itemJson["position_y"] = Json::Value(nodePosition(nodeData->id).y());
     nodesJson.append(itemJson);
   }
   value["nodes"] = nodesJson;
@@ -226,4 +235,19 @@ void OntologyDataController::removeRelatedRelations(NodeData *nodeData) {
     m_relationsMap.remove(relationData->id);
     delete relationData;
   }
+}
+
+QPointF OntologyDataController::nodePosition(long nodeId) const {
+
+  if (m_nodePositions.contains(nodeId)) {
+    return m_nodePositions.value(nodeId);
+  }
+  else {
+    return QPointF(0.0, 0.0);
+  }
+}
+
+void OntologyDataController::setNodePosition(long nodeId, const QPointF &position) {
+
+  m_nodePositions.insert(nodeId, position);
 }

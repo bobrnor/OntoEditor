@@ -19,6 +19,8 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
     QList<NodeData *> m_nodesList;
     QList<RelationData *> m_relationsList;
 
+    QMap<long, QPointF> m_nodePositions;
+
     void removeRelatedRelations(NodeData *nodeData);
     NodeData *otherNode(RelationData *relation, NodeData *node) const;
 
@@ -48,6 +50,9 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
     void relationNameChanged(long relationId, const QString &name);
     void nodeRemoved(long nodeId);
     void relationRemoved(long relationId);
+
+    QPointF nodePosition(long nodeId) const;
+    void setNodePosition(long nodeId, const QPointF &position);
 
     Json::Value serialize();
 };

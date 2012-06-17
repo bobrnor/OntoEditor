@@ -10,17 +10,25 @@ class NodeData;
 class JsonToOntoHelper {
 
   private:
-    IOntologyDelegate *m_ontoDelegate;
-    IOntologyDataSource *m_ontoDataSource;
+    IOntologyDataSource *m_languageDataSource;
+    IOntologyDelegate *m_languageDelegate;
+
+    IOntologyDataSource *m_destinationDataSource;
+    IOntologyDelegate *m_destinationDelegate;
 
   protected:
-    void process(const Json::Value &jsonValue, NodeData *currentNode);
-    void processArrayValue(const Json::Value &jsonValue, NodeData *currentNode);
-    void processJsonValue(const Json::Value &jsonValue, NodeData *currentNode);
-    void processValue(const Json::Value &jsonValue, NodeData *currentNode);
+    void process(const Json::Value &jsonValue, NodeData *currentLanguageNode, NodeData *currentDestinationNode);
+    void processArrayValue(const Json::Value &jsonValue, NodeData *currentLanguageNode, NodeData *currentDestinationNode);
+    void processJsonValue(const Json::Value &jsonValue, NodeData *currentLanguageNode, NodeData *currentDestinationNode);
+    void processValue(const Json::Value &jsonValue, NodeData *currentLanguageNode, NodeData *currentDestinationNode);
+
+    NodeData *copyNode(NodeData *currentLanguageNode, NodeData *currentDestinationNode);
 
   public:
-    JsonToOntoHelper(IOntologyDelegate *delegate, IOntologyDataSource *dataSource);
+    JsonToOntoHelper();
+
+    void setLanguageOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
+    void setDestinationOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
 
     void fillOntology(const Json::Value &json);
 };

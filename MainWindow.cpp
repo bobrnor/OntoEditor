@@ -28,7 +28,10 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->splitter->setStretchFactor(0, 1);
   ui->splitter->setStretchFactor(1, 10);
 
-  m_logicalInference = new LogicalInference(&m_domainSpecificOntologyController, &m_domainSpecificOntologyController);
+  m_logicalInference = new LogicalInference();
+  m_logicalInference->setSourceOntology(&m_domainSpecificOntologyController, &m_domainSpecificOntologyController);
+  m_logicalInference->addLanguage("java", &m_javaOntologyController, &m_javaOntologyController);
+  m_logicalInference->addLanguage("objective-c", &m_objcOntologyController, &m_objcOntologyController);
 
   m_zoomInShortcut = new QShortcut(this);
   m_zoomInShortcut->setKey(QKeySequence("Ctrl+="));
@@ -235,15 +238,10 @@ void MainWindow::saveSlot() {
   }
 
   Json::Value jsonState;
-  jsonState["ds_positions"] = m_domainSpecificOntologyWidget->serialize();
-  jsonState["java_positions"] = m_javaOntologyWidget->serialize();
-  jsonState["objc_positions"] = m_objcOntologyWidget->serialize();
-  jsonState["problems_positions"] = m_problemsOntologyWidget->serialize();
-
-  jsonState["ds_data_source"] = m_domainSpecificOntologyController.serialize();
-  jsonState["java_data_source"] = m_javaOntologyController.serialize();
-  jsonState["objc_data_source"] = m_objcOntologyController.serialize();
-  jsonState["problems_data_source"] = m_problemsOntologyController.serialize();
+  jsonState["ds"] = m_domainSpecificOntologyController.serialize();
+  jsonState["java"] = m_javaOntologyController.serialize();
+  jsonState["objc"] = m_objcOntologyController.serialize();
+  jsonState["problems"] = m_problemsOntologyController.serialize();
 
   QTextStream stream(&file);
   stream.setCodec("UTF-8");
@@ -262,22 +260,25 @@ void MainWindow::loadSlot() {
     Json::Value jsonState;
     bool ok = reader.parse(fileStream, jsonState);
     if (ok) {
-      m_domainSpecificOntologyController = OntologyDataController(jsonState["ds_data_source"]);
-      m_javaOntologyController = OntologyDataController(jsonState["java_data_source"]);
-      m_objcOntologyController = OntologyDataController(jsonState["objc_data_source"]);
-      m_problemsOntologyController = OntologyDataController(jsonState["problems_data_source"]);
+      m_domainSpecificOntologyController = OntologyDataController(jsonState["ds"]);
+      m_javaOntologyController = OntologyDataController(jsonState["java"]);
+      m_objcOntologyController = OntologyDataController(jsonState["objc"]);
+      m_problemsOntologyController = OntologyDataController(jsonState["problems"]);
 
-      m_domainSpecificOntologyWidget->deserialize(jsonState["ds_positions"]);
-      m_javaOntologyWidget->deserialize(jsonState["java_positions"]);
-      m_objcOntologyWidget->deserialize(jsonState["objc_positions"]);
-      m_problemsOntologyWidget->deserialize(jsonState["problems_positions"]);
+      m_domainSpecificOntologyWidget->dataChangedSlot();
+      m_javaOntologyWidget->dataChangedSlot();
+      m_objcOntologyWidget->dataChangedSlot();
+      m_problemsOntologyWidget->dataChangedSlot();
 
       m_ontologyTreeViewController->updateData();
       if (m_logicalInference != NULL) {
         disconnect(m_logicalInference);
         delete m_logicalInference;
       }
-      m_logicalInference = new LogicalInference(&m_domainSpecificOntologyController, &m_domainSpecificOntologyController);
+      m_logicalInference = new LogicalInference();
+      m_logicalInference->setSourceOntology(&m_domainSpecificOntologyController, &m_domainSpecificOntologyController);
+      m_logicalInference->addLanguage("java", &m_javaOntologyController, &m_javaOntologyController);
+      m_logicalInference->addLanguage("objective-c", &m_objcOntologyController, &m_objcOntologyController);
       connect(m_domainSpecificOntologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
       connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
       connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_domainSpecificOntologyWidget, SLOT(dataChangedSlot()));

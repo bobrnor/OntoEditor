@@ -27,9 +27,6 @@ class OntologyWidget : public QWidget {
     void setDataSource(IOntologyDataSource *dataSource);
     IOntologyDataSource *dataSource() const;
 
-    Json::Value serialize() const;
-    void deserialize(const Json::Value &json);
-
     QImage makeScreenshot() const;
 
     void updateData();
@@ -42,7 +39,6 @@ class OntologyWidget : public QWidget {
     RelationVisualizedLine *m_relationVisualizedLine;
     IOntologyDataSource *m_dataSource;
     IOntologyDelegate *m_delegate;
-    QMap<long, QPointF> m_nodePositions;
 
     bool m_editRelationMode;
 
@@ -71,6 +67,8 @@ class OntologyWidget : public QWidget {
 
     void zoomInSlot();
     void zoomOutSlot();
+
+    void nodeItemPositionChangedSlot(long id, const QPointF &newPosition);
 };
 
 #endif // ONTOLOGYWIDGET_H

@@ -152,6 +152,7 @@ void OntologyWidget::addNodeSlot() {
   NodeItem *newNode = new NodeItem(NULL);
   newNode->setId(newNodeId);
   newNode->setPos(scenePos);
+  connect(newNode, SIGNAL(nodeItemPositionChangedSignal(long, QPointF)), SLOT(nodeItemPositionChangedSlot(long, QPointF)));
   m_ontologyView->scene()->addItem(newNode);
 }
 
@@ -199,10 +200,8 @@ void OntologyWidget::updateData() {
         existedNodes.insert(nodeItem->id(), nodeItem);
       }
       else {
-        QPointF pos(0.0, 0.0);
-        if (m_nodePositions.contains(nodeData->id)) {
-          pos = m_nodePositions.value(nodeData->id);
-        }
+        QPointF pos = m_delegate->nodePosition(nodeData->id);
+
         NodeItem *nodeItem = new NodeItem();
         nodeItem->setId(nodeData->id);
         nodeItem->setName(nodeData->name);
@@ -375,38 +374,6 @@ void OntologyWidget::ontologyViewMousePositionChangedSlot(const QPoint &pos) {
   }
 }
 
-Json::Value OntologyWidget::serialize() const {
-
-  Json::Value value;
-  Json::Value nodesJson(Json::arrayValue);
-  foreach (QGraphicsItem *item, m_ontologyView->scene()->items()) {
-    if (item->data(kIDTType) == kITNode) {
-      NodeItem *nodeItem = static_cast<NodeItem *>(item);
-      nodesJson.append(nodeItem->jsonRepresentation());
-    }
-  }
-  value["nodes"] = nodesJson;
-
-  return value;
-}
-void OntologyWidget::deserialize(const Json::Value &json) {
-
-  m_ontologyView->scene()->clear();
-  m_nodePositions.clear();
-
-  Json::Value nodesJson = json["nodes"];
-  for (int i = 0; i < nodesJson.size(); ++i) {
-    Json::Value nodeJson = nodesJson[i];
-    long nodeId = nodeJson["id"].asInt64();
-    double x = nodeJson["pos_x"].asDouble();
-    double y = nodeJson["pos_y"].asDouble();
-    QPointF pos(x, y);
-    m_nodePositions.insert(nodeId, pos);
-  }
-
-  updateData();
-}
-
 void OntologyWidget::dataChangedSlot() {
 
   updateData();
@@ -442,6 +409,11 @@ void OntologyWidget::zoomInSlot() {
 void OntologyWidget::zoomOutSlot() {
 
   m_ontologyView->scale(0.8, 0.8);
+}
+
+void OntologyWidget::nodeItemPositionChangedSlot(long id, const QPointF &newPosition) {
+
+  m_delegate->setNodePosition(id, newPosition);
 }
 
 QImage OntologyWidget::makeScreenshot() const {
