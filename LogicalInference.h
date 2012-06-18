@@ -12,9 +12,6 @@ class LogicalInference : public QObject {
     Q_OBJECT
 
   private:
-    QMap<QString, IOntologyDataSource *> m_languageDataSources;
-    QMap<QString, IOntologyDelegate *> m_languageDelegates;
-
     IOntologyDataSource *m_sourceDataSource;
     IOntologyDelegate *m_sourceDelegate;
 
@@ -24,11 +21,6 @@ class LogicalInference : public QObject {
     IOntologyDataSource *m_problemsDataSource;
     IOntologyDelegate *m_problemsDelegate;
 
-//    QMap<long, LINodeData *> m_nodes;
-
-    QString findCorrenspondingLanguage(const QString &term) const;
-//    void setupInnerState();
-
     void transform();
     NodeData *transformationTargetNode(NodeData *sourceNode);
     NodeData *addPathToDestinationOntology(const QStringList &path);
@@ -37,11 +29,7 @@ class LogicalInference : public QObject {
     LogicalInference();
 
     void updateData();
-    Json::Value process(const Json::Value &value);
-
-    void addLanguage(const QString &name, IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
-    void removeLanguage(const QString &name);
-    QList<QString> availableLanguages() const;
+    void process();
 
     void setSourceOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
     IOntologyDataSource *sourceDataSource() const;

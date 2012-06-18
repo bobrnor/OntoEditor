@@ -30,6 +30,9 @@ class MainWindow : public QMainWindow {
 
     OntologyTreeViewController *m_ontologyTreeViewController;
 
+    QMap<QString, IOntologyDataSource *> m_languageDataSources;
+    QMap<QString, IOntologyDelegate *> m_languageDelegates;
+
     OntologyDataController m_sourceOntologyController;
     OntologyDataController m_destinationOntologyController;
     OntologyDataController m_javaOntologyController;
@@ -58,11 +61,22 @@ class MainWindow : public QMainWindow {
 
     void clearConnections();
 
+    QString findCorrenspondingLanguage(const QString &term) const;
+
   private slots:
-    void saveSlot();
-    void loadSlot();
-    void consultSlot();
+    void openSourceFileSlot();
+    void saveGeneratedFileSlot();
+
+    void openWorkspaceSlot();
+    void saveWorkspaceSlot();
+
+    void openProjectSlot();
+    void saveProjectSlot();
+
     void screenshotSlot();
+
+    void transformSlot();
+
     void currentTabChangedSlot(int index);
 };
 

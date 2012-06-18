@@ -11,11 +11,19 @@
 
 #include "lib_json/json/json.h"
 
+#include "JsonToOntoHelper.h"
+#include "OntoToJsonHelper.h"
+
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow) {
 
   ui->setupUi(this);
+
+  m_languageDataSources.insert("java", &m_javaOntologyController);
+  m_languageDelegates.insert("java", &m_javaOntologyController);
+  m_languageDataSources.insert("objc", &m_objcOntologyController);
+  m_languageDelegates.insert("objc", &m_objcOntologyController);
 
   setupSourceOntology();
   setupDestinationOntology();
@@ -33,8 +41,6 @@ MainWindow::MainWindow(QWidget *parent) :
   m_logicalInference->setSourceOntology(&m_sourceOntologyController, &m_sourceOntologyController);
   m_logicalInference->setDestinationOntology(&m_destinationOntologyController, &m_destinationOntologyController);
   m_logicalInference->setProblemsOntology(&m_problemsOntologyController, &m_problemsOntologyController);
-  m_logicalInference->addLanguage("java", &m_javaOntologyController, &m_javaOntologyController);
-  m_logicalInference->addLanguage("objective-c", &m_objcOntologyController, &m_objcOntologyController);
 
   m_zoomInShortcut = new QShortcut(this);
   m_zoomInShortcut->setKey(QKeySequence("Ctrl+="));
@@ -264,86 +270,58 @@ void MainWindow::clearConnections() {
   disconnect(m_problemsOntologyWidget);
 }
 
-void MainWindow::setupMenu() {
+QString MainWindow::findCorrenspondingLanguage(const QString &term) const {
 
-  QMenu *menu = ui->menubar->addMenu(tr("File"));
-  QAction *saveAction = menu->addAction(tr("Save..."));
-  QAction *loadAction = menu->addAction(tr("Load..."));
-  QAction *consultAction = menu->addAction(tr("Consult..."));
-  QAction *screenshotAction = menu->addAction(tr("Screenshot..."));
-
-  connect(saveAction, SIGNAL(triggered()), SLOT(saveSlot()));
-  connect(loadAction, SIGNAL(triggered()), SLOT(loadSlot()));
-  connect(consultAction, SIGNAL(triggered()), SLOT(consultSlot()));
-  connect(screenshotAction, SIGNAL(triggered()), SLOT(screenshotSlot()));
-}
-
-void MainWindow::saveSlot() {
-
-  QString filePath = QFileDialog::getSaveFileName(this, tr("Save dialog"), QString(), "*.ojs");
-  QFile file(filePath);
-
-  if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-    return;
-  }
-
-  Json::Value jsonState;
-  jsonState["source"] = m_sourceOntologyController.serialize();
-  jsonState["destination"] = m_destinationOntologyController.serialize();
-  jsonState["java"] = m_javaOntologyController.serialize();
-  jsonState["objc"] = m_objcOntologyController.serialize();
-  jsonState["problems"] = m_problemsOntologyController.serialize();
-
-  QTextStream stream(&file);
-  stream.setCodec("UTF-8");
-  stream.setAutoDetectUnicode(true);
-  stream << QString::fromStdString(jsonState.toStyledString());
-}
-
-void MainWindow::loadSlot() {
-
-  QString filePath = QFileDialog::getOpenFileName(this, tr("Open dialog"), QString(), "*.ojs");
-  if (QFile::exists(filePath)) {
-    Json::Reader reader;
-    std::ifstream fileStream;
-    fileStream.open(filePath.toStdString().c_str());
-
-    Json::Value jsonState;
-    bool ok = reader.parse(fileStream, jsonState);
-    if (ok) {
-      m_sourceOntologyController = OntologyDataController(jsonState["source"]);
-      m_destinationOntologyController = OntologyDataController(jsonState["destination"]);
-      m_javaOntologyController = OntologyDataController(jsonState["java"]);
-      m_objcOntologyController = OntologyDataController(jsonState["objc"]);
-      m_problemsOntologyController = OntologyDataController(jsonState["problems"]);
-
-      m_sourceOntologyWidget->dataChangedSlot();
-      m_destinationOntologyWidget->dataChangedSlot();
-      m_javaOntologyWidget->dataChangedSlot();
-      m_objcOntologyWidget->dataChangedSlot();
-      m_problemsOntologyWidget->dataChangedSlot();
-
-      m_ontologyTreeViewController->updateData();
-      if (m_logicalInference != NULL) {
-        disconnect(m_logicalInference);
-        delete m_logicalInference;
-      }
-      m_logicalInference = new LogicalInference();
-      m_logicalInference->setSourceOntology(&m_sourceOntologyController, &m_sourceOntologyController);
-      m_logicalInference->setDestinationOntology(&m_destinationOntologyController, &m_destinationOntologyController);
-      m_logicalInference->setProblemsOntology(&m_problemsOntologyController, &m_problemsOntologyController);
-      m_logicalInference->addLanguage("java", &m_javaOntologyController, &m_javaOntologyController);
-      m_logicalInference->addLanguage("objective-c", &m_objcOntologyController, &m_objcOntologyController);
-      connect(m_sourceOntologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
-      connect(m_destinationOntologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
-      connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
-      connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_sourceOntologyWidget, SLOT(dataChangedSlot()));
-      connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
+  foreach (QString languageName, m_languageDataSources.keys()) {
+    IOntologyDataSource *languageDataSource = m_languageDataSources.value(languageName);
+    NodeData *node = languageDataSource->findNode(term);
+    if (node != NULL) {
+      return languageName;
     }
   }
+  return QString::null;
 }
 
-void MainWindow::consultSlot() {
+void MainWindow::setupMenu() {
+
+  QMenu *fileMenu = ui->menubar->addMenu(tr("File"));
+
+  QAction *openSourceFileAction = fileMenu->addAction(tr("Open source file..."));
+  QAction *saveGeneratedFileAction = fileMenu->addAction(tr("Save generated file..."));
+
+  fileMenu->addSeparator();
+
+  QAction *openWorkspaceAction = fileMenu->addAction(tr("Open workspace..."));
+  QAction *saveWorkspaceAction = fileMenu->addAction(tr("Save workcpace..."));
+
+  fileMenu->addSeparator();
+
+  QAction *openProjectAction = fileMenu->addAction(tr("Open project..."));
+  QAction *saveProjectAction = fileMenu->addAction(tr("Save project..."));
+
+  fileMenu->addSeparator();
+
+  QAction *screenshotAction = fileMenu->addAction(tr("Screenshot..."));
+
+  QMenu *transformationMenu = ui->menubar->addMenu(tr("Transformation"));
+
+  QAction *transformAction = transformationMenu->addAction(tr("Transform"));
+
+  connect(openSourceFileAction, SIGNAL(triggered()), SLOT(openSourceFileSlot()));
+  connect(saveGeneratedFileAction, SIGNAL(triggered()), SLOT(saveGeneratedFileSlot()));
+
+  connect(openWorkspaceAction, SIGNAL(triggered()), SLOT(openWorkspaceSlot()));
+  connect(saveWorkspaceAction, SIGNAL(triggered()), SLOT(saveWorkspaceSlot()));
+
+  connect(openProjectAction, SIGNAL(triggered()), SLOT(openProjectSlot()));
+  connect(saveProjectAction, SIGNAL(triggered()), SLOT(saveProjectSlot()));
+
+  connect(screenshotAction, SIGNAL(triggered()), SLOT(screenshotSlot()));
+
+  connect(transformAction, SIGNAL(triggered()), SLOT(transformSlot()));
+}
+
+void MainWindow::openSourceFileSlot() {
 
   QString filePath = QFileDialog::getOpenFileName(this, tr("Open dialog"), QString(), "*");
   if (QFile::exists(filePath)) {
@@ -357,22 +335,98 @@ void MainWindow::consultSlot() {
     Q_ASSERT(ok);
 
     if (ok) {
-      Json::Value json = m_logicalInference->process(jsonState);
-      qDebug() << QString::fromStdString(json.toStyledString());
+      QString term = QString::fromStdString(jsonState.getMemberNames().at(0));
+      QString language = findCorrenspondingLanguage(term);
 
-      QString filePath = QFileDialog::getSaveFileName(this, tr("Save dialog"), QString(), "*");
-      QFile file(filePath);
+      JsonToOntoHelper jtoHelper;
+      jtoHelper.setLanguageOntology(m_languageDataSources.value(language), m_languageDelegates.value(language));
+      jtoHelper.setDestinationOntology(&m_sourceOntologyController, &m_sourceOntologyController);
+      jtoHelper.fillOntology(jsonState);
 
-      if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        return;
-      }
-
-      QTextStream stream(&file);
-      stream.setCodec("UTF-8");
-      stream.setAutoDetectUnicode(true);
-      stream << QString::fromStdString(json.toStyledString());
+      m_sourceOntologyWidget->updateData();
     }
   }
+}
+
+void MainWindow::saveGeneratedFileSlot() {
+
+  OntoToJsonHelper otjHelper(&m_destinationOntologyController);
+  Json::Value json = otjHelper.generateJson();
+
+  QString filePath = QFileDialog::getSaveFileName(this, tr("Save dialog"), QString(), "*");
+  QFile file(filePath);
+
+  if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    return;
+  }
+
+  QTextStream stream(&file);
+  stream.setCodec("UTF-8");
+  stream.setAutoDetectUnicode(true);
+  stream << QString::fromStdString(json.toStyledString());
+}
+
+void MainWindow::openWorkspaceSlot() {
+
+  QString filePath = QFileDialog::getOpenFileName(this, tr("Open dialog"), QString(), "*.ojs");
+  if (QFile::exists(filePath)) {
+    Json::Reader reader;
+    std::ifstream fileStream;
+    fileStream.open(filePath.toStdString().c_str());
+
+    Json::Value jsonState;
+    bool ok = reader.parse(fileStream, jsonState);
+    if (ok) {
+      m_javaOntologyController = OntologyDataController(jsonState["java"]);
+      m_objcOntologyController = OntologyDataController(jsonState["objc"]);
+      m_problemsOntologyController = OntologyDataController(jsonState["problems"]);
+
+      m_languageDataSources.insert("java", &m_javaOntologyController);
+      m_languageDelegates.insert("java", &m_javaOntologyController);
+      m_languageDataSources.insert("objc", &m_objcOntologyController);
+      m_languageDelegates.insert("objc", &m_objcOntologyController);
+
+      m_javaOntologyWidget->dataChangedSlot();
+      m_objcOntologyWidget->dataChangedSlot();
+      m_problemsOntologyWidget->dataChangedSlot();
+
+      m_ontologyTreeViewController->updateData();
+
+      m_logicalInference->setSourceOntology(&m_sourceOntologyController, &m_sourceOntologyController);
+      m_logicalInference->setDestinationOntology(&m_destinationOntologyController, &m_destinationOntologyController);
+      m_logicalInference->setProblemsOntology(&m_problemsOntologyController, &m_problemsOntologyController);
+    }
+  }
+}
+
+void MainWindow::saveWorkspaceSlot() {
+
+  QString filePath = QFileDialog::getSaveFileName(this, tr("Save dialog"), QString(), "*.ojs");
+  QFile file(filePath);
+
+  if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    return;
+  }
+
+  Json::Value jsonState;
+  jsonState["java"] = m_javaOntologyController.serialize();
+  jsonState["objc"] = m_objcOntologyController.serialize();
+  jsonState["problems"] = m_problemsOntologyController.serialize();
+
+  QTextStream stream(&file);
+  stream.setCodec("UTF-8");
+  stream.setAutoDetectUnicode(true);
+  stream << QString::fromStdString(jsonState.toStyledString());
+}
+
+void MainWindow::openProjectSlot() {
+
+  Q_ASSERT(false);
+}
+
+void MainWindow::saveProjectSlot() {
+
+  Q_ASSERT(false);
 }
 
 void MainWindow::screenshotSlot() {
@@ -380,6 +434,11 @@ void MainWindow::screenshotSlot() {
   QString filePath = QFileDialog::getSaveFileName(this, tr("Save dialog"), QString(), "*.png");
   QImage screenshot = m_sourceOntologyWidget->makeScreenshot();
   screenshot.save(filePath);
+}
+
+void MainWindow::transformSlot() {
+
+  m_logicalInference->process();
 }
 
 void MainWindow::currentTabChangedSlot(int index) {

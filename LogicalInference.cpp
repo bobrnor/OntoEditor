@@ -1,8 +1,6 @@
 #include "LogicalInference.h"
 
 #include "lib_json/json/value.h"
-#include "JsonToOntoHelper.h"
-#include "OntoToJsonHelper.h"
 
 LogicalInference::LogicalInference() {
 
@@ -11,23 +9,6 @@ LogicalInference::LogicalInference() {
 
   m_destinationDataSource = NULL;
   m_destinationDelegate = NULL;
-}
-
-void LogicalInference::addLanguage(const QString &name, IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
-
-  m_languageDataSources.insert(name, dataSource);
-  m_languageDelegates.insert(name, delegate);
-}
-
-void LogicalInference::removeLanguage(const QString &name) {
-
-  m_languageDataSources.remove(name);
-  m_languageDelegates.remove(name);
-}
-
-QList<QString> LogicalInference::availableLanguages() const {
-
-  return m_languageDelegates.keys();
 }
 
 void LogicalInference::setSourceOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
@@ -78,18 +59,6 @@ IOntologyDelegate *LogicalInference::problemsDelegate() const {
   return m_problemsDelegate;
 }
 
-QString LogicalInference::findCorrenspondingLanguage(const QString &term) const {
-
-  foreach (QString languageName, m_languageDataSources.keys()) {
-    IOntologyDataSource *languageDataSource = m_languageDataSources.value(languageName);
-    NodeData *node = languageDataSource->findNode(term);
-    if (node != NULL) {
-      return languageName;
-    }
-  }
-  return QString::null;
-}
-
 void LogicalInference::updateData() {
 
 }
@@ -99,24 +68,10 @@ void LogicalInference::dataChangedSlot() {
   updateData();
 }
 
-Json::Value LogicalInference::process(const Json::Value &value) {
-
-  QString term = QString::fromStdString(value.getMemberNames().at(0));
-  QString language = findCorrenspondingLanguage(term);
-
-  JsonToOntoHelper jtoHelper;
-  jtoHelper.setLanguageOntology(m_languageDataSources.value(language), m_languageDelegates.value(language));
-  jtoHelper.setDestinationOntology(m_sourceDataSource, m_sourceDelegate);
-  jtoHelper.fillOntology(value);
+void LogicalInference::process() {
 
   transform();
-
-  OntoToJsonHelper otjHelper(m_destinationDataSource);
-  Json::Value newJson = otjHelper.generateJson();
-
   emit dataChangedSignal();
-  return newJson;
-//  return value;
 }
 
 void LogicalInference::transform() {

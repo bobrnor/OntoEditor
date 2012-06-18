@@ -34,7 +34,7 @@ void OntoToJsonHelper::putNodeIntoJson(NodeData *node, Json::Value *jsonValue) c
   foreach (long relationId, node->relations) {
     RelationData *relation = m_ontoDataSource->getRelationById(relationId);
     if (relation->name.compare("transform", Qt::CaseInsensitive) != 0
-        && relation->name.compare("is_element", Qt::CaseInsensitive) != 0) {
+        /*&& relation->name.compare("is_element", Qt::CaseInsensitive) != 0*/) {
 
       if (relation->destinationNodeId == node->id) {
         if (relation->name.compare("is_instance", Qt::CaseInsensitive) == 0) {
