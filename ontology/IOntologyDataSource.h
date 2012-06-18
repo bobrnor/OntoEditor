@@ -15,10 +15,14 @@ class IOntologyDataSource {
     virtual NodeData *getNodeById(long id) = 0;
     virtual RelationData *getRelationById(long id) = 0;
 
+    virtual NodeData *getNodeByPath(const QStringList &path) const = 0;
+
     virtual RelationData *getRelationByNodes(long sourceNodeId, long destinationNodeId) = 0;
 
     virtual NodeData *findNode(const QString &nodeName) const = 0;
     virtual NodeData *findNode(const QString &nodeName, NodeData *startNode) const = 0;
+
+    virtual QStringList pathToNode(long id) = 0;
 };
 
 #endif // IONTOLOGYDATASOURCE_H

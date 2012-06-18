@@ -12,14 +12,17 @@ class LogicalInference : public QObject {
     Q_OBJECT
 
   private:
-    QMap<QString, IOntologyDelegate *> m_languageDelegates;
     QMap<QString, IOntologyDataSource *> m_languageDataSources;
+    QMap<QString, IOntologyDelegate *> m_languageDelegates;
 
-    IOntologyDelegate *m_sourceDelegate;
     IOntologyDataSource *m_sourceDataSource;
+    IOntologyDelegate *m_sourceDelegate;
 
-    IOntologyDelegate *m_destinationDelegate;
     IOntologyDataSource *m_destinationDataSource;
+    IOntologyDelegate *m_destinationDelegate;
+
+    IOntologyDataSource *m_problemsDataSource;
+    IOntologyDelegate *m_problemsDelegate;
 
 //    QMap<long, LINodeData *> m_nodes;
 
@@ -27,8 +30,8 @@ class LogicalInference : public QObject {
 //    void setupInnerState();
 
     void transform();
-    Json::Value generate();
-    LINodeData *baseNode(LINodeData *node);
+    NodeData *transformationTargetNode(NodeData *sourceNode);
+    NodeData *addPathToDestinationOntology(const QStringList &path);
 
   public:
     LogicalInference();
@@ -47,6 +50,10 @@ class LogicalInference : public QObject {
     void setDestinationOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
     IOntologyDataSource *destinationDataSource() const;
     IOntologyDelegate *destinationDelegate() const;
+
+    void setProblemsOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
+    IOntologyDataSource *problemsDataSource() const;
+    IOntologyDelegate *problemsDelegate() const;
 
   signals:
     void dataChangedSignal();

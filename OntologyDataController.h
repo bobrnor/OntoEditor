@@ -38,14 +38,18 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
     NodeData *getNodeById(long id);
     RelationData *getRelationById(long id);
 
+    NodeData *getNodeByPath(const QStringList &path) const;
+
     RelationData *getRelationByNodes(long sourceNodeId, long destinationNodeId);
 
     NodeData *findNode(const QString &nodeName) const;
     NodeData *findNode(const QString &nodeName, NodeData *startNode) const;
 
+    QStringList pathToNode(long id);
+
     // delegate
     long nodeCreated();
-    long relatoinCreated(long sourceNodeId, long destinationNodeId);
+    long relationCreated(long sourceNodeId, long destinationNodeId);
     void nodeNameChanged(long nodeId, const QString &name);
     void relationNameChanged(long relationId, const QString &name);
     void nodeRemoved(long nodeId);

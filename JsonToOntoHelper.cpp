@@ -46,12 +46,12 @@ NodeData *JsonToOntoHelper::copyNode(NodeData *currentLanguageNode, NodeData *cu
     foreach (long relationId, sourceNode->relations) {
       RelationData *relation = m_languageDataSource->getRelationById(relationId);
       if (relation->sourceNodeId == prevSourceNode->id) {
-        long newRelationId = m_destinationDelegate->relatoinCreated(currentDestinationNode->id, newNodeId);
+        long newRelationId = m_destinationDelegate->relationCreated(currentDestinationNode->id, newNodeId);
         m_destinationDelegate->relationNameChanged(newRelationId, relation->name);
         break;
       }
       else if (relation->destinationNodeId == prevSourceNode->id) {
-        long newRelationId = m_destinationDelegate->relatoinCreated(newNodeId, currentDestinationNode->id);
+        long newRelationId = m_destinationDelegate->relationCreated(newNodeId, currentDestinationNode->id);
         m_destinationDelegate->relationNameChanged(newRelationId, relation->name);
         break;
       }
@@ -125,7 +125,7 @@ void JsonToOntoHelper::processValue(const Json::Value &jsonValue, NodeData *curr
     m_destinationDelegate->nodeNameChanged(nodeId, qString);
 
     // create relation
-    long relationId = m_destinationDelegate->relatoinCreated(nodeId, currentDestinationNode->id);
+    long relationId = m_destinationDelegate->relationCreated(nodeId, currentDestinationNode->id);
     m_destinationDelegate->relationNameChanged(relationId, "is_instance");
   }
 }

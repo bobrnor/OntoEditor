@@ -37,6 +37,9 @@ OntologyDataController::OntologyDataController(const Json::Value &json) {
     m_relationsMap.insert(relationData->id, relationData);
     m_relationsList.append(relationData);
 
+    QPair<long, long> relationNodesPair(relationData->sourceNodeId, relationData->destinationNodeId);
+    m_relationsMapByNodes.insert(relationNodesPair, relationData);
+
     NodeData *sourceNode = m_nodesMap.value(relationData->sourceNodeId);
     sourceNode->relations.append(relationData->id);
 
@@ -107,6 +110,17 @@ RelationData *OntologyDataController::getRelationById(long id) {
   return m_relationsMap.value(id);
 }
 
+NodeData *OntologyDataController::getNodeByPath(const QStringList &path) const {
+
+  NodeData *prevNode = NULL;
+  foreach (QString nodeName, path) {
+    NodeData *node = findNode(nodeName, prevNode);
+    Q_ASSERT(node != NULL);
+    prevNode = node;
+  }
+  return prevNode;
+}
+
 RelationData *OntologyDataController::getRelationByNodes(long sourceNodeId, long destinationNodeId) {
 
   QPair<long, long> nodesPair(sourceNodeId, destinationNodeId);
@@ -144,6 +158,29 @@ NodeData *OntologyDataController::findNode(const QString &nodeName, NodeData *st
   return NULL;
 }
 
+QStringList OntologyDataController::pathToNode(long id) {
+
+  QStringList path;
+  NodeData *currentNode = NULL;
+  NodeData *nextNode = getNodeById(id);
+
+  while (nextNode != NULL) {
+    currentNode = nextNode;
+    nextNode = NULL;
+    path.push_front(currentNode->name);
+
+    foreach (long relationId, currentNode->relations) {
+      RelationData *relation = getRelationById(relationId);
+      if (relation->sourceNodeId == currentNode->id) {
+        nextNode = getNodeById(relation->destinationNodeId);
+        break;
+      }
+    }
+  }
+
+  return path;
+}
+
 NodeData *OntologyDataController::otherNode(RelationData *relation, NodeData *node) const {
 
   if (relation->sourceNodeId == node->id) {
@@ -170,7 +207,7 @@ long OntologyDataController::nodeCreated() {
   return node->id;
 }
 
-long OntologyDataController::relatoinCreated(long sourceNodeId, long destinationNodeId) {
+long OntologyDataController::relationCreated(long sourceNodeId, long destinationNodeId) {
 
   m_lastId++;
 
@@ -182,6 +219,9 @@ long OntologyDataController::relatoinCreated(long sourceNodeId, long destination
 
   m_relationsMap.insert(relation->id, relation);
   m_relationsList.append(relation);
+
+  QPair<long, long> relationNodesPair(relation->sourceNodeId, relation->destinationNodeId);
+  m_relationsMapByNodes.insert(relationNodesPair, relation);
 
   NodeData *sourceNode = m_nodesMap.value(relation->sourceNodeId);
   sourceNode->relations.append(relation->id);
@@ -218,6 +258,10 @@ void OntologyDataController::relationRemoved(long relationId) {
   RelationData *relation = m_relationsMap.value(relationId);
   m_relationsMap.remove(relationId);
   m_relationsList.removeAll(relation);
+
+  QPair<long, long> relationNodesPair(relation->sourceNodeId, relation->destinationNodeId);
+  m_relationsMapByNodes.remove(relationNodesPair);
+
   delete relation;
 }
 
@@ -233,6 +277,10 @@ void OntologyDataController::removeRelatedRelations(NodeData *nodeData) {
   foreach (RelationData *relationData, relationsToRemove) {
     m_relationsList.removeAll(relationData);
     m_relationsMap.remove(relationData->id);
+
+    QPair<long, long> relationNodesPair(relationData->sourceNodeId, relationData->destinationNodeId);
+    m_relationsMapByNodes.remove(relationNodesPair);
+
     delete relationData;
   }
 }

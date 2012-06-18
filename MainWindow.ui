@@ -33,9 +33,14 @@
           <property name="currentIndex">
            <number>0</number>
           </property>
-          <widget class="QWidget" name="domainSpecificOntologyTab">
+          <widget class="QWidget" name="sourceOntologyTab">
            <attribute name="title">
-            <string>D-S Ontology</string>
+            <string>Source Ontology</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="destinationOntologyTab">
+           <attribute name="title">
+            <string>Destination Ontology</string>
            </attribute>
           </widget>
           <widget class="QWidget" name="javaOntologyTab">

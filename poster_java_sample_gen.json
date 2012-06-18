@@ -1,0 +1,13 @@
+{
+   "Class declaration" : {
+      "Class name" : "MyJavaClass",
+      "Interfaces designation" : {
+         "Interface type list" : null
+      },
+      "Super class designation" : {
+         "Class type" : {
+            "Type name" : "MySuperJavaClass"
+         }
+      }
+   }
+}

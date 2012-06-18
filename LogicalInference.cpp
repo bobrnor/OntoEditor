@@ -62,6 +62,22 @@ IOntologyDelegate *LogicalInference::destinationDelegate() const {
   return m_destinationDelegate;
 }
 
+void LogicalInference::setProblemsOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
+
+  m_problemsDataSource = dataSource;
+  m_problemsDelegate = delegate;
+}
+
+IOntologyDataSource *LogicalInference::problemsDataSource() const {
+
+  return m_problemsDataSource;
+}
+
+IOntologyDelegate *LogicalInference::problemsDelegate() const {
+
+  return m_problemsDelegate;
+}
+
 QString LogicalInference::findCorrenspondingLanguage(const QString &term) const {
 
   foreach (QString languageName, m_languageDataSources.keys()) {
@@ -74,31 +90,6 @@ QString LogicalInference::findCorrenspondingLanguage(const QString &term) const 
   return QString::null;
 }
 
-//void LogicalInference::setupInnerState() {
-
-//  m_nodes.clear();
-
-//  if (m_dataSource != NULL) {
-//    int nodesCount = m_dataSource->nodeCount();
-//    for (int i = 0; i < nodesCount; ++i) {
-//      LINodeData *liNodeData = new LINodeData();
-//      NodeData *nodeData = m_dataSource->getNodeByIndex(i);
-//      liNodeData->id = nodeData->id;
-//      liNodeData->name = nodeData->name;
-//      m_nodes.insert(liNodeData->id, liNodeData);
-//    }
-
-//    int relationsCount = m_dataSource->relationCount();
-//    for (int i = 0; i < relationsCount; ++i) {
-//      RelationData *relationData = m_dataSource->getRelationByIndex(i);
-//      LINodeData *sourceNodeData = m_nodes.value(relationData->sourceNodeId);
-//      LINodeData *destinationNodeData = m_nodes.value(relationData->destinationNodeId);
-//      sourceNodeData->relations.append(relationData);
-//      destinationNodeData->relations.append(relationData);
-//    }
-//  }
-//}
-
 void LogicalInference::updateData() {
 
 }
@@ -110,112 +101,116 @@ void LogicalInference::dataChangedSlot() {
 
 Json::Value LogicalInference::process(const Json::Value &value) {
 
+  QString term = QString::fromStdString(value.getMemberNames().at(0));
+  QString language = findCorrenspondingLanguage(term);
+
   JsonToOntoHelper jtoHelper;
-  jtoHelper.setLanguageOntology(m_languageDataSources.value("java"), m_languageDelegates.value("java"));
+  jtoHelper.setLanguageOntology(m_languageDataSources.value(language), m_languageDelegates.value(language));
   jtoHelper.setDestinationOntology(m_sourceDataSource, m_sourceDelegate);
   jtoHelper.fillOntology(value);
+
+  transform();
+
+  OntoToJsonHelper otjHelper(m_destinationDataSource);
+  Json::Value newJson = otjHelper.generateJson();
+
   emit dataChangedSignal();
-  return value;
-//  transform();
-//  updateData();
-
-//  OntoToJsonHelper otjHelper(m_dataSource);
-//  Json::Value newJson = otjHelper.generateJson();
-
-//  emit dataChangedSignal();
-//  return newJson;
+  return newJson;
+//  return value;
 }
 
 void LogicalInference::transform() {
 
-//  if (m_dataSource != NULL) {
-//    int relationsCount = m_dataSource->relationCount();
-//    for (int i = 0; i < relationsCount; ++i) {
-//      RelationData *relationData = m_dataSource->getRelationByIndex(i);
-//      if (relationData->name == "transform") {
-//        LINodeData *sourceNode = m_nodes.value(relationData->sourceNodeId);
-//        LINodeData *destinationNode = m_nodes.value(relationData->destinationNodeId);
+  Q_ASSERT(m_problemsDataSource != NULL);
+  Q_ASSERT(m_problemsDelegate != NULL);
 
-//        foreach (RelationData *sourceNodeRelation, sourceNode->relations) {
-//          if (sourceNodeRelation->destinationNodeId == sourceNode->id && sourceNodeRelation->name == "is_instance") {
-//            LINodeData *instanceNode = m_nodes.value(sourceNodeRelation->sourceNodeId);
-//            long newNodeId = m_delegate->nodeCreated();
-//            m_delegate->nodeNameChanged(newNodeId, instanceNode->name);
-//            long newRelationId = m_delegate->relatoinCreated(newNodeId, destinationNode->id);
-//            m_delegate->relationNameChanged(newRelationId, "is_instance");
-//          }
-//        }
-//      }
-//    }
-//  }
+  QSet<long> passedInstanceNodes;
+
+  int relationsCount = m_sourceDataSource->relationCount();
+  for (int i = 0; i < relationsCount; ++i) {
+    RelationData *relation = m_sourceDataSource->getRelationByIndex(i);
+    if (relation->name == "is_instance") {
+      NodeData *nodeWithInstances = m_sourceDataSource->getNodeById(relation->destinationNodeId);
+      if (!passedInstanceNodes.contains(nodeWithInstances->id)) {
+        passedInstanceNodes.insert(nodeWithInstances->id);
+
+        NodeData *targetNode = transformationTargetNode(nodeWithInstances);
+        if (targetNode != NULL) {
+          QStringList targetNodePath = m_problemsDataSource->pathToNode(targetNode->id);
+          NodeData *destinationNode = addPathToDestinationOntology(targetNodePath);
+
+          foreach (long relationId, nodeWithInstances->relations) {
+            RelationData *relation = m_sourceDataSource->getRelationById(relationId);
+            if (relation->name == "is_instance") {
+              NodeData *instanceNode = m_sourceDataSource->getNodeById(relation->sourceNodeId);
+
+              long newNodeId = m_destinationDelegate->nodeCreated();
+              m_destinationDelegate->nodeNameChanged(newNodeId, instanceNode->name);
+              long newRelationId = m_destinationDelegate->relationCreated(newNodeId, destinationNode->id);
+              m_destinationDelegate->relationNameChanged(newRelationId, "is_instance");
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
-Json::Value LogicalInference::generate() {
+NodeData *LogicalInference::transformationTargetNode(NodeData *sourceNode) {
 
-//  Json::Value json;
+  QStringList pathToSourceNode = m_sourceDataSource->pathToNode(sourceNode->id);
 
-//  if (m_dataSource != NULL) {
-//    LINodeData *destinationBaseNode = NULL;
+  qDebug() << pathToSourceNode;
 
-//    int relationsCount = m_dataSource->relationCount();
-//    for (int i = 0; i < relationsCount; ++i) {
-//      RelationData *relationData = m_dataSource->getRelationByIndex(i);
-//      if (relationData->name == "transform") {
-//        LINodeData *destinationNode = m_nodes.value(relationData->destinationNodeId);
-//        destinationBaseNode = baseNode(destinationNode);
-//        break;
-//      }
-//    }
-
-//    if (destinationBaseNode != NULL) {
-//      qDebug() << "Base node: " << destinationBaseNode->name;
-//    }
-//    else {
-//      qDebug() << "Base node: (NULL)";
-//    }
-
-//    for (int i = 0; i < relationsCount; ++i) {
-//      RelationData *relationData = m_dataSource->getRelationByIndex(i);
-//      if (relationData->name == "is_instance") {
-//        LINodeData *sourceNode = m_nodes.value(relationData->sourceNodeId);
-//        LINodeData *destinationNode = m_nodes.value(relationData->destinationNodeId);
-
-//        if (destinationBaseNode == baseNode(sourceNode)) {
-//          bool isArray = false;
-//          foreach (RelationData *destinationRelation, destinationNode->relations) {
-//            if (destinationRelation->name == "is_element") {
-//              isArray = true;
-//              LINodeData *elementBaseNode = m_nodes.value(destinationRelation->destinationNodeId);
-//              Json::Value arrayValue = json.get(elementBaseNode->name.toStdString(), Json::Value(Json::nullValue));
-//              if (arrayValue.isNull()) {
-//                arrayValue = Json::Value(Json::arrayValue);
-//              }
-//              Json::Value elementJson;
-//              elementJson[destinationNode->name.toStdString()] = Json::Value(sourceNode->name.toStdString());
-//              arrayValue.append(elementJson);
-//              json[elementBaseNode->name.toStdString()] = arrayValue;
-//            }
-
-//            if (!isArray) {
-//              json[destinationNode->name.toStdString()] = Json::Value(sourceNode->name.toStdString());
-//            }
-//          }
-//        }
-//      }
-//    }
-//  }
-
-//  return json;
+  NodeData *sourceNodeInProblemsOntology = m_problemsDataSource->getNodeByPath(pathToSourceNode);
+  foreach (long relationId, sourceNodeInProblemsOntology->relations) {
+    RelationData *relation = m_problemsDataSource->getRelationById(relationId);
+    if (relation->name == "transform") {
+      NodeData *targetNode = m_problemsDataSource->getNodeById(relation->destinationNodeId);
+      Q_ASSERT(targetNode);
+      return targetNode;
+    }
+  }
+  return NULL;
 }
 
-LINodeData *LogicalInference::baseNode(LINodeData *node) {
+NodeData *LogicalInference::addPathToDestinationOntology(const QStringList &path) {
 
-//  foreach (RelationData *relation, node->relations) {
-//    if (relation->sourceNodeId == node->id) {
-//      LINodeData *topNode = m_nodes.value(relation->destinationNodeId);
-//      return baseNode(topNode);
-//    }
-//  }
+  NodeData *prevDestinationNode = NULL;
+  NodeData *prevProblemsNode = NULL;
+  foreach (QString nodeName, path) {
+    NodeData *destinationNode = m_destinationDataSource->findNode(nodeName, prevDestinationNode);
+    NodeData *problemsNode = m_problemsDataSource->findNode(nodeName, prevProblemsNode);
 
-//  return node;
+    Q_ASSERT(problemsNode != NULL);
+
+    if (destinationNode == NULL) {
+      QPointF position = m_problemsDelegate->nodePosition(problemsNode->id);
+      long newNodeId = m_destinationDelegate->nodeCreated();
+      m_destinationDelegate->nodeNameChanged(newNodeId, problemsNode->name);
+      destinationNode = m_destinationDataSource->getNodeById(newNodeId);
+
+      if (prevDestinationNode != NULL) {
+        RelationData *relation = m_problemsDataSource->getRelationByNodes(problemsNode->id, prevProblemsNode->id);
+        if (relation != NULL) {
+          long newRelationId = m_destinationDelegate->relationCreated(destinationNode->id, prevDestinationNode->id);
+          m_destinationDelegate->relationNameChanged(newRelationId, relation->name);
+        }
+        else {
+          relation = m_problemsDataSource->getRelationByNodes(prevProblemsNode->id, problemsNode->id);
+          if (relation != NULL) {
+            long newRelationId = m_destinationDelegate->relationCreated(prevDestinationNode->id, destinationNode->id);
+            m_destinationDelegate->relationNameChanged(newRelationId, relation->name);
+          }
+        }
+      }
+
+      m_destinationDelegate->setNodePosition(newNodeId, position);
+    }
+
+    prevDestinationNode = destinationNode;
+    prevProblemsNode = problemsNode;
+  }
+
+  return prevDestinationNode;
 }

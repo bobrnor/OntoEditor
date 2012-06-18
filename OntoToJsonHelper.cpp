@@ -12,15 +12,10 @@ OntoToJsonHelper::OntoToJsonHelper(IOntologyDataSource *dataSource) {
 
 Json::Value OntoToJsonHelper::generateJson() {
 
-  NodeData *root = NULL;
-
-  int relationsCount = m_ontoDataSource->relationCount();
-  for (int i = 0; i < relationsCount; ++i) {
-    RelationData *relation = m_ontoDataSource->getRelationByIndex(i);
-    if (relation->name.compare("transform", Qt::CaseInsensitive) == 0) {
-      NodeData *destinationNode = m_ontoDataSource->getNodeById(relation->destinationNodeId);
-      root = rootNode(destinationNode);
-    }
+  NodeData *someNode = m_ontoDataSource->getNodeByIndex(0);
+  NodeData *root = rootNode(someNode);
+  if (root == NULL) {
+    root = someNode;
   }
 
   Q_ASSERT_X(root != NULL, "Finding root node", "Can't find root node");
@@ -91,16 +86,14 @@ NodeData *OntoToJsonHelper::rootNode(NodeData *node) const {
 
   foreach (long relationId, node->relations) {
     RelationData *relation = m_ontoDataSource->getRelationById(relationId);
-    if (relation->name.compare("tranform", Qt::CaseInsensitive) != 0) {
-      if (relation->sourceNodeId == node->id) {
-        NodeData *parentNode = m_ontoDataSource->getNodeById(relation->destinationNodeId);
-        NodeData *root = rootNode(parentNode);
-        if (root == NULL) {
-          return parentNode;
-        }
-        else {
-          return root;
-        }
+    if (relation->sourceNodeId == node->id) {
+      NodeData *parentNode = m_ontoDataSource->getNodeById(relation->destinationNodeId);
+      NodeData *root = rootNode(parentNode);
+      if (root == NULL) {
+        return parentNode;
+      }
+      else {
+        return root;
       }
     }
   }

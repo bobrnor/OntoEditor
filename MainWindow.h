@@ -22,14 +22,16 @@ class MainWindow : public QMainWindow {
   private:
     Ui::MainWindow *ui;
 
-    OntologyWidget *m_domainSpecificOntologyWidget;
+    OntologyWidget *m_sourceOntologyWidget;
+    OntologyWidget *m_destinationOntologyWidget;
     OntologyWidget *m_javaOntologyWidget;
     OntologyWidget *m_objcOntologyWidget;
     OntologyWidget *m_problemsOntologyWidget;
 
     OntologyTreeViewController *m_ontologyTreeViewController;
 
-    OntologyDataController m_domainSpecificOntologyController;
+    OntologyDataController m_sourceOntologyController;
+    OntologyDataController m_destinationOntologyController;
     OntologyDataController m_javaOntologyController;
     OntologyDataController m_objcOntologyController;
     OntologyDataController m_problemsOntologyController;
@@ -42,12 +44,14 @@ class MainWindow : public QMainWindow {
 
     void setupMenu();
 
-    void setupDomainSpecificOntology();
+    void setupSourceOntology();
+    void setupDestinationOntology();
     void setupJavaOntology();
     void setupObjcOntology();
     void setupProblemsOntology();
 
-    void onDomainSpecificOntologyWidgetShow();
+    void onSourceOntologyWidgetShow();
+    void onDestinationOntologyWidgetShow();
     void onJavaOntologyWidgetShow();
     void onObjcOntologyWidgetShow();
     void onProblemsOntologyWidgetShow();

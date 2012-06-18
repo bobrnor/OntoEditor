@@ -17,7 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
   ui->setupUi(this);
 
-  setupDomainSpecificOntology();
+  setupSourceOntology();
+  setupDestinationOntology();
   setupJavaOntology();
   setupObjcOntology();
   setupProblemsOntology();
@@ -29,7 +30,9 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->splitter->setStretchFactor(1, 10);
 
   m_logicalInference = new LogicalInference();
-  m_logicalInference->setSourceOntology(&m_domainSpecificOntologyController, &m_domainSpecificOntologyController);
+  m_logicalInference->setSourceOntology(&m_sourceOntologyController, &m_sourceOntologyController);
+  m_logicalInference->setDestinationOntology(&m_destinationOntologyController, &m_destinationOntologyController);
+  m_logicalInference->setProblemsOntology(&m_problemsOntologyController, &m_problemsOntologyController);
   m_logicalInference->addLanguage("java", &m_javaOntologyController, &m_javaOntologyController);
   m_logicalInference->addLanguage("objective-c", &m_objcOntologyController, &m_objcOntologyController);
 
@@ -48,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->tabWidget, SIGNAL(currentChanged(int)), SLOT(currentTabChangedSlot(int)));
 
   setupMenu();
-  onDomainSpecificOntologyWidgetShow();
+  onSourceOntologyWidgetShow();
 }
 
 MainWindow::~MainWindow() {
@@ -56,17 +59,30 @@ MainWindow::~MainWindow() {
   delete ui;
 }
 
-void MainWindow::setupDomainSpecificOntology() {
+void MainWindow::setupSourceOntology() {
 
-  m_domainSpecificOntologyWidget = new OntologyWidget(this);
-  m_domainSpecificOntologyWidget->setDataSource(&m_domainSpecificOntologyController);
-  m_domainSpecificOntologyWidget->setDelegate(&m_domainSpecificOntologyController);
+  m_sourceOntologyWidget = new OntologyWidget(this);
+  m_sourceOntologyWidget->setDataSource(&m_sourceOntologyController);
+  m_sourceOntologyWidget->setDelegate(&m_sourceOntologyController);
 
   QWidget *dsTab = ui->tabWidget->widget(0);
   QVBoxLayout *layout = new QVBoxLayout();
   layout->setMargin(0);
   dsTab->setLayout(layout);
-  layout->addWidget(m_domainSpecificOntologyWidget);
+  layout->addWidget(m_sourceOntologyWidget);
+}
+
+void MainWindow::setupDestinationOntology() {
+
+  m_destinationOntologyWidget = new OntologyWidget(this);
+  m_destinationOntologyWidget->setDataSource(&m_destinationOntologyController);
+  m_destinationOntologyWidget->setDelegate(&m_destinationOntologyController);
+
+  QWidget *dsTab = ui->tabWidget->widget(1);
+  QVBoxLayout *layout = new QVBoxLayout();
+  layout->setMargin(0);
+  dsTab->setLayout(layout);
+  layout->addWidget(m_destinationOntologyWidget);
 }
 
 void MainWindow::setupJavaOntology() {
@@ -75,7 +91,7 @@ void MainWindow::setupJavaOntology() {
   m_javaOntologyWidget->setDataSource(&m_javaOntologyController);
   m_javaOntologyWidget->setDelegate(&m_javaOntologyController);
 
-  QWidget *javaTab = ui->tabWidget->widget(1);
+  QWidget *javaTab = ui->tabWidget->widget(2);
   QVBoxLayout *layout = new QVBoxLayout();
   layout->setMargin(0);
   javaTab->setLayout(layout);
@@ -88,7 +104,7 @@ void MainWindow::setupObjcOntology() {
   m_objcOntologyWidget->setDataSource(&m_objcOntologyController);
   m_objcOntologyWidget->setDelegate(&m_objcOntologyController);
 
-  QWidget *objcTab = ui->tabWidget->widget(2);
+  QWidget *objcTab = ui->tabWidget->widget(3);
   QVBoxLayout *layout = new QVBoxLayout();
   layout->setMargin(0);
   objcTab->setLayout(layout);
@@ -101,36 +117,63 @@ void MainWindow::setupProblemsOntology() {
   m_problemsOntologyWidget->setDataSource(&m_problemsOntologyController);
   m_problemsOntologyWidget->setDelegate(&m_problemsOntologyController);
 
-  QWidget *problemsTab = ui->tabWidget->widget(3);
+  QWidget *problemsTab = ui->tabWidget->widget(4);
   QVBoxLayout *layout = new QVBoxLayout();
   layout->setMargin(0);
   problemsTab->setLayout(layout);
   layout->addWidget(m_problemsOntologyWidget);
 }
 
-void MainWindow::onDomainSpecificOntologyWidgetShow() {
+void MainWindow::onSourceOntologyWidgetShow() {
 
   clearConnections();
 
-  m_ontologyTreeViewController->setDataSource(&m_domainSpecificOntologyController);
-  m_ontologyTreeViewController->setDelegate(&m_domainSpecificOntologyController);
+  m_ontologyTreeViewController->setDataSource(&m_sourceOntologyController);
+  m_ontologyTreeViewController->setDelegate(&m_sourceOntologyController);
 
-  connect(m_domainSpecificOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
-  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_domainSpecificOntologyWidget, SLOT(dataChangedSlot()));
+  connect(m_sourceOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
+  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_sourceOntologyWidget, SLOT(dataChangedSlot()));
 
-  connect(m_domainSpecificOntologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
+  connect(m_sourceOntologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
 
-  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_domainSpecificOntologyWidget, SLOT(dataChangedSlot()));
+  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_sourceOntologyWidget, SLOT(dataChangedSlot()));
   connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
 
-  connect(m_ontologyTreeViewController, SIGNAL(itemSelectedSignal(long)), m_domainSpecificOntologyWidget, SLOT(itemSelectedSlot(long)));
+  connect(m_ontologyTreeViewController, SIGNAL(itemSelectedSignal(long)), m_sourceOntologyWidget, SLOT(itemSelectedSlot(long)));
 
-  connect(m_zoomInShortcut, SIGNAL(activated()), m_domainSpecificOntologyWidget, SLOT(zoomInSlot()));
-  connect(m_zoomOutShortcut, SIGNAL(activated()), m_domainSpecificOntologyWidget, SLOT(zoomOutSlot()));
-  connect(m_removeShortcut, SIGNAL(activated()), m_domainSpecificOntologyWidget, SLOT(removeSelectedSlot()));
+  connect(m_zoomInShortcut, SIGNAL(activated()), m_sourceOntologyWidget, SLOT(zoomInSlot()));
+  connect(m_zoomOutShortcut, SIGNAL(activated()), m_sourceOntologyWidget, SLOT(zoomOutSlot()));
+  connect(m_removeShortcut, SIGNAL(activated()), m_sourceOntologyWidget, SLOT(removeSelectedSlot()));
 
   m_ontologyTreeViewController->updateData();
+  m_sourceOntologyWidget->updateData();
+}
+
+void MainWindow::onDestinationOntologyWidgetShow() {
+
+  clearConnections();
+
+  m_ontologyTreeViewController->setDataSource(&m_destinationOntologyController);
+  m_ontologyTreeViewController->setDelegate(&m_destinationOntologyController);
+
+  connect(m_destinationOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
+  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_destinationOntologyWidget, SLOT(dataChangedSlot()));
+
+  connect(m_destinationOntologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
+  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
+
+  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_destinationOntologyWidget, SLOT(dataChangedSlot()));
+  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
+
+  connect(m_ontologyTreeViewController, SIGNAL(itemSelectedSignal(long)), m_destinationOntologyWidget, SLOT(itemSelectedSlot(long)));
+
+  connect(m_zoomInShortcut, SIGNAL(activated()), m_destinationOntologyWidget, SLOT(zoomInSlot()));
+  connect(m_zoomOutShortcut, SIGNAL(activated()), m_destinationOntologyWidget, SLOT(zoomOutSlot()));
+  connect(m_removeShortcut, SIGNAL(activated()), m_destinationOntologyWidget, SLOT(removeSelectedSlot()));
+
+  m_ontologyTreeViewController->updateData();
+  m_destinationOntologyWidget->updateData();
 }
 
 void MainWindow::onJavaOntologyWidgetShow() {
@@ -156,6 +199,7 @@ void MainWindow::onJavaOntologyWidgetShow() {
   connect(m_removeShortcut, SIGNAL(activated()), m_javaOntologyWidget, SLOT(removeSelectedSlot()));
 
   m_ontologyTreeViewController->updateData();
+  m_javaOntologyWidget->updateData();
 }
 
 void MainWindow::onObjcOntologyWidgetShow() {
@@ -181,6 +225,7 @@ void MainWindow::onObjcOntologyWidgetShow() {
   connect(m_removeShortcut, SIGNAL(activated()), m_objcOntologyWidget, SLOT(removeSelectedSlot()));
 
   m_ontologyTreeViewController->updateData();
+  m_objcOntologyWidget->updateData();
 }
 
 void MainWindow::onProblemsOntologyWidgetShow() {
@@ -206,12 +251,17 @@ void MainWindow::onProblemsOntologyWidgetShow() {
   connect(m_removeShortcut, SIGNAL(activated()), m_problemsOntologyWidget, SLOT(removeSelectedSlot()));
 
   m_ontologyTreeViewController->updateData();
+  m_problemsOntologyWidget->updateData();
 }
 
 void MainWindow::clearConnections() {
 
   disconnect(m_ontologyTreeViewController);
-  disconnect(m_domainSpecificOntologyWidget);
+  disconnect(m_sourceOntologyWidget);
+  disconnect(m_destinationOntologyWidget);
+  disconnect(m_javaOntologyWidget);
+  disconnect(m_objcOntologyWidget);
+  disconnect(m_problemsOntologyWidget);
 }
 
 void MainWindow::setupMenu() {
@@ -238,7 +288,8 @@ void MainWindow::saveSlot() {
   }
 
   Json::Value jsonState;
-  jsonState["ds"] = m_domainSpecificOntologyController.serialize();
+  jsonState["source"] = m_sourceOntologyController.serialize();
+  jsonState["destination"] = m_destinationOntologyController.serialize();
   jsonState["java"] = m_javaOntologyController.serialize();
   jsonState["objc"] = m_objcOntologyController.serialize();
   jsonState["problems"] = m_problemsOntologyController.serialize();
@@ -260,12 +311,14 @@ void MainWindow::loadSlot() {
     Json::Value jsonState;
     bool ok = reader.parse(fileStream, jsonState);
     if (ok) {
-      m_domainSpecificOntologyController = OntologyDataController(jsonState["ds"]);
+      m_sourceOntologyController = OntologyDataController(jsonState["source"]);
+      m_destinationOntologyController = OntologyDataController(jsonState["destination"]);
       m_javaOntologyController = OntologyDataController(jsonState["java"]);
       m_objcOntologyController = OntologyDataController(jsonState["objc"]);
       m_problemsOntologyController = OntologyDataController(jsonState["problems"]);
 
-      m_domainSpecificOntologyWidget->dataChangedSlot();
+      m_sourceOntologyWidget->dataChangedSlot();
+      m_destinationOntologyWidget->dataChangedSlot();
       m_javaOntologyWidget->dataChangedSlot();
       m_objcOntologyWidget->dataChangedSlot();
       m_problemsOntologyWidget->dataChangedSlot();
@@ -276,12 +329,15 @@ void MainWindow::loadSlot() {
         delete m_logicalInference;
       }
       m_logicalInference = new LogicalInference();
-      m_logicalInference->setSourceOntology(&m_domainSpecificOntologyController, &m_domainSpecificOntologyController);
+      m_logicalInference->setSourceOntology(&m_sourceOntologyController, &m_sourceOntologyController);
+      m_logicalInference->setDestinationOntology(&m_destinationOntologyController, &m_destinationOntologyController);
+      m_logicalInference->setProblemsOntology(&m_problemsOntologyController, &m_problemsOntologyController);
       m_logicalInference->addLanguage("java", &m_javaOntologyController, &m_javaOntologyController);
       m_logicalInference->addLanguage("objective-c", &m_objcOntologyController, &m_objcOntologyController);
-      connect(m_domainSpecificOntologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
+      connect(m_sourceOntologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
+      connect(m_destinationOntologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
       connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
-      connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_domainSpecificOntologyWidget, SLOT(dataChangedSlot()));
+      connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_sourceOntologyWidget, SLOT(dataChangedSlot()));
       connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
     }
   }
@@ -322,7 +378,7 @@ void MainWindow::consultSlot() {
 void MainWindow::screenshotSlot() {
 
   QString filePath = QFileDialog::getSaveFileName(this, tr("Save dialog"), QString(), "*.png");
-  QImage screenshot = m_domainSpecificOntologyWidget->makeScreenshot();
+  QImage screenshot = m_sourceOntologyWidget->makeScreenshot();
   screenshot.save(filePath);
 }
 
@@ -330,18 +386,22 @@ void MainWindow::currentTabChangedSlot(int index) {
 
   switch (index) {
     case 0:
-      onDomainSpecificOntologyWidgetShow();
+      onSourceOntologyWidgetShow();
       break;
 
     case 1:
-      onJavaOntologyWidgetShow();
+      onDestinationOntologyWidgetShow();
       break;
 
     case 2:
-      onObjcOntologyWidgetShow();
+      onJavaOntologyWidgetShow();
       break;
 
     case 3:
+      onObjcOntologyWidgetShow();
+      break;
+
+    case 4:
       onProblemsOntologyWidgetShow();
       break;
   }

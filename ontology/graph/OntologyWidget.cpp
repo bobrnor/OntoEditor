@@ -160,7 +160,7 @@ void OntologyWidget::setRelation(NodeItem *sourceNode, NodeItem *destinationNode
 
   long newRelationId = -1;
   if (m_delegate != NULL) {
-    newRelationId = m_delegate->relatoinCreated(sourceNode->id(), destinationNode->id());
+    newRelationId = m_delegate->relationCreated(sourceNode->id(), destinationNode->id());
     emit dataChangedSignal();
   }
 
