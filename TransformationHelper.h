@@ -8,7 +8,7 @@
 #include "ontology/IOntologyDelegate.h"
 #include "LINodeData.h"
 
-class LogicalInference : public QObject {
+class TransformationHelper : public QObject {
     Q_OBJECT
 
   private:
@@ -26,7 +26,7 @@ class LogicalInference : public QObject {
     NodeData *addPathToDestinationOntology(const QStringList &path);
 
   public:
-    LogicalInference();
+    TransformationHelper();
 
     void updateData();
     void process();
@@ -42,6 +42,8 @@ class LogicalInference : public QObject {
     void setProblemsOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
     IOntologyDataSource *problemsDataSource() const;
     IOntologyDelegate *problemsDelegate() const;
+
+    bool isReady() const;
 
   signals:
     void dataChangedSignal();

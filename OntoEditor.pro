@@ -25,12 +25,13 @@ SOURCES += main.cpp \
     ontology/graph/OntologyGraphElement.cpp \
     ontology/graph/NodeItem.cpp \
     ontology/treeview/OntologyTreeViewController.cpp \
-    LogicalInference.cpp \
     JsonToOntoHelper.cpp \
     OntoToJsonHelper.cpp \
     Project.cpp \
     ProjectFile.cpp \
-    ProjectFileCategory.cpp
+    ProjectFileCategory.cpp \
+    ProjectTreeViewController.cpp \
+    TransformationHelper.cpp
 
 HEADERS  += \
     lib_json/json_tool.h \
@@ -57,7 +58,6 @@ HEADERS  += \
     ontology/treeview/OntologyTreeViewController.h \
     ontology/IOntologyDelegate.h \
     ontology/IOntologyDataSource.h \
-    LogicalInference.h \
     JsonToOntoHelper.h \
     LINodeData.h \
     ontology/NodeData.h \
@@ -65,7 +65,9 @@ HEADERS  += \
     OntoToJsonHelper.h \
     Project.h \
     ProjectFile.h \
-    ProjectFileCategory.h
+    ProjectFileCategory.h \
+    ProjectTreeViewController.h \
+    TransformationHelper.h
 
 FORMS += \
     MainWindow.ui \

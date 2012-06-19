@@ -5,8 +5,9 @@
 
 #include "ontology/graph/OntologyWidget.h"
 #include "ontology/treeview/OntologyTreeViewController.h"
+#include "ProjectTreeViewController.h"
 #include "OntologyDataController.h"
-#include "LogicalInference.h"
+#include "TransformationHelper.h"
 #include "Project.h"
 
 namespace Ui {
@@ -32,9 +33,10 @@ class MainWindow : public QMainWindow {
     OntologyWidget *m_objcOntologyWidget;
     OntologyWidget *m_problemsOntologyWidget;
 
+    ProjectTreeViewController *m_projectTreeViewController;
     OntologyTreeViewController *m_ontologyTreeViewController;
 
-    LogicalInference *m_logicalInference;
+    TransformationHelper *m_transformationHelper;
 
     QShortcut *m_zoomInShortcut;
     QShortcut *m_zoomOutShortcut;
@@ -73,6 +75,7 @@ class MainWindow : public QMainWindow {
     void transformSlot();
 
     void currentTabChangedSlot(int index);
+    void currentFileChangedSlot(const QString &fileName);
 };
 
 #endif // MAINWINDOW_H

@@ -1,8 +1,8 @@
-#include "LogicalInference.h"
+#include "TransformationHelper.h"
 
 #include "lib_json/json/value.h"
 
-LogicalInference::LogicalInference() {
+TransformationHelper::TransformationHelper() {
 
   m_sourceDataSource = NULL;
   m_sourceDelegate = NULL;
@@ -11,73 +11,84 @@ LogicalInference::LogicalInference() {
   m_destinationDelegate = NULL;
 }
 
-void LogicalInference::setSourceOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
+void TransformationHelper::setSourceOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
 
   m_sourceDataSource = dataSource;
   m_sourceDelegate = delegate;
 }
 
-IOntologyDataSource *LogicalInference::sourceDataSource() const {
+IOntologyDataSource *TransformationHelper::sourceDataSource() const {
 
   return m_sourceDataSource;
 }
 
-IOntologyDelegate *LogicalInference::sourceDelegate() const {
+IOntologyDelegate *TransformationHelper::sourceDelegate() const {
 
   return m_sourceDelegate;
 }
 
-void LogicalInference::setDestinationOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
+void TransformationHelper::setDestinationOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
 
   m_destinationDataSource = dataSource;
   m_destinationDelegate = delegate;
 }
 
-IOntologyDataSource *LogicalInference::destinationDataSource() const {
+IOntologyDataSource *TransformationHelper::destinationDataSource() const {
 
   return m_destinationDataSource;
 }
 
-IOntologyDelegate *LogicalInference::destinationDelegate() const {
+IOntologyDelegate *TransformationHelper::destinationDelegate() const {
 
   return m_destinationDelegate;
 }
 
-void LogicalInference::setProblemsOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
+void TransformationHelper::setProblemsOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
 
   m_problemsDataSource = dataSource;
   m_problemsDelegate = delegate;
 }
 
-IOntologyDataSource *LogicalInference::problemsDataSource() const {
+IOntologyDataSource *TransformationHelper::problemsDataSource() const {
 
   return m_problemsDataSource;
 }
 
-IOntologyDelegate *LogicalInference::problemsDelegate() const {
+IOntologyDelegate *TransformationHelper::problemsDelegate() const {
 
   return m_problemsDelegate;
 }
 
-void LogicalInference::updateData() {
+bool TransformationHelper::isReady() const {
+
+  if (m_sourceDataSource != NULL && m_sourceDelegate != NULL
+      && m_destinationDataSource != NULL && m_destinationDelegate != NULL
+      && m_problemsDataSource != NULL && m_problemsDelegate != NULL) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+void TransformationHelper::updateData() {
 
 }
 
-void LogicalInference::dataChangedSlot() {
+void TransformationHelper::dataChangedSlot() {
 
   updateData();
 }
 
-void LogicalInference::process() {
+void TransformationHelper::process() {
 
-  transform();
-  emit dataChangedSignal();
+  if (isReady()) {
+    transform();
+    emit dataChangedSignal();
+  }
 }
 
-void LogicalInference::transform() {
-
-  Q_ASSERT(m_problemsDataSource != NULL);
-  Q_ASSERT(m_problemsDelegate != NULL);
+void TransformationHelper::transform() {
 
   QSet<long> passedInstanceNodes;
 
@@ -111,7 +122,7 @@ void LogicalInference::transform() {
   }
 }
 
-NodeData *LogicalInference::transformationTargetNode(NodeData *sourceNode) {
+NodeData *TransformationHelper::transformationTargetNode(NodeData *sourceNode) {
 
   QStringList pathToSourceNode = m_sourceDataSource->pathToNode(sourceNode->id);
 
@@ -129,7 +140,7 @@ NodeData *LogicalInference::transformationTargetNode(NodeData *sourceNode) {
   return NULL;
 }
 
-NodeData *LogicalInference::addPathToDestinationOntology(const QStringList &path) {
+NodeData *TransformationHelper::addPathToDestinationOntology(const QStringList &path) {
 
   NodeData *prevDestinationNode = NULL;
   NodeData *prevProblemsNode = NULL;

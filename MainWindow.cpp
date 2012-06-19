@@ -22,10 +22,14 @@ MainWindow::MainWindow(QWidget *parent) :
   setupObjcOntologyWidget();
   setupProblemsOntologyWidget();
 
-  m_ontologyTreeViewController = new OntologyTreeViewController();
-  ui->treeViewLayout->addWidget(m_ontologyTreeViewController->treeView());
+  m_projectTreeViewController = new ProjectTreeViewController();
+  m_projectTreeViewController->setProject(&m_currentProject);
+  ui->projectTreeLayout->addWidget(m_projectTreeViewController->widget());
 
-  m_logicalInference = NULL;
+  m_ontologyTreeViewController = new OntologyTreeViewController();
+  ui->ontologyTreeLayout->addWidget(m_ontologyTreeViewController->treeView());
+
+  m_transformationHelper = new TransformationHelper();
 
   m_zoomInShortcut = new QShortcut(this);
   m_zoomInShortcut->setKey(QKeySequence("Ctrl+="));
@@ -40,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
   m_removeShortcut->setEnabled(true);
 
   connect(ui->tabWidget, SIGNAL(currentChanged(int)), SLOT(currentTabChangedSlot(int)));
+  connect(m_projectTreeViewController, SIGNAL(currentFileChangedSignal(QString)), SLOT(currentFileChangedSlot(QString)));
 
   setupMenu();
   onSourceOntologyWidgetShow();
@@ -122,11 +127,11 @@ void MainWindow::onSourceOntologyWidgetShow() {
   connect(m_sourceOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_sourceOntologyWidget, SLOT(dataChangedSlot()));
 
-  connect(m_sourceOntologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
-  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
+  connect(m_sourceOntologyWidget, SIGNAL(dataChangedSignal()), m_transformationHelper, SLOT(dataChangedSlot()));
+  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_transformationHelper, SLOT(dataChangedSlot()));
 
-  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_sourceOntologyWidget, SLOT(dataChangedSlot()));
-  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
+  connect(m_transformationHelper, SIGNAL(dataChangedSignal()), m_sourceOntologyWidget, SLOT(dataChangedSlot()));
+  connect(m_transformationHelper, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
 
   connect(m_ontologyTreeViewController, SIGNAL(itemSelectedSignal(long)), m_sourceOntologyWidget, SLOT(itemSelectedSlot(long)));
 
@@ -155,11 +160,11 @@ void MainWindow::onDestinationOntologyWidgetShow() {
   connect(m_destinationOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_destinationOntologyWidget, SLOT(dataChangedSlot()));
 
-  connect(m_destinationOntologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
-  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
+  connect(m_destinationOntologyWidget, SIGNAL(dataChangedSignal()), m_transformationHelper, SLOT(dataChangedSlot()));
+  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_transformationHelper, SLOT(dataChangedSlot()));
 
-  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_destinationOntologyWidget, SLOT(dataChangedSlot()));
-  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
+  connect(m_transformationHelper, SIGNAL(dataChangedSignal()), m_destinationOntologyWidget, SLOT(dataChangedSlot()));
+  connect(m_transformationHelper, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
 
   connect(m_ontologyTreeViewController, SIGNAL(itemSelectedSignal(long)), m_destinationOntologyWidget, SLOT(itemSelectedSlot(long)));
 
@@ -181,11 +186,11 @@ void MainWindow::onJavaOntologyWidgetShow() {
   connect(m_javaOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_javaOntologyWidget, SLOT(dataChangedSlot()));
 
-  connect(m_javaOntologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
-  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
+  connect(m_javaOntologyWidget, SIGNAL(dataChangedSignal()), m_transformationHelper, SLOT(dataChangedSlot()));
+  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_transformationHelper, SLOT(dataChangedSlot()));
 
-  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_javaOntologyWidget, SLOT(dataChangedSlot()));
-  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
+  connect(m_transformationHelper, SIGNAL(dataChangedSignal()), m_javaOntologyWidget, SLOT(dataChangedSlot()));
+  connect(m_transformationHelper, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
 
   connect(m_ontologyTreeViewController, SIGNAL(itemSelectedSignal(long)), m_javaOntologyWidget, SLOT(itemSelectedSlot(long)));
 
@@ -207,11 +212,11 @@ void MainWindow::onObjcOntologyWidgetShow() {
   connect(m_objcOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_objcOntologyWidget, SLOT(dataChangedSlot()));
 
-  connect(m_objcOntologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
-  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
+  connect(m_objcOntologyWidget, SIGNAL(dataChangedSignal()), m_transformationHelper, SLOT(dataChangedSlot()));
+  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_transformationHelper, SLOT(dataChangedSlot()));
 
-  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_objcOntologyWidget, SLOT(dataChangedSlot()));
-  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
+  connect(m_transformationHelper, SIGNAL(dataChangedSignal()), m_objcOntologyWidget, SLOT(dataChangedSlot()));
+  connect(m_transformationHelper, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
 
   connect(m_ontologyTreeViewController, SIGNAL(itemSelectedSignal(long)), m_objcOntologyWidget, SLOT(itemSelectedSlot(long)));
 
@@ -227,17 +232,17 @@ void MainWindow::onProblemsOntologyWidgetShow() {
 
   clearConnections();
 
-  m_ontologyTreeViewController->setDataSource(m_currentProject.problemsOntology());
-  m_ontologyTreeViewController->setDelegate(m_currentProject.problemsOntology());
+  m_ontologyTreeViewController->setDataSource(m_currentProject.problemsOntologyController());
+  m_ontologyTreeViewController->setDelegate(m_currentProject.problemsOntologyController());
 
   connect(m_problemsOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_problemsOntologyWidget, SLOT(dataChangedSlot()));
 
-  connect(m_problemsOntologyWidget, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
-  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_logicalInference, SLOT(dataChangedSlot()));
+  connect(m_problemsOntologyWidget, SIGNAL(dataChangedSignal()), m_transformationHelper, SLOT(dataChangedSlot()));
+  connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_transformationHelper, SLOT(dataChangedSlot()));
 
-  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_problemsOntologyWidget, SLOT(dataChangedSlot()));
-  connect(m_logicalInference, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
+  connect(m_transformationHelper, SIGNAL(dataChangedSignal()), m_problemsOntologyWidget, SLOT(dataChangedSlot()));
+  connect(m_transformationHelper, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
 
   connect(m_ontologyTreeViewController, SIGNAL(itemSelectedSignal(long)), m_problemsOntologyWidget, SLOT(itemSelectedSlot(long)));
 
@@ -298,8 +303,8 @@ void MainWindow::updateOntologyTreeData() {
       break;
 
     case 4:
-      m_ontologyTreeViewController->setDataSource(m_currentProject.problemsOntology());
-      m_ontologyTreeViewController->setDelegate(m_currentProject.problemsOntology());
+      m_ontologyTreeViewController->setDataSource(m_currentProject.problemsOntologyController());
+      m_ontologyTreeViewController->setDelegate(m_currentProject.problemsOntologyController());
       break;
   }
 
@@ -310,7 +315,7 @@ void MainWindow::setupMenu() {
 
   QMenu *fileMenu = ui->menubar->addMenu(tr("File"));
 
-  QAction *importSourceFileAction = fileMenu->addAction(tr("Imaport source file..."));
+  QAction *importSourceFileAction = fileMenu->addAction(tr("Import source file..."));
   QAction *exportGeneratedFileAction = fileMenu->addAction(tr("Export generated file..."));
 
   fileMenu->addSeparator();
@@ -353,6 +358,7 @@ void MainWindow::importSourceFileSlot() {
   if (result) {
     m_sourceOntologyWidget->updateData();
     updateOntologyTreeData();
+    m_projectTreeViewController->updateData();
   }
 }
 
@@ -376,15 +382,11 @@ void MainWindow::openWorkspaceSlot() {
     m_objcOntologyWidget->setDelegate(m_currentProject.getLanguageOntologyByName("objc"));
     m_objcOntologyWidget->dataChangedSlot();
 
-    m_problemsOntologyWidget->setDataSource(m_currentProject.problemsOntology());
-    m_problemsOntologyWidget->setDelegate(m_currentProject.problemsOntology());
+    m_problemsOntologyWidget->setDataSource(m_currentProject.problemsOntologyController());
+    m_problemsOntologyWidget->setDelegate(m_currentProject.problemsOntologyController());
     m_problemsOntologyWidget->dataChangedSlot();
 
     updateOntologyTreeData();
-
-//    m_logicalInference->setSourceOntology(&m_sourceOntologyController, &m_sourceOntologyController);
-//    m_logicalInference->setDestinationOntology(&m_destinationOntologyController, &m_destinationOntologyController);
-//    m_logicalInference->setProblemsOntology(&m_problemsOntologyController, &m_problemsOntologyController);
   }
 }
 
@@ -413,7 +415,7 @@ void MainWindow::screenshotSlot() {
 
 void MainWindow::transformSlot() {
 
-  m_logicalInference->process();
+  m_transformationHelper->process();
 }
 
 void MainWindow::currentTabChangedSlot(int index) {
@@ -438,5 +440,25 @@ void MainWindow::currentTabChangedSlot(int index) {
     case 4:
       onProblemsOntologyWidgetShow();
       break;
+  }
+}
+
+void MainWindow::currentFileChangedSlot(const QString &fileName) {
+
+  ProjectFile *file = m_currentProject.getProjectFileByName(fileName);
+  if (file != NULL) {
+    m_currentFileName = fileName;
+
+    m_transformationHelper->setSourceOntology(file->sourceOntologyController(), file->sourceOntologyController());
+    m_transformationHelper->setDestinationOntology(file->destinationOntologyController(), file->destinationOntologyController());
+    m_transformationHelper->setProblemsOntology(m_currentProject.problemsOntologyController(), m_currentProject.problemsOntologyController());
+
+    m_sourceOntologyWidget->setDataSource(file->sourceOntologyController());
+    m_sourceOntologyWidget->setDelegate(file->sourceOntologyController());
+    m_sourceOntologyWidget->dataChangedSlot();
+
+    m_destinationOntologyWidget->setDataSource(file->destinationOntologyController());
+    m_destinationOntologyWidget->setDelegate(file->destinationOntologyController());
+    m_destinationOntologyWidget->dataChangedSlot();
   }
 }

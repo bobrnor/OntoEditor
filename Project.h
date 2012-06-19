@@ -24,11 +24,13 @@ class Project {
     QList<QString> availableLanguages() const;
     OntologyDataController *getLanguageOntologyByName(const QString &languageName) const;
 
-    OntologyDataController *problemsOntology() const;
+    OntologyDataController *problemsOntologyController() const;
 
     bool importSourceFile(const QString &path);
     bool exportDestinationFile(const QString &fileName, const QString &path);
     ProjectFile *getProjectFileByName(const QString &name) const;
+    QList<QString> availableFileNames() const;
+    int filesCount() const;
 
     bool openWorkspace(const QString &path);
     bool saveWorkspace(const QString &path);

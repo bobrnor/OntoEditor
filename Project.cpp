@@ -33,6 +33,17 @@ ProjectFile *Project::getProjectFileByName(const QString &name) const {
   }
 }
 
+QList<QString> Project::availableFileNames() const {
+
+  qDebug() << m_files.keys();
+
+  return m_files.keys();
+}
+int Project::filesCount() const {
+
+  return m_files.count();
+}
+
 void Project::addLanguageOntology(const QString &languageName, OntologyDataController *ontologyController) {
 
   m_languageOntologies.insert(languageName, ontologyController);
@@ -58,7 +69,7 @@ OntologyDataController *Project::getLanguageOntologyByName(const QString &langua
   }
 }
 
-OntologyDataController *Project::problemsOntology() const {
+OntologyDataController *Project::problemsOntologyController() const {
 
   return m_problemsOntologyController;
 }
@@ -78,30 +89,32 @@ QString Project::findCorrenspondingLanguage(const QString &term) const {
 bool Project::importSourceFile(const QString &path) {
 
   if (QFile::exists(path)) {
-    Json::Reader reader;
-    std::ifstream fileStream;
-    fileStream.open(path.toStdString().c_str());
+    QFileInfo fileInfo(path);
+    if (!m_files.contains(fileInfo.fileName())) {
+      Json::Reader reader;
+      std::ifstream fileStream;
+      fileStream.open(path.toStdString().c_str());
 
-    Json::Value jsonState;
-    bool ok = reader.parse(fileStream, jsonState);
+      Json::Value jsonState;
+      bool ok = reader.parse(fileStream, jsonState);
 
-    Q_ASSERT(ok);
+      Q_ASSERT(ok);
 
-    if (ok) {
-      QString term = QString::fromStdString(jsonState.getMemberNames().at(0));
-      QString language = findCorrenspondingLanguage(term);
+      if (ok) {
+        QString term = QString::fromStdString(jsonState.getMemberNames().at(0));
+        QString language = findCorrenspondingLanguage(term);
 
-      if (!language.isNull()) {
-        QFileInfo fileInfo(path);
-        ProjectFile *file = new ProjectFile(fileInfo.fileName());
-        m_files.insert(file->name(), file);
+        if (!language.isNull()) {
+          ProjectFile *file = new ProjectFile(fileInfo.fileName());
+          m_files.insert(file->name(), file);
 
-        JsonToOntoHelper jtoHelper;
-        jtoHelper.setLanguageOntology(m_languageOntologies.value(language), m_languageOntologies.value(language));
-        jtoHelper.setDestinationOntology(file->sourceOntologyController(), file->sourceOntologyController());
-        jtoHelper.fillOntology(jsonState);
+          JsonToOntoHelper jtoHelper;
+          jtoHelper.setLanguageOntology(m_languageOntologies.value(language), m_languageOntologies.value(language));
+          jtoHelper.setDestinationOntology(file->sourceOntologyController(), file->sourceOntologyController());
+          jtoHelper.fillOntology(jsonState);
 
-        return true;
+          return true;
+        }
       }
     }
   }
