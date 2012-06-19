@@ -12,6 +12,8 @@ OntologyTreeViewController::OntologyTreeViewController() {
   m_objectsTreeView = new QTreeView();
   m_objectsTreeView->setHeaderHidden(true);
   m_objectsTreeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+  m_objectsTreeView->setDragDropMode(QAbstractItemView::DragOnly);
+  m_objectsTreeView->setDragEnabled(true);
 
   m_objectsModel = new QStandardItemModel();
   m_objectsTreeView->setModel(m_objectsModel);
@@ -38,14 +40,17 @@ void OntologyTreeViewController::clearTreeView() {
   QModelIndex nodeTreeIndex = m_objectsModel->index(0, 0);
   m_objectsModel->insertColumn(0, nodeTreeIndex);
   m_objectsModel->setData(nodeTreeIndex, tr("Tree"));
+  m_objectsModel->itemFromIndex(nodeTreeIndex)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
   QModelIndex nodeIndex = m_objectsModel->index(1, 0);
   m_objectsModel->insertColumn(0, nodeIndex);
   m_objectsModel->setData(nodeIndex, tr("Nodes"));
+  m_objectsModel->itemFromIndex(nodeIndex)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
   QModelIndex relationIndex = m_objectsModel->index(2, 0);
   m_objectsModel->insertColumn(0, relationIndex);
   m_objectsModel->setData(relationIndex, tr("Relations"));
+  m_objectsModel->itemFromIndex(relationIndex)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 }
 
 QTreeView *OntologyTreeViewController::treeView() const {
@@ -71,6 +76,16 @@ void OntologyTreeViewController::setDelegate(IOntologyDelegate *delegate) {
 IOntologyDelegate *OntologyTreeViewController::delegate() const {
 
   return m_delegate;
+}
+
+void OntologyTreeViewController::setDragEnabled(bool enabled) {
+
+  m_objectsTreeView->setDragEnabled(enabled);
+}
+
+bool OntologyTreeViewController::isDragEnabled() const {
+
+  return m_objectsTreeView->dragEnabled();
 }
 
 void OntologyTreeViewController::updateTreeDataBottomToTop() {
@@ -194,7 +209,7 @@ void OntologyTreeViewController::buildNodesTree(QStandardItem *rootItem, QList<T
   // put all top level nodes
   for (int i = 0; i < nodes.count(); ++i) {
     TVNodeData nodeData = nodes.at(i);
-    QStandardItem *item = new QStandardItem(nodeData.nodeData->name + "[" + QString::number(nodeData.nodeData->id) + "]");
+    QStandardItem *item = new QStandardItem(nodeData.nodeData->name/* + "[" + QString::number(nodeData.nodeData->id) + "]"*/);
     item->setData((qlonglong)nodeData.nodeData->id, Qt::UserRole);
     rootItem->appendRow(item);
 
@@ -202,7 +217,8 @@ void OntologyTreeViewController::buildNodesTree(QStandardItem *rootItem, QList<T
       // put all relation elements as 2nd level if aleady does not seen
       foreach (QString key, nodeData.childNodes->keys()) {
         QStandardItem *relationItem = new QStandardItem(key);
-        item->appendRow(relationItem);
+        relationItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+        item->appendRow(relationItem);        
 
         // put nodes by relations
         QList<TVNodeData> children = nodeData.childNodes->value(key);
@@ -241,8 +257,9 @@ void OntologyTreeViewController::updateData() {
     for (int i = 0; i < nodesCount; ++i) {
       QModelIndex index = m_objectsModel->index(i, 0, nodesIndex);
       NodeData *nodeData = m_dataSource->getNodeByIndex(i);
-      m_objectsModel->setData(index, nodeData->name + "[" + QString::number(nodeData->id) + "]");
+      m_objectsModel->setData(index, nodeData->name/* + "[" + QString::number(nodeData->id) + "]"*/);
       m_objectsModel->setData(index, (qlonglong)nodeData->id, Qt::UserRole);
+      m_objectsModel->itemFromIndex(index)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     }
 
     QModelIndex relationsIndex = m_objectsModel->index(2, 0);
@@ -260,8 +277,9 @@ void OntologyTreeViewController::updateData() {
     for (int i = 0; i < relationsCount; ++i) {
       QModelIndex index = m_objectsModel->index(i, 0, relationsIndex);
       RelationData *relationData = m_dataSource->getRelationByIndex(i);
-      m_objectsModel->setData(index, relationData->name + "[" + QString::number(relationData->id) + "]");
+      m_objectsModel->setData(index, relationData->name/* + "[" + QString::number(relationData->id) + "]"*/);
       m_objectsModel->setData(index, (qlonglong)relationData->id, Qt::UserRole);
+      m_objectsModel->itemFromIndex(index)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     }
   }
 

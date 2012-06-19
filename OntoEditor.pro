@@ -31,7 +31,8 @@ SOURCES += main.cpp \
     ProjectFile.cpp \
     ProjectFileCategory.cpp \
     ProjectTreeViewController.cpp \
-    TransformationHelper.cpp
+    TransformationHelper.cpp \
+    ProjectTreeWidget.cpp
 
 HEADERS  += \
     lib_json/json_tool.h \
@@ -67,7 +68,9 @@ HEADERS  += \
     ProjectFile.h \
     ProjectFileCategory.h \
     ProjectTreeViewController.h \
-    TransformationHelper.h
+    TransformationHelper.h \
+    ProjectTreeWidget.h \
+    ProjectTreeWidgetDelegate.h
 
 FORMS += \
     MainWindow.ui \

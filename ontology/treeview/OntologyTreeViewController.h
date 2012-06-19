@@ -22,6 +22,8 @@ class OntologyTreeViewController : public QObject {
 
     QMap<long, TVNodeData> m_treeData;
 
+    bool m_dragEnabled;
+
     void updateTreeDataBottomToTop();
     void updateTreeDataTopToBottom();
     void buildNodesTree(QStandardItem *rootItem, QList<TVNodeData> nodes, QSet<long> *seenNodeIds);
@@ -38,6 +40,9 @@ class OntologyTreeViewController : public QObject {
 
     void setDelegate(IOntologyDelegate *delegate);
     IOntologyDelegate *delegate() const;
+
+    void setDragEnabled(bool enabled);
+    bool isDragEnabled() const;
 
     void updateData();
 

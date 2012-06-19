@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
   connect(ui->tabWidget, SIGNAL(currentChanged(int)), SLOT(currentTabChangedSlot(int)));
   connect(m_projectTreeViewController, SIGNAL(currentFileChangedSignal(QString)), SLOT(currentFileChangedSlot(QString)));
+  connect(m_projectTreeViewController, SIGNAL(categorySelectedSignal(QString,QString)), SLOT(categorySelectedSlot(QString,QString)));
 
   setupMenu();
   onSourceOntologyWidgetShow();
@@ -139,7 +140,10 @@ void MainWindow::onSourceOntologyWidgetShow() {
   connect(m_zoomOutShortcut, SIGNAL(activated()), m_sourceOntologyWidget, SLOT(zoomOutSlot()));
   connect(m_removeShortcut, SIGNAL(activated()), m_sourceOntologyWidget, SLOT(removeSelectedSlot()));
 
+  connect(this, SIGNAL(itemsSelectedSignal(QSet<long>)), m_sourceOntologyWidget, SLOT(itemsSelectedSlot(QSet<long>)));
+
   m_ontologyTreeViewController->updateData();
+  m_ontologyTreeViewController->setDragEnabled(true);
   m_sourceOntologyWidget->updateData();
 }
 
@@ -173,6 +177,7 @@ void MainWindow::onDestinationOntologyWidgetShow() {
   connect(m_removeShortcut, SIGNAL(activated()), m_destinationOntologyWidget, SLOT(removeSelectedSlot()));
 
   m_ontologyTreeViewController->updateData();
+  m_ontologyTreeViewController->setDragEnabled(false);
   m_destinationOntologyWidget->updateData();
 }
 
@@ -199,6 +204,7 @@ void MainWindow::onJavaOntologyWidgetShow() {
   connect(m_removeShortcut, SIGNAL(activated()), m_javaOntologyWidget, SLOT(removeSelectedSlot()));
 
   m_ontologyTreeViewController->updateData();
+  m_ontologyTreeViewController->setDragEnabled(false);
   m_javaOntologyWidget->updateData();
 }
 
@@ -225,6 +231,7 @@ void MainWindow::onObjcOntologyWidgetShow() {
   connect(m_removeShortcut, SIGNAL(activated()), m_objcOntologyWidget, SLOT(removeSelectedSlot()));
 
   m_ontologyTreeViewController->updateData();
+  m_ontologyTreeViewController->setDragEnabled(false);
   m_objcOntologyWidget->updateData();
 }
 
@@ -251,6 +258,7 @@ void MainWindow::onProblemsOntologyWidgetShow() {
   connect(m_removeShortcut, SIGNAL(activated()), m_problemsOntologyWidget, SLOT(removeSelectedSlot()));
 
   m_ontologyTreeViewController->updateData();
+  m_ontologyTreeViewController->setDragEnabled(false);
   m_problemsOntologyWidget->updateData();
 }
 
@@ -460,5 +468,32 @@ void MainWindow::currentFileChangedSlot(const QString &fileName) {
     m_destinationOntologyWidget->setDataSource(file->destinationOntologyController());
     m_destinationOntologyWidget->setDelegate(file->destinationOntologyController());
     m_destinationOntologyWidget->dataChangedSlot();
+  }
+}
+
+void MainWindow::categorySelectedSlot(const QString &fileName, const QString &categoryName) {
+
+  ProjectFile *file = m_currentProject.getProjectFileByName(fileName);
+  if (file != NULL) {
+    if (m_currentFileName != fileName) {
+      m_currentFileName = fileName;
+
+      m_transformationHelper->setSourceOntology(file->sourceOntologyController(), file->sourceOntologyController());
+      m_transformationHelper->setDestinationOntology(file->destinationOntologyController(), file->destinationOntologyController());
+      m_transformationHelper->setProblemsOntology(m_currentProject.problemsOntologyController(), m_currentProject.problemsOntologyController());
+
+      m_sourceOntologyWidget->setDataSource(file->sourceOntologyController());
+      m_sourceOntologyWidget->setDelegate(file->sourceOntologyController());
+      m_sourceOntologyWidget->dataChangedSlot();
+
+      m_destinationOntologyWidget->setDataSource(file->destinationOntologyController());
+      m_destinationOntologyWidget->setDelegate(file->destinationOntologyController());
+      m_destinationOntologyWidget->dataChangedSlot();
+    }
+
+    ProjectFileCategory *category = file->getCategoryByName(categoryName);
+    if (category != NULL) {
+      emit itemsSelectedSignal(category->relatedNodeIds());
+    }
   }
 }

@@ -27,17 +27,33 @@ OntologyDataController *ProjectFile::destinationOntologyController() const {
   return m_destinationOntologyController;
 }
 
-void ProjectFile::addCategory(const ProjectFileCategory &category) {
+void ProjectFile::addCategory(ProjectFileCategory *category) {
+
+  foreach (ProjectFileCategory *existsCategory, m_categories) {
+    if (category->name() == existsCategory->name()) {
+      return;
+    }
+  }
 
   m_categories.append(category);
 }
 
-void ProjectFile::removeCategory(const ProjectFileCategory &category) {
+void ProjectFile::removeCategory(ProjectFileCategory *category) {
 
   m_categories.removeOne(category);
 }
 
-QList<ProjectFileCategory> ProjectFile::categories() const {
+ProjectFileCategory *ProjectFile::getCategoryByName(const QString &name) const {
+
+  foreach (ProjectFileCategory *category, m_categories) {
+    if (category->name() == name) {
+      return category;
+    }
+  }
+  return NULL;
+}
+
+QList<ProjectFileCategory*> ProjectFile::categories() const {
 
   return m_categories;
 }

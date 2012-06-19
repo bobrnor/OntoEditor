@@ -19,6 +19,7 @@ class ProjectFileCategory {
     void setName(QString name);
     QString name() const;
 
+    bool addRelatedNodeId(long id);
     void setRelatedNodeIds(QSet<long> ids);
     QSet<long> relatedNodeIds() const;
 

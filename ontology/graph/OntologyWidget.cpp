@@ -406,6 +406,32 @@ void OntologyWidget::itemSelectedSlot(long id) {
   }
 }
 
+void OntologyWidget::itemsSelectedSlot(const QSet<long> ids) {
+
+  m_ontologyView->scene()->clearSelection();
+
+  bool alreadyCentered = false;
+  foreach (QGraphicsItem *item, m_ontologyView->scene()->items()) {
+    if (item->data(kIDTType) == kITNode) {
+      NodeItem *nodeItem = static_cast<NodeItem *>(item);
+      if (ids.contains(nodeItem->id())) {
+        item->setSelected(true);
+        if (!alreadyCentered) {
+          m_ontologyView->centerOn(item);
+          alreadyCentered = true;
+        }
+      }
+    }
+//    else if (item->data(kIDTType) == kITRelation) {
+//      RelationItem *relationItem = static_cast<RelationItem *>(item);
+//      if (relationItem->id() == id) {
+//        item->setSelected(true);
+//        m_ontologyView->centerOn(item);
+//      }
+//    }
+  }
+}
+
 void OntologyWidget::zoomInSlot() {
 
   m_ontologyView->scale(1.2, 1.2);

@@ -11,7 +11,7 @@ class ProjectFile {
 
     OntologyDataController *m_sourceOntologyController;
     OntologyDataController *m_destinationOntologyController;
-    QList<ProjectFileCategory> m_categories;
+    QList<ProjectFileCategory *> m_categories;
 
   public:
     ProjectFile(QString name);
@@ -22,9 +22,10 @@ class ProjectFile {
     OntologyDataController *sourceOntologyController() const;
     OntologyDataController *destinationOntologyController() const;
 
-    void addCategory(const ProjectFileCategory &category);
-    void removeCategory(const ProjectFileCategory &category);
-    QList<ProjectFileCategory> categories() const;
+    void addCategory(ProjectFileCategory *category);
+    void removeCategory(ProjectFileCategory *category);
+    ProjectFileCategory *getCategoryByName(const QString &name) const;
+    QList<ProjectFileCategory*> categories() const;
 };
 
 #endif // PROJECTFILE_H

@@ -76,6 +76,10 @@ class MainWindow : public QMainWindow {
 
     void currentTabChangedSlot(int index);
     void currentFileChangedSlot(const QString &fileName);
+    void categorySelectedSlot(const QString &fileName, const QString &categoryName);
+
+  signals:
+    void itemsSelectedSignal(const QSet<long> ids);
 };
 
 #endif // MAINWINDOW_H
