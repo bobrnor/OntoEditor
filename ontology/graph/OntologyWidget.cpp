@@ -173,22 +173,27 @@ void OntologyWidget::setRelation(NodeItem *sourceNode, NodeItem *destinationNode
 
 void OntologyWidget::updateData() {
 
-  QMap<long, NodeItem *> invalidatedNodesMap;
-  QMap<long, RelationItem *> invalidatedRelationsMap;
-
-  QList<QGraphicsItem *> items = m_ontologyView->scene()->items();
-  foreach (QGraphicsItem *item, items) {
-    if (item->data(kIDTType) == kITNode) {
-      NodeItem *nodeItem = static_cast<NodeItem *>(item);
-      invalidatedNodesMap.insert(nodeItem->id(), nodeItem);
-    }
-    else if (item->data(kIDTType) == kITRelation) {
-      RelationItem *relationItem = static_cast<RelationItem *>(item);
-      invalidatedRelationsMap.insert(relationItem->id(), relationItem);
-    }
+  if (m_dataSource == NULL || m_delegate == NULL) {
+    this->setEnabled(false);
   }
+  else {
+    this->setEnabled(true);
 
-  if (m_dataSource != NULL) {
+    QMap<long, NodeItem *> invalidatedNodesMap;
+    QMap<long, RelationItem *> invalidatedRelationsMap;
+
+    QList<QGraphicsItem *> items = m_ontologyView->scene()->items();
+    foreach (QGraphicsItem *item, items) {
+      if (item->data(kIDTType) == kITNode) {
+        NodeItem *nodeItem = static_cast<NodeItem *>(item);
+        invalidatedNodesMap.insert(nodeItem->id(), nodeItem);
+      }
+      else if (item->data(kIDTType) == kITRelation) {
+        RelationItem *relationItem = static_cast<RelationItem *>(item);
+        invalidatedRelationsMap.insert(relationItem->id(), relationItem);
+      }
+    }
+
     QMap<long, NodeItem *> existedNodes;
     int nodeCount = m_dataSource->nodeCount();
     for (int i = 0; i < nodeCount; ++i) {
@@ -233,16 +238,16 @@ void OntologyWidget::updateData() {
         m_ontologyView->scene()->addItem(relationItem);
       }
     }
-  }
 
-  foreach (NodeItem *invalidNode, invalidatedNodesMap.values()) {
-    m_ontologyView->scene()->removeItem(invalidNode);
-    delete invalidNode;
-  }
+    foreach (NodeItem *invalidNode, invalidatedNodesMap.values()) {
+      m_ontologyView->scene()->removeItem(invalidNode);
+      delete invalidNode;
+    }
 
-  foreach (RelationItem *invalidRelation, invalidatedRelationsMap.values()) {
-    m_ontologyView->scene()->removeItem(invalidRelation);
-    delete invalidRelation;
+    foreach (RelationItem *invalidRelation, invalidatedRelationsMap.values()) {
+      m_ontologyView->scene()->removeItem(invalidRelation);
+      delete invalidRelation;
+    }
   }
 }
 

@@ -7,6 +7,7 @@
 #include "ontology/treeview/OntologyTreeViewController.h"
 #include "OntologyDataController.h"
 #include "LogicalInference.h"
+#include "Project.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,6 +23,9 @@ class MainWindow : public QMainWindow {
   private:
     Ui::MainWindow *ui;
 
+    Project m_currentProject;
+    QString m_currentFileName;
+
     OntologyWidget *m_sourceOntologyWidget;
     OntologyWidget *m_destinationOntologyWidget;
     OntologyWidget *m_javaOntologyWidget;
@@ -29,15 +33,6 @@ class MainWindow : public QMainWindow {
     OntologyWidget *m_problemsOntologyWidget;
 
     OntologyTreeViewController *m_ontologyTreeViewController;
-
-    QMap<QString, IOntologyDataSource *> m_languageDataSources;
-    QMap<QString, IOntologyDelegate *> m_languageDelegates;
-
-    OntologyDataController m_sourceOntologyController;
-    OntologyDataController m_destinationOntologyController;
-    OntologyDataController m_javaOntologyController;
-    OntologyDataController m_objcOntologyController;
-    OntologyDataController m_problemsOntologyController;
 
     LogicalInference *m_logicalInference;
 
@@ -47,11 +42,11 @@ class MainWindow : public QMainWindow {
 
     void setupMenu();
 
-    void setupSourceOntology();
-    void setupDestinationOntology();
-    void setupJavaOntology();
-    void setupObjcOntology();
-    void setupProblemsOntology();
+    void setupSourceOntologyWidget();
+    void setupDestinationOntologyWidget();
+    void setupJavaOntologyWidget();
+    void setupObjcOntologyWidget();
+    void setupProblemsOntologyWidget();
 
     void onSourceOntologyWidgetShow();
     void onDestinationOntologyWidgetShow();
@@ -61,11 +56,11 @@ class MainWindow : public QMainWindow {
 
     void clearConnections();
 
-    QString findCorrenspondingLanguage(const QString &term) const;
+    void updateOntologyTreeData();
 
   private slots:
-    void openSourceFileSlot();
-    void saveGeneratedFileSlot();
+    void importSourceFileSlot();
+    void exportGeneratedFileSlot();
 
     void openWorkspaceSlot();
     void saveWorkspaceSlot();

@@ -77,7 +77,7 @@ void OntologyTreeViewController::updateTreeDataBottomToTop() {
 
   m_treeData.clear();
 
-  if (m_dataSource != NULL) {
+  if (m_dataSource != NULL && m_delegate != NULL) {
     QMap<long, int> parentCounts;
 
     int nodesCount = m_dataSource->nodeCount();
@@ -134,7 +134,7 @@ void OntologyTreeViewController::updateTreeDataTopToBottom() {
 
   m_treeData.clear();
 
-  if (m_dataSource != NULL) {
+  if (m_dataSource != NULL && m_delegate != NULL) {
     QMap<long, int> childCounts;
 
     int nodesCount = m_dataSource->nodeCount();
@@ -225,7 +225,7 @@ void OntologyTreeViewController::updateData() {
 
   clearTreeView();
 
-  if (m_dataSource != NULL) {
+  if (m_dataSource != NULL && m_delegate != NULL) {
     QModelIndex nodesIndex = m_objectsModel->index(1, 0);
     int currentNodeRowsCount = m_objectsModel->rowCount(nodesIndex);
     int nodesCount = m_dataSource->nodeCount();

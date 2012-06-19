@@ -14,55 +14,60 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="margin">
+     <number>0</number>
+    </property>
     <item>
-     <widget class="QSplitter" name="splitter">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <widget class="QWidget" name="verticalLayoutWidget_2">
-       <layout class="QVBoxLayout" name="treeViewLayout"/>
-      </widget>
-      <widget class="QWidget" name="verticalLayoutWidget">
-       <layout class="QVBoxLayout" name="contentLayout">
-        <item>
-         <widget class="QTabWidget" name="tabWidget">
-          <property name="tabShape">
-           <enum>QTabWidget::Rounded</enum>
-          </property>
-          <property name="currentIndex">
-           <number>0</number>
-          </property>
-          <widget class="QWidget" name="sourceOntologyTab">
-           <attribute name="title">
-            <string>Source Ontology</string>
-           </attribute>
-          </widget>
-          <widget class="QWidget" name="destinationOntologyTab">
-           <attribute name="title">
-            <string>Destination Ontology</string>
-           </attribute>
-          </widget>
-          <widget class="QWidget" name="javaOntologyTab">
-           <attribute name="title">
-            <string>Java Ontology</string>
-           </attribute>
-          </widget>
-          <widget class="QWidget" name="objcObtologyTab">
-           <attribute name="title">
-            <string>Objective C Ontology</string>
-           </attribute>
-          </widget>
-          <widget class="QWidget" name="problemsOntology">
-           <attribute name="title">
-            <string>Problem's Ontology</string>
-           </attribute>
-          </widget>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
+     <layout class="QVBoxLayout" name="contentLayout">
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="tabPosition">
+         <enum>QTabWidget::South</enum>
+        </property>
+        <property name="tabShape">
+         <enum>QTabWidget::Rounded</enum>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <property name="elideMode">
+         <enum>Qt::ElideMiddle</enum>
+        </property>
+        <property name="usesScrollButtons">
+         <bool>true</bool>
+        </property>
+        <property name="documentMode">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="sourceOntologyTab">
+         <attribute name="title">
+          <string>Source Ontology</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="destinationOntologyTab">
+         <attribute name="title">
+          <string>Destination Ontology</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="javaOntologyTab">
+         <attribute name="title">
+          <string>Java Ontology</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="objcObtologyTab">
+         <attribute name="title">
+          <string>Objective C Ontology</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="problemsOntology">
+         <attribute name="title">
+          <string>Problem's Ontology</string>
+         </attribute>
+        </widget>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -77,6 +82,60 @@
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QDockWidget" name="projectDockWidget">
+   <property name="minimumSize">
+    <size>
+     <width>200</width>
+     <height>42</height>
+    </size>
+   </property>
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Project</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="projectDockWidgetContents"/>
+  </widget>
+  <widget class="QDockWidget" name="treeDockWidget">
+   <property name="minimumSize">
+    <size>
+     <width>200</width>
+     <height>42</height>
+    </size>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Ontology Tree</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="treeDockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <item>
+      <layout class="QVBoxLayout" name="treeViewLayout"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
  </widget>
  <resources/>
  <connections/>

@@ -7,12 +7,8 @@
 #include <QFileDialog>
 #include <QTextStream>
 #include <QTableWidget>
-#include <fstream>
 
 #include "lib_json/json/json.h"
-
-#include "JsonToOntoHelper.h"
-#include "OntoToJsonHelper.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -20,27 +16,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
   ui->setupUi(this);
 
-  m_languageDataSources.insert("java", &m_javaOntologyController);
-  m_languageDelegates.insert("java", &m_javaOntologyController);
-  m_languageDataSources.insert("objc", &m_objcOntologyController);
-  m_languageDelegates.insert("objc", &m_objcOntologyController);
-
-  setupSourceOntology();
-  setupDestinationOntology();
-  setupJavaOntology();
-  setupObjcOntology();
-  setupProblemsOntology();
+  setupSourceOntologyWidget();
+  setupDestinationOntologyWidget();
+  setupJavaOntologyWidget();
+  setupObjcOntologyWidget();
+  setupProblemsOntologyWidget();
 
   m_ontologyTreeViewController = new OntologyTreeViewController();
   ui->treeViewLayout->addWidget(m_ontologyTreeViewController->treeView());
 
-  ui->splitter->setStretchFactor(0, 1);
-  ui->splitter->setStretchFactor(1, 10);
-
-  m_logicalInference = new LogicalInference();
-  m_logicalInference->setSourceOntology(&m_sourceOntologyController, &m_sourceOntologyController);
-  m_logicalInference->setDestinationOntology(&m_destinationOntologyController, &m_destinationOntologyController);
-  m_logicalInference->setProblemsOntology(&m_problemsOntologyController, &m_problemsOntologyController);
+  m_logicalInference = NULL;
 
   m_zoomInShortcut = new QShortcut(this);
   m_zoomInShortcut->setKey(QKeySequence("Ctrl+="));
@@ -65,11 +50,9 @@ MainWindow::~MainWindow() {
   delete ui;
 }
 
-void MainWindow::setupSourceOntology() {
+void MainWindow::setupSourceOntologyWidget() {
 
   m_sourceOntologyWidget = new OntologyWidget(this);
-  m_sourceOntologyWidget->setDataSource(&m_sourceOntologyController);
-  m_sourceOntologyWidget->setDelegate(&m_sourceOntologyController);
 
   QWidget *dsTab = ui->tabWidget->widget(0);
   QVBoxLayout *layout = new QVBoxLayout();
@@ -78,11 +61,9 @@ void MainWindow::setupSourceOntology() {
   layout->addWidget(m_sourceOntologyWidget);
 }
 
-void MainWindow::setupDestinationOntology() {
+void MainWindow::setupDestinationOntologyWidget() {
 
   m_destinationOntologyWidget = new OntologyWidget(this);
-  m_destinationOntologyWidget->setDataSource(&m_destinationOntologyController);
-  m_destinationOntologyWidget->setDelegate(&m_destinationOntologyController);
 
   QWidget *dsTab = ui->tabWidget->widget(1);
   QVBoxLayout *layout = new QVBoxLayout();
@@ -91,11 +72,9 @@ void MainWindow::setupDestinationOntology() {
   layout->addWidget(m_destinationOntologyWidget);
 }
 
-void MainWindow::setupJavaOntology() {
+void MainWindow::setupJavaOntologyWidget() {
 
   m_javaOntologyWidget = new OntologyWidget();
-  m_javaOntologyWidget->setDataSource(&m_javaOntologyController);
-  m_javaOntologyWidget->setDelegate(&m_javaOntologyController);
 
   QWidget *javaTab = ui->tabWidget->widget(2);
   QVBoxLayout *layout = new QVBoxLayout();
@@ -104,11 +83,9 @@ void MainWindow::setupJavaOntology() {
   layout->addWidget(m_javaOntologyWidget);
 }
 
-void MainWindow::setupObjcOntology() {
+void MainWindow::setupObjcOntologyWidget() {
 
   m_objcOntologyWidget = new OntologyWidget(this);
-  m_objcOntologyWidget->setDataSource(&m_objcOntologyController);
-  m_objcOntologyWidget->setDelegate(&m_objcOntologyController);
 
   QWidget *objcTab = ui->tabWidget->widget(3);
   QVBoxLayout *layout = new QVBoxLayout();
@@ -117,11 +94,9 @@ void MainWindow::setupObjcOntology() {
   layout->addWidget(m_objcOntologyWidget);
 }
 
-void MainWindow::setupProblemsOntology() {
+void MainWindow::setupProblemsOntologyWidget() {
 
   m_problemsOntologyWidget = new OntologyWidget(this);
-  m_problemsOntologyWidget->setDataSource(&m_problemsOntologyController);
-  m_problemsOntologyWidget->setDelegate(&m_problemsOntologyController);
 
   QWidget *problemsTab = ui->tabWidget->widget(4);
   QVBoxLayout *layout = new QVBoxLayout();
@@ -134,8 +109,15 @@ void MainWindow::onSourceOntologyWidgetShow() {
 
   clearConnections();
 
-  m_ontologyTreeViewController->setDataSource(&m_sourceOntologyController);
-  m_ontologyTreeViewController->setDelegate(&m_sourceOntologyController);
+  if (m_currentFileName.isEmpty()) {
+    m_ontologyTreeViewController->setDataSource(NULL);
+    m_ontologyTreeViewController->setDelegate(NULL);
+  }
+  else {
+    const ProjectFile *file = m_currentProject.getProjectFileByName(m_currentFileName);
+    m_ontologyTreeViewController->setDataSource(file->sourceOntologyController());
+    m_ontologyTreeViewController->setDelegate(file->sourceOntologyController());
+  }
 
   connect(m_sourceOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_sourceOntologyWidget, SLOT(dataChangedSlot()));
@@ -160,8 +142,15 @@ void MainWindow::onDestinationOntologyWidgetShow() {
 
   clearConnections();
 
-  m_ontologyTreeViewController->setDataSource(&m_destinationOntologyController);
-  m_ontologyTreeViewController->setDelegate(&m_destinationOntologyController);
+  if (m_currentFileName.isEmpty()) {
+    m_ontologyTreeViewController->setDataSource(NULL);
+    m_ontologyTreeViewController->setDelegate(NULL);
+  }
+  else {
+    const ProjectFile *file = m_currentProject.getProjectFileByName(m_currentFileName);
+    m_ontologyTreeViewController->setDataSource(file->destinationOntologyController());
+    m_ontologyTreeViewController->setDelegate(file->destinationOntologyController());
+  }
 
   connect(m_destinationOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_destinationOntologyWidget, SLOT(dataChangedSlot()));
@@ -186,8 +175,8 @@ void MainWindow::onJavaOntologyWidgetShow() {
 
   clearConnections();
 
-  m_ontologyTreeViewController->setDataSource(&m_javaOntologyController);
-  m_ontologyTreeViewController->setDelegate(&m_javaOntologyController);
+  m_ontologyTreeViewController->setDataSource(m_currentProject.getLanguageOntologyByName("java"));
+  m_ontologyTreeViewController->setDelegate(m_currentProject.getLanguageOntologyByName("java"));
 
   connect(m_javaOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_javaOntologyWidget, SLOT(dataChangedSlot()));
@@ -212,8 +201,8 @@ void MainWindow::onObjcOntologyWidgetShow() {
 
   clearConnections();
 
-  m_ontologyTreeViewController->setDataSource(&m_objcOntologyController);
-  m_ontologyTreeViewController->setDelegate(&m_objcOntologyController);
+  m_ontologyTreeViewController->setDataSource(m_currentProject.getLanguageOntologyByName("objc"));
+  m_ontologyTreeViewController->setDelegate(m_currentProject.getLanguageOntologyByName("objc"));
 
   connect(m_objcOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_objcOntologyWidget, SLOT(dataChangedSlot()));
@@ -238,8 +227,8 @@ void MainWindow::onProblemsOntologyWidgetShow() {
 
   clearConnections();
 
-  m_ontologyTreeViewController->setDataSource(&m_problemsOntologyController);
-  m_ontologyTreeViewController->setDelegate(&m_problemsOntologyController);
+  m_ontologyTreeViewController->setDataSource(m_currentProject.problemsOntology());
+  m_ontologyTreeViewController->setDelegate(m_currentProject.problemsOntology());
 
   connect(m_problemsOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_problemsOntologyWidget, SLOT(dataChangedSlot()));
@@ -270,24 +259,59 @@ void MainWindow::clearConnections() {
   disconnect(m_problemsOntologyWidget);
 }
 
-QString MainWindow::findCorrenspondingLanguage(const QString &term) const {
+void MainWindow::updateOntologyTreeData() {
 
-  foreach (QString languageName, m_languageDataSources.keys()) {
-    IOntologyDataSource *languageDataSource = m_languageDataSources.value(languageName);
-    NodeData *node = languageDataSource->findNode(term);
-    if (node != NULL) {
-      return languageName;
-    }
+  int index = ui->tabWidget->currentIndex();
+  switch (index) {
+    case 0:
+      if (m_currentFileName.isEmpty()) {
+        m_ontologyTreeViewController->setDataSource(NULL);
+        m_ontologyTreeViewController->setDelegate(NULL);
+      }
+      else {
+        const ProjectFile *file = m_currentProject.getProjectFileByName(m_currentFileName);
+        m_ontologyTreeViewController->setDataSource(file->sourceOntologyController());
+        m_ontologyTreeViewController->setDelegate(file->sourceOntologyController());
+      }
+      break;
+
+    case 1:
+      if (m_currentFileName.isEmpty()) {
+        m_ontologyTreeViewController->setDataSource(NULL);
+        m_ontologyTreeViewController->setDelegate(NULL);
+      }
+      else {
+        const ProjectFile *file = m_currentProject.getProjectFileByName(m_currentFileName);
+        m_ontologyTreeViewController->setDataSource(file->destinationOntologyController());
+        m_ontologyTreeViewController->setDelegate(file->destinationOntologyController());
+      }
+      break;
+
+    case 2:
+      m_ontologyTreeViewController->setDataSource(m_currentProject.getLanguageOntologyByName("java"));
+      m_ontologyTreeViewController->setDelegate(m_currentProject.getLanguageOntologyByName("java"));
+      break;
+
+    case 3:
+      m_ontologyTreeViewController->setDataSource(m_currentProject.getLanguageOntologyByName("objc"));
+      m_ontologyTreeViewController->setDelegate(m_currentProject.getLanguageOntologyByName("objc"));
+      break;
+
+    case 4:
+      m_ontologyTreeViewController->setDataSource(m_currentProject.problemsOntology());
+      m_ontologyTreeViewController->setDelegate(m_currentProject.problemsOntology());
+      break;
   }
-  return QString::null;
+
+  m_ontologyTreeViewController->updateData();
 }
 
 void MainWindow::setupMenu() {
 
   QMenu *fileMenu = ui->menubar->addMenu(tr("File"));
 
-  QAction *openSourceFileAction = fileMenu->addAction(tr("Open source file..."));
-  QAction *saveGeneratedFileAction = fileMenu->addAction(tr("Save generated file..."));
+  QAction *importSourceFileAction = fileMenu->addAction(tr("Imaport source file..."));
+  QAction *exportGeneratedFileAction = fileMenu->addAction(tr("Export generated file..."));
 
   fileMenu->addSeparator();
 
@@ -307,8 +331,8 @@ void MainWindow::setupMenu() {
 
   QAction *transformAction = transformationMenu->addAction(tr("Transform"));
 
-  connect(openSourceFileAction, SIGNAL(triggered()), SLOT(openSourceFileSlot()));
-  connect(saveGeneratedFileAction, SIGNAL(triggered()), SLOT(saveGeneratedFileSlot()));
+  connect(importSourceFileAction, SIGNAL(triggered()), SLOT(importSourceFileSlot()));
+  connect(exportGeneratedFileAction, SIGNAL(triggered()), SLOT(exportGeneratedFileSlot()));
 
   connect(openWorkspaceAction, SIGNAL(triggered()), SLOT(openWorkspaceSlot()));
   connect(saveWorkspaceAction, SIGNAL(triggered()), SLOT(saveWorkspaceSlot()));
@@ -321,102 +345,53 @@ void MainWindow::setupMenu() {
   connect(transformAction, SIGNAL(triggered()), SLOT(transformSlot()));
 }
 
-void MainWindow::openSourceFileSlot() {
+void MainWindow::importSourceFileSlot() {
 
   QString filePath = QFileDialog::getOpenFileName(this, tr("Open dialog"), QString(), "*");
-  if (QFile::exists(filePath)) {
-    Json::Reader reader;
-    std::ifstream fileStream;
-    fileStream.open(filePath.toStdString().c_str());
+  bool result = m_currentProject.importSourceFile(filePath);
 
-    Json::Value jsonState;
-    bool ok = reader.parse(fileStream, jsonState);
-
-    Q_ASSERT(ok);
-
-    if (ok) {
-      QString term = QString::fromStdString(jsonState.getMemberNames().at(0));
-      QString language = findCorrenspondingLanguage(term);
-
-      JsonToOntoHelper jtoHelper;
-      jtoHelper.setLanguageOntology(m_languageDataSources.value(language), m_languageDelegates.value(language));
-      jtoHelper.setDestinationOntology(&m_sourceOntologyController, &m_sourceOntologyController);
-      jtoHelper.fillOntology(jsonState);
-
-      m_sourceOntologyWidget->updateData();
-    }
+  if (result) {
+    m_sourceOntologyWidget->updateData();
+    updateOntologyTreeData();
   }
 }
 
-void MainWindow::saveGeneratedFileSlot() {
-
-  OntoToJsonHelper otjHelper(&m_destinationOntologyController);
-  Json::Value json = otjHelper.generateJson();
+void MainWindow::exportGeneratedFileSlot() {
 
   QString filePath = QFileDialog::getSaveFileName(this, tr("Save dialog"), QString(), "*");
-  QFile file(filePath);
-
-  if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-    return;
-  }
-
-  QTextStream stream(&file);
-  stream.setCodec("UTF-8");
-  stream.setAutoDetectUnicode(true);
-  stream << QString::fromStdString(json.toStyledString());
+  m_currentProject.exportDestinationFile(m_currentFileName, filePath);
 }
 
 void MainWindow::openWorkspaceSlot() {
 
   QString filePath = QFileDialog::getOpenFileName(this, tr("Open dialog"), QString(), "*.ojs");
-  if (QFile::exists(filePath)) {
-    Json::Reader reader;
-    std::ifstream fileStream;
-    fileStream.open(filePath.toStdString().c_str());
+  bool result = m_currentProject.openWorkspace(filePath);
 
-    Json::Value jsonState;
-    bool ok = reader.parse(fileStream, jsonState);
-    if (ok) {
-      m_javaOntologyController = OntologyDataController(jsonState["java"]);
-      m_objcOntologyController = OntologyDataController(jsonState["objc"]);
-      m_problemsOntologyController = OntologyDataController(jsonState["problems"]);
+  if (result) {
+    m_javaOntologyWidget->setDataSource(m_currentProject.getLanguageOntologyByName("java"));
+    m_javaOntologyWidget->setDelegate(m_currentProject.getLanguageOntologyByName("java"));
+    m_javaOntologyWidget->dataChangedSlot();
 
-      m_languageDataSources.insert("java", &m_javaOntologyController);
-      m_languageDelegates.insert("java", &m_javaOntologyController);
-      m_languageDataSources.insert("objc", &m_objcOntologyController);
-      m_languageDelegates.insert("objc", &m_objcOntologyController);
+    m_objcOntologyWidget->setDataSource(m_currentProject.getLanguageOntologyByName("objc"));
+    m_objcOntologyWidget->setDelegate(m_currentProject.getLanguageOntologyByName("objc"));
+    m_objcOntologyWidget->dataChangedSlot();
 
-      m_javaOntologyWidget->dataChangedSlot();
-      m_objcOntologyWidget->dataChangedSlot();
-      m_problemsOntologyWidget->dataChangedSlot();
+    m_problemsOntologyWidget->setDataSource(m_currentProject.problemsOntology());
+    m_problemsOntologyWidget->setDelegate(m_currentProject.problemsOntology());
+    m_problemsOntologyWidget->dataChangedSlot();
 
-      m_ontologyTreeViewController->updateData();
+    updateOntologyTreeData();
 
-      m_logicalInference->setSourceOntology(&m_sourceOntologyController, &m_sourceOntologyController);
-      m_logicalInference->setDestinationOntology(&m_destinationOntologyController, &m_destinationOntologyController);
-      m_logicalInference->setProblemsOntology(&m_problemsOntologyController, &m_problemsOntologyController);
-    }
+//    m_logicalInference->setSourceOntology(&m_sourceOntologyController, &m_sourceOntologyController);
+//    m_logicalInference->setDestinationOntology(&m_destinationOntologyController, &m_destinationOntologyController);
+//    m_logicalInference->setProblemsOntology(&m_problemsOntologyController, &m_problemsOntologyController);
   }
 }
 
 void MainWindow::saveWorkspaceSlot() {
 
   QString filePath = QFileDialog::getSaveFileName(this, tr("Save dialog"), QString(), "*.ojs");
-  QFile file(filePath);
-
-  if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-    return;
-  }
-
-  Json::Value jsonState;
-  jsonState["java"] = m_javaOntologyController.serialize();
-  jsonState["objc"] = m_objcOntologyController.serialize();
-  jsonState["problems"] = m_problemsOntologyController.serialize();
-
-  QTextStream stream(&file);
-  stream.setCodec("UTF-8");
-  stream.setAutoDetectUnicode(true);
-  stream << QString::fromStdString(jsonState.toStyledString());
+  m_currentProject.saveWorkspace(filePath);
 }
 
 void MainWindow::openProjectSlot() {

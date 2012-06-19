@@ -27,7 +27,10 @@ SOURCES += main.cpp \
     ontology/treeview/OntologyTreeViewController.cpp \
     LogicalInference.cpp \
     JsonToOntoHelper.cpp \
-    OntoToJsonHelper.cpp
+    OntoToJsonHelper.cpp \
+    Project.cpp \
+    ProjectFile.cpp \
+    ProjectFileCategory.cpp
 
 HEADERS  += \
     lib_json/json_tool.h \
@@ -59,7 +62,10 @@ HEADERS  += \
     LINodeData.h \
     ontology/NodeData.h \
     ontology/RelationData.h \
-    OntoToJsonHelper.h
+    OntoToJsonHelper.h \
+    Project.h \
+    ProjectFile.h \
+    ProjectFileCategory.h
 
 FORMS += \
     MainWindow.ui \
