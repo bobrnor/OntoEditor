@@ -16,23 +16,23 @@ SOURCES += main.cpp \
     lib_json/json_writer.cpp \
     lib_json/json_value.cpp \
     lib_json/json_reader.cpp \
-    OntologyDataController.cpp \
-    MainWindow.cpp \
-    ontology/graph/RelationVisualizedLine.cpp \
-    ontology/graph/RelationItem.cpp \
-    ontology/graph/OntologyWidget.cpp \
-    ontology/graph/OntologyGraphicsView.cpp \
-    ontology/graph/OntologyGraphElement.cpp \
-    ontology/graph/NodeItem.cpp \
-    ontology/treeview/OntologyTreeViewController.cpp \
-    JsonToOntoHelper.cpp \
-    OntoToJsonHelper.cpp \
-    Project.cpp \
-    ProjectFile.cpp \
-    ProjectFileCategory.cpp \
-    ProjectTreeViewController.cpp \
-    TransformationHelper.cpp \
-    ProjectTreeWidget.cpp
+    core/TransformationHelper.cpp \
+    core/OntoToJsonHelper.cpp \
+    core/OntologyDataController.cpp \
+    core/JsonToOntoHelper.cpp \
+    ui/MainWindow.cpp \
+    ui/ontology/graph/RelationVisualizedLine.cpp \
+    ui/ontology/graph/RelationItem.cpp \
+    ui/ontology/graph/OntologyWidget.cpp \
+    ui/ontology/graph/OntologyGraphicsView.cpp \
+    ui/ontology/graph/OntologyGraphElement.cpp \
+    ui/ontology/graph/NodeItem.cpp \
+    ui/ontology/treeview/OntologyTreeViewController.cpp \
+    ui/project_tree/ProjectTreeWidget.cpp \
+    ui/project_tree/ProjectTreeViewController.cpp \
+    ui/project_tree/ProjectFileCategory.cpp \
+    ui/project_tree/ProjectFile.cpp \
+    ui/project_tree/Project.cpp
 
 HEADERS  += \
     lib_json/json_tool.h \
@@ -45,33 +45,31 @@ HEADERS  += \
     lib_json/json/features.h \
     lib_json/json/config.h \
     lib_json/json/autolink.h \
-    IOntologyDataSource.h \
-    OntologyDataController.h \
-    MainWindow.h \
-    ontology/graph/RelationVisualizedLine.h \
-    ontology/graph/RelationItem.h \
-    ontology/graph/OntologyWidget.h \
-    ontology/graph/OntologyGraphicsView.h \
-    ontology/graph/OntologyGraphElement.h \
-    ontology/graph/NodeItem.h \
-    ontology/graph/ItemType.h \
-    ontology/graph/ItemDataKey.h \
-    ontology/treeview/OntologyTreeViewController.h \
-    ontology/IOntologyDelegate.h \
-    ontology/IOntologyDataSource.h \
-    JsonToOntoHelper.h \
-    LINodeData.h \
-    ontology/NodeData.h \
-    ontology/RelationData.h \
-    OntoToJsonHelper.h \
-    Project.h \
-    ProjectFile.h \
-    ProjectFileCategory.h \
-    ProjectTreeViewController.h \
-    TransformationHelper.h \
-    ProjectTreeWidget.h \
-    ProjectTreeWidgetDelegate.h
+    core/TransformationHelper.h \
+    core/RelationData.h \
+    core/OntoToJsonHelper.h \
+    core/OntologyDataController.h \
+    core/NodeData.h \
+    core/JsonToOntoHelper.h \
+    core/IOntologyDelegate.h \
+    core/IOntologyDataSource.h \
+    ui/MainWindow.h \
+    ui/ontology/graph/RelationVisualizedLine.h \
+    ui/ontology/graph/RelationItem.h \
+    ui/ontology/graph/OntologyWidget.h \
+    ui/ontology/graph/OntologyGraphicsView.h \
+    ui/ontology/graph/OntologyGraphElement.h \
+    ui/ontology/graph/NodeItem.h \
+    ui/ontology/graph/ItemType.h \
+    ui/ontology/graph/ItemDataKey.h \
+    ui/ontology/treeview/OntologyTreeViewController.h \
+    ui/project_tree/ProjectTreeWidgetDelegate.h \
+    ui/project_tree/ProjectTreeWidget.h \
+    ui/project_tree/ProjectTreeViewController.h \
+    ui/project_tree/ProjectFileCategory.h \
+    ui/project_tree/ProjectFile.h \
+    ui/project_tree/Project.h
 
 FORMS += \
     MainWindow.ui \
-    ontology/graph/OntologyWidget.ui
+    OntologyWidget.ui

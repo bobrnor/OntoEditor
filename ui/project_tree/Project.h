@@ -3,8 +3,8 @@
 
 #include <QString>
 
-#include "OntologyDataController.h"
-#include <ProjectFile.h>
+#include "../../core/OntologyDataController.h"
+#include "ProjectFile.h"
 
 class Project {
 

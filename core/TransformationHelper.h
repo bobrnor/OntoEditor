@@ -4,9 +4,8 @@
 #include <QtGui>
 
 #include "lib_json/json/json.h"
-#include "ontology/IOntologyDataSource.h"
-#include "ontology/IOntologyDelegate.h"
-#include "LINodeData.h"
+#include "core/IOntologyDataSource.h"
+#include "core/IOntologyDelegate.h"
 
 class TransformationHelper : public QObject {
     Q_OBJECT

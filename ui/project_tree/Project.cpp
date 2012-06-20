@@ -2,8 +2,8 @@
 
 #include <fstream>
 
-#include "JsonToOntoHelper.h"
-#include "OntoToJsonHelper.h"
+#include "../../core/JsonToOntoHelper.h"
+#include "../../core/OntoToJsonHelper.h"
 
 Project::Project() {
 

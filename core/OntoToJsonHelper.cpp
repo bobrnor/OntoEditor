@@ -2,8 +2,8 @@
 
 #include <QDebug>
 
-#include "ontology/IOntologyDataSource.h"
-#include "ontology/IOntologyDelegate.h"
+#include "IOntologyDataSource.h"
+#include "IOntologyDelegate.h"
 
 OntoToJsonHelper::OntoToJsonHelper(IOntologyDataSource *dataSource) {
 

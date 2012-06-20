@@ -1,7 +1,7 @@
 #ifndef PROJECTFILE_H
 #define PROJECTFILE_H
 
-#include "OntologyDataController.h"
+#include "../../core/OntologyDataController.h"
 #include "ProjectFileCategory.h"
 
 class ProjectFile {

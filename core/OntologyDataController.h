@@ -5,8 +5,8 @@
 
 #include "lib_json/json/json.h"
 
-#include "ontology/IOntologyDataSource.h"
-#include "ontology/IOntologyDelegate.h"
+#include "core/IOntologyDataSource.h"
+#include "core/IOntologyDelegate.h"
 
 class OntologyDataController : public IOntologyDataSource, public IOntologyDelegate {
   private:

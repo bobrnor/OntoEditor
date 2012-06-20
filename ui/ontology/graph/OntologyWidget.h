@@ -4,8 +4,8 @@
 #include "lib_json/json/json.h"
 
 #include "OntologyGraphicsView.h"
-#include "../IOntologyDelegate.h"
-#include "../IOntologyDataSource.h"
+#include "../../../core/IOntologyDelegate.h"
+#include "../../../core/IOntologyDataSource.h"
 
 class RelationVisualizedLine;
 class NodeItem;

@@ -3,12 +3,12 @@
 
 #include <QMainWindow>
 
-#include "ontology/graph/OntologyWidget.h"
-#include "ontology/treeview/OntologyTreeViewController.h"
-#include "ProjectTreeViewController.h"
-#include "OntologyDataController.h"
-#include "TransformationHelper.h"
-#include "Project.h"
+#include "core/OntologyDataController.h"
+#include "core/TransformationHelper.h"
+#include "ui/ontology/graph/OntologyWidget.h"
+#include "ui/ontology/treeview/OntologyTreeViewController.h"
+#include "ui/project_tree/ProjectTreeViewController.h"
+#include "ui/project_tree/Project.h"
 
 namespace Ui {
 class MainWindow;

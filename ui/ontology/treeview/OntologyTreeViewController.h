@@ -3,8 +3,8 @@
 
 #include <QtGui>
 
-#include "../IOntologyDataSource.h"
-#include "../IOntologyDelegate.h"
+#include "../../../core/IOntologyDataSource.h"
+#include "../../../core/IOntologyDelegate.h"
 
 struct TVNodeData {
     NodeData *nodeData;
