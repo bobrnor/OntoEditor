@@ -80,6 +80,9 @@ class MainWindow : public QMainWindow {
 
   signals:
     void itemsSelectedSignal(const QSet<long> ids);
+
+    void showOntologyGraphSignal();
+    void showSourceCodeSignal();
 };
 
 #endif // MAINWINDOW_H

@@ -1,6 +1,8 @@
 #ifndef ONTOLOGYWIDGET_H
 #define ONTOLOGYWIDGET_H
 
+#include <QTextEdit>
+
 #include "lib_json/json/json.h"
 
 #include "OntologyGraphicsView.h"
@@ -34,6 +36,7 @@ class OntologyWidget : public QWidget {
   private:
     Ui::OntologyWidget *ui;
 
+    QTextEdit *m_sourceCodeViewer;
     OntologyGraphicsView *m_ontologyView;
     QPointF m_lastRightClickScenePosition;
     RelationVisualizedLine *m_relationVisualizedLine;
@@ -41,6 +44,7 @@ class OntologyWidget : public QWidget {
     IOntologyDelegate *m_delegate;
 
     bool m_editRelationMode;
+    bool m_sourceCodeShown;
 
     void setEditRelationMode(bool on);
     void setRelation(NodeItem *sourceNode, NodeItem *destinationNode);
@@ -70,6 +74,9 @@ class OntologyWidget : public QWidget {
     void zoomOutSlot();
 
     void nodeItemPositionChangedSlot(long id, const QPointF &newPosition);
+
+    void showOntologySlot();
+    void showSourceCodeSlot();
 };
 
 #endif // ONTOLOGYWIDGET_H

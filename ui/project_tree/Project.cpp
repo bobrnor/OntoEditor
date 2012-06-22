@@ -86,6 +86,14 @@ QString Project::findCorrenspondingLanguage(const QString &term) const {
   return QString::null;
 }
 
+QString Project::generateDestinationCode(const QString &fileName) const {
+
+  ProjectFile *projectFile = m_files.value(fileName);
+  OntoToJsonHelper otjHelper(projectFile->destinationOntologyController());
+  Json::Value json = otjHelper.generateJson();
+  return QString::fromStdString(json.toStyledString());
+}
+
 bool Project::importSourceFile(const QString &path) {
 
   if (QFile::exists(path)) {
@@ -106,12 +114,15 @@ bool Project::importSourceFile(const QString &path) {
 
         if (!language.isNull()) {
           ProjectFile *file = new ProjectFile(fileInfo.fileName());
+          file->setLanguageName(language);
           m_files.insert(file->name(), file);
 
           JsonToOntoHelper jtoHelper;
           jtoHelper.setLanguageOntology(m_languageOntologies.value(language), m_languageOntologies.value(language));
           jtoHelper.setDestinationOntology(file->sourceOntologyController(), file->sourceOntologyController());
           jtoHelper.fillOntology(jsonState);
+
+          file->sourceOntologyController()->setSourceCode(QString::fromStdString(jsonState.toStyledString()));
 
           return true;
         }
@@ -125,17 +136,14 @@ bool Project::importSourceFile(const QString &path) {
 bool Project::exportDestinationFile(const QString &fileName, const QString &path) {
 
   if (m_files.contains(fileName)) {
-    ProjectFile *projectFile = m_files.value(fileName);
-
     QFile file(path);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-      OntoToJsonHelper otjHelper(projectFile->destinationOntologyController());
-      Json::Value json = otjHelper.generateJson();
+      QString code = generateDestinationCode(fileName);
 
       QTextStream stream(&file);
       stream.setCodec("UTF-8");
       stream.setAutoDetectUnicode(true);
-      stream << QString::fromStdString(json.toStyledString());
+      stream << code;
 
       return true;
     }

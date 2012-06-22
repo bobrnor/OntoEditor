@@ -26,6 +26,8 @@ class Project {
 
     OntologyDataController *problemsOntologyController() const;
 
+    QString generateDestinationCode(const QString &fileName) const;
+
     bool importSourceFile(const QString &path);
     bool exportDestinationFile(const QString &fileName, const QString &path);
     ProjectFile *getProjectFileByName(const QString &name) const;

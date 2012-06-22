@@ -14,7 +14,17 @@ ProjectFile::~ProjectFile() {
 
 QString ProjectFile::name() const {
 
-  return m_name;
+  return QString(m_name).append(" (").append(m_languageName).append(")");
+}
+
+void ProjectFile::setLanguageName(const QString &languageName) {
+
+  m_languageName = languageName;
+}
+
+QString ProjectFile::languageName() const {
+
+  return m_languageName;
 }
 
 OntologyDataController *ProjectFile::sourceOntologyController() const {

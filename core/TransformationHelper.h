@@ -24,6 +24,11 @@ class TransformationHelper : public QObject {
     NodeData *transformationTargetNode(NodeData *sourceNode);
     NodeData *addPathToDestinationOntology(const QStringList &path);
 
+    void simpleTransform(NodeData *sourceNodeData, NodeData *destinationNodeData);
+    void typeTransform(NodeData *sourceNodeData, NodeData *destinationNodeData);
+
+    RelationData *transformRelation(NodeData *sourceNodeData);
+
   public:
     TransformationHelper();
 

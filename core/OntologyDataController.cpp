@@ -48,6 +48,11 @@ OntologyDataController::OntologyDataController(const Json::Value &json) {
   }
 }
 
+void OntologyDataController::setSourceCode(const QString &sourceCode) {
+
+  m_sourceCode = sourceCode;
+}
+
 Json::Value OntologyDataController::serialize() {
 
   Json::Value value;
@@ -191,6 +196,11 @@ NodeData *OntologyDataController::otherNode(RelationData *relation, NodeData *no
   }
 }
 
+QString OntologyDataController::sourceCode() const {
+
+  return m_sourceCode;
+}
+
 // delegate
 
 long OntologyDataController::nodeCreated() {
@@ -255,7 +265,10 @@ void OntologyDataController::nodeRemoved(long nodeId) {
 
 void OntologyDataController::relationRemoved(long relationId) {
 
+  qDebug() << m_relationsMap;
+
   RelationData *relation = m_relationsMap.value(relationId);
+
   m_relationsMap.remove(relationId);
   m_relationsList.removeAll(relation);
 

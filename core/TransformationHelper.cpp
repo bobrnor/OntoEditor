@@ -88,6 +88,21 @@ void TransformationHelper::process() {
   }
 }
 
+RelationData *TransformationHelper::transformRelation(NodeData *sourceNodeData) {
+
+  QStringList pathToSourceNode = m_sourceDataSource->pathToNode(sourceNodeData->id);
+  NodeData *sourceNodeInProblemsOntology = m_problemsDataSource->getNodeByPath(pathToSourceNode);
+
+  foreach (long relationId, sourceNodeInProblemsOntology->relations) {
+    RelationData *relation = m_problemsDataSource->getRelationById(relationId);
+    if (relation->name == "transform" || relation->name == "type_transform") {
+      return relation;
+    }
+  }
+
+  return NULL;
+}
+
 void TransformationHelper::transform() {
 
   QSet<long> passedInstanceNodes;
@@ -105,15 +120,13 @@ void TransformationHelper::transform() {
           QStringList targetNodePath = m_problemsDataSource->pathToNode(targetNode->id);
           NodeData *destinationNode = addPathToDestinationOntology(targetNodePath);
 
-          foreach (long relationId, nodeWithInstances->relations) {
-            RelationData *relation = m_sourceDataSource->getRelationById(relationId);
-            if (relation->name == "is_instance") {
-              NodeData *instanceNode = m_sourceDataSource->getNodeById(relation->sourceNodeId);
-
-              long newNodeId = m_destinationDelegate->nodeCreated();
-              m_destinationDelegate->nodeNameChanged(newNodeId, instanceNode->name);
-              long newRelationId = m_destinationDelegate->relationCreated(newNodeId, destinationNode->id);
-              m_destinationDelegate->relationNameChanged(newRelationId, "is_instance");
+          RelationData *transformRelationData = transformRelation(nodeWithInstances);
+          if (transformRelationData != NULL) {
+            if (transformRelationData->name == "transform") {
+              simpleTransform(nodeWithInstances, destinationNode);
+            }
+            else if (transformRelationData->name == "type_transform") {
+              typeTransform(nodeWithInstances, destinationNode);
             }
           }
         }
@@ -122,21 +135,56 @@ void TransformationHelper::transform() {
   }
 }
 
-NodeData *TransformationHelper::transformationTargetNode(NodeData *sourceNode) {
+/*
+  @sourceNodeData - node from source ontology,
+  @destinationNodeData - node from destination ontology
+*/
+void TransformationHelper::simpleTransform(NodeData *sourceNodeData, NodeData *destinationNodeData) {
 
-  QStringList pathToSourceNode = m_sourceDataSource->pathToNode(sourceNode->id);
+  foreach (long relationId, sourceNodeData->relations) {
+    RelationData *relation = m_sourceDataSource->getRelationById(relationId);
+    if (relation->name == "is_instance") {
+      NodeData *instanceNode = m_sourceDataSource->getNodeById(relation->sourceNodeId);
 
-  qDebug() << pathToSourceNode;
-
-  NodeData *sourceNodeInProblemsOntology = m_problemsDataSource->getNodeByPath(pathToSourceNode);
-  foreach (long relationId, sourceNodeInProblemsOntology->relations) {
-    RelationData *relation = m_problemsDataSource->getRelationById(relationId);
-    if (relation->name == "transform") {
-      NodeData *targetNode = m_problemsDataSource->getNodeById(relation->destinationNodeId);
-      Q_ASSERT(targetNode);
-      return targetNode;
+      long newNodeId = m_destinationDelegate->nodeCreated();
+      m_destinationDelegate->nodeNameChanged(newNodeId, instanceNode->name);
+      long newRelationId = m_destinationDelegate->relationCreated(newNodeId, destinationNodeData->id);
+      m_destinationDelegate->relationNameChanged(newRelationId, "is_instance");
     }
   }
+}
+
+/*
+  @sourceNodeData - node from source ontology,
+  @destinationNodeData - node from destination ontology
+*/
+void TransformationHelper::typeTransform(NodeData *sourceNodeData, NodeData *destinationNodeData) {
+
+  QStringList destinationNodePath = m_destinationDataSource->pathToNode(destinationNodeData->id);
+  NodeData *problemsDestinationNode = m_problemsDataSource->getNodeByPath(destinationNodePath);
+  foreach (long relationId, problemsDestinationNode->relations) {
+    RelationData *relationData = m_problemsDataSource->getRelationById(relationId);
+    if (relationData->name == "is_instance") {
+      NodeData *typeNodeData = m_problemsDataSource->getNodeById(relationData->sourceNodeId);
+      Q_ASSERT(typeNodeData);
+
+      long newNodeId = m_destinationDelegate->nodeCreated();
+      m_destinationDelegate->nodeNameChanged(newNodeId, typeNodeData->name);
+      long newRelationId = m_destinationDelegate->relationCreated(newNodeId, sourceNodeData->id);
+      m_destinationDelegate->relationNameChanged(newRelationId, "is_instance");
+    }
+  }
+}
+
+NodeData *TransformationHelper::transformationTargetNode(NodeData *sourceNode) {
+
+  RelationData *transformRelationData = transformRelation(sourceNode);
+  if (transformRelationData != NULL) {
+    NodeData *targetNode = m_problemsDataSource->getNodeById(transformRelationData->destinationNodeId);
+    Q_ASSERT(targetNode);
+    return targetNode;
+  }
+
   return NULL;
 }
 

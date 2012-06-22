@@ -22,6 +22,10 @@ OntologyWidget::OntologyWidget(QWidget *parent) :
   m_ontologyView->setContextMenuPolicy(Qt::CustomContextMenu);
   m_ontologyView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
+  m_sourceCodeViewer = new QTextEdit(this);
+  m_sourceCodeViewer->setReadOnly(true);
+  m_sourceCodeViewer->setVisible(false);
+
   QGraphicsScene *scene = new QGraphicsScene(m_ontologyView);
   QBrush bgBrush = QBrush(Qt::Dense7Pattern);
   bgBrush.setColor(Qt::lightGray);
@@ -35,6 +39,7 @@ OntologyWidget::OntologyWidget(QWidget *parent) :
   m_delegate = NULL;
   m_relationVisualizedLine = NULL;
   m_editRelationMode = false;
+  m_sourceCodeShown = false;
 
   ui->verticalLayout->addWidget(m_ontologyView);
 }
@@ -177,7 +182,7 @@ void OntologyWidget::updateData() {
     this->setEnabled(false);
   }
   else {
-    this->setEnabled(true);
+    this->setEnabled(true);    
 
     QMap<long, NodeItem *> invalidatedNodesMap;
     QMap<long, RelationItem *> invalidatedRelationsMap;
@@ -453,4 +458,31 @@ QImage OntologyWidget::makeScreenshot() const {
   QPainter painter(&image);
   m_ontologyView->scene()->render(&painter);
   return image;
+}
+
+void OntologyWidget::showOntologySlot() {
+
+  if (m_sourceCodeShown) {
+    m_sourceCodeShown = false;
+    m_sourceCodeViewer->setVisible(false);
+    ui->verticalLayout->removeWidget(m_sourceCodeViewer);
+    ui->verticalLayout->addWidget(m_ontologyView);
+    m_ontologyView->setVisible(true);
+  }
+}
+
+void OntologyWidget::showSourceCodeSlot() {
+
+  if (!m_sourceCodeShown) {
+    m_sourceCodeShown = true;
+    if (m_dataSource != NULL) {
+      qDebug() << m_dataSource->sourceCode();
+      m_sourceCodeViewer->setText(m_dataSource->sourceCode());
+    }
+
+    m_ontologyView->setVisible(false);
+    ui->verticalLayout->removeWidget(m_ontologyView);
+    ui->verticalLayout->addWidget(m_sourceCodeViewer);
+    m_sourceCodeViewer->setVisible(true);
+  }
 }

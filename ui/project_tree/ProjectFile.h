@@ -12,12 +12,15 @@ class ProjectFile {
     OntologyDataController *m_sourceOntologyController;
     OntologyDataController *m_destinationOntologyController;
     QList<ProjectFileCategory *> m_categories;
+    QString m_languageName;
 
   public:
     ProjectFile(QString name);
     ~ProjectFile();
 
     QString name() const;
+    void setLanguageName(const QString &languageName);
+    QString languageName() const;
 
     OntologyDataController *sourceOntologyController() const;
     OntologyDataController *destinationOntologyController() const;

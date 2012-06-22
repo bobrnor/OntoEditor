@@ -21,12 +21,16 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
 
     QMap<long, QPointF> m_nodePositions;
 
+    QString m_sourceCode;
+
     void removeRelatedRelations(NodeData *nodeData);
     NodeData *otherNode(RelationData *relation, NodeData *node) const;
 
   public:
     OntologyDataController();
     OntologyDataController(const Json::Value &json);
+
+    void setSourceCode(const QString &sourceCode);
 
     // data source
     int nodeCount();
@@ -46,6 +50,8 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
     NodeData *findNode(const QString &nodeName, NodeData *startNode) const;
 
     QStringList pathToNode(long id);
+
+    QString sourceCode() const;
 
     // delegate
     long nodeCreated();

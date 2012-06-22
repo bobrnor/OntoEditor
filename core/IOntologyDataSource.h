@@ -23,6 +23,8 @@ class IOntologyDataSource {
     virtual NodeData *findNode(const QString &nodeName, NodeData *startNode) const = 0;
 
     virtual QStringList pathToNode(long id) = 0;
+
+    virtual QString sourceCode() const = 0;
 };
 
 #endif // IONTOLOGYDATASOURCE_H

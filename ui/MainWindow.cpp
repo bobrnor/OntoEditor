@@ -125,6 +125,9 @@ void MainWindow::onSourceOntologyWidgetShow() {
     m_ontologyTreeViewController->setDelegate(file->sourceOntologyController());
   }
 
+  connect(this, SIGNAL(showOntologyGraphSignal()), m_sourceOntologyWidget, SLOT(showOntologySlot()));
+  connect(this, SIGNAL(showSourceCodeSignal()), m_sourceOntologyWidget, SLOT(showSourceCodeSlot()));
+
   connect(m_sourceOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_sourceOntologyWidget, SLOT(dataChangedSlot()));
 
@@ -160,6 +163,9 @@ void MainWindow::onDestinationOntologyWidgetShow() {
     m_ontologyTreeViewController->setDataSource(file->destinationOntologyController());
     m_ontologyTreeViewController->setDelegate(file->destinationOntologyController());
   }
+
+  connect(this, SIGNAL(showOntologyGraphSignal()), m_destinationOntologyWidget, SLOT(showOntologySlot()));
+  connect(this, SIGNAL(showSourceCodeSignal()), m_destinationOntologyWidget, SLOT(showSourceCodeSlot()));
 
   connect(m_destinationOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_destinationOntologyWidget, SLOT(dataChangedSlot()));
@@ -264,6 +270,7 @@ void MainWindow::onProblemsOntologyWidgetShow() {
 
 void MainWindow::clearConnections() {
 
+  disconnect(this);
   disconnect(m_ontologyTreeViewController);
   disconnect(m_sourceOntologyWidget);
   disconnect(m_destinationOntologyWidget);
@@ -329,7 +336,7 @@ void MainWindow::setupMenu() {
   fileMenu->addSeparator();
 
   QAction *openWorkspaceAction = fileMenu->addAction(tr("Open workspace..."));
-  QAction *saveWorkspaceAction = fileMenu->addAction(tr("Save workcpace..."));
+  QAction *saveWorkspaceAction = fileMenu->addAction(tr("Save workspace..."));
 
   fileMenu->addSeparator();
 
@@ -339,6 +346,11 @@ void MainWindow::setupMenu() {
   fileMenu->addSeparator();
 
   QAction *screenshotAction = fileMenu->addAction(tr("Screenshot..."));
+
+  QMenu *viewMenu = ui->menubar->addMenu(tr("View"));
+
+  QAction *ontologyGraphAction = viewMenu->addAction(tr("Show ontology graph"));
+  QAction *sourceCodeAction = viewMenu->addAction(tr("Show source code"));
 
   QMenu *transformationMenu = ui->menubar->addMenu(tr("Transformation"));
 
@@ -352,6 +364,9 @@ void MainWindow::setupMenu() {
 
   connect(openProjectAction, SIGNAL(triggered()), SLOT(openProjectSlot()));
   connect(saveProjectAction, SIGNAL(triggered()), SLOT(saveProjectSlot()));
+
+  connect(ontologyGraphAction, SIGNAL(triggered()), SIGNAL(showOntologyGraphSignal()));
+  connect(sourceCodeAction, SIGNAL(triggered()), SIGNAL(showSourceCodeSignal()));
 
   connect(screenshotAction, SIGNAL(triggered()), SLOT(screenshotSlot()));
 
@@ -417,13 +432,41 @@ void MainWindow::saveProjectSlot() {
 void MainWindow::screenshotSlot() {
 
   QString filePath = QFileDialog::getSaveFileName(this, tr("Save dialog"), QString(), "*.png");
-  QImage screenshot = m_sourceOntologyWidget->makeScreenshot();
+  QImage screenshot;
+  switch (ui->tabWidget->currentIndex()) {
+    case 0:
+      screenshot = m_sourceOntologyWidget->makeScreenshot();
+      break;
+
+    case 1:
+      screenshot = m_destinationOntologyWidget->makeScreenshot();
+      break;
+
+    case 2:
+      screenshot = m_javaOntologyWidget->makeScreenshot();
+      break;
+
+    case 3:
+      screenshot = m_objcOntologyWidget->makeScreenshot();
+      break;
+
+    case 4:
+      screenshot = m_problemsOntologyWidget->makeScreenshot();
+      break;
+  }
   screenshot.save(filePath);
 }
 
 void MainWindow::transformSlot() {
 
   m_transformationHelper->process();
+  ProjectFile *currentFile = m_currentProject.getProjectFileByName(m_currentFileName);
+  if (currentFile != NULL) {
+    qDebug() << m_currentFileName;
+    QString code = m_currentProject.generateDestinationCode(m_currentFileName);
+    qDebug() << "Generated code: " << code;
+    currentFile->destinationOntologyController()->setSourceCode(code);
+  }
 }
 
 void MainWindow::currentTabChangedSlot(int index) {
