@@ -310,5 +310,6 @@ QPointF OntologyDataController::nodePosition(long nodeId) const {
 
 void OntologyDataController::setNodePosition(long nodeId, const QPointF &position) {
 
+  qDebug() << "Position changed!";
   m_nodePositions.insert(nodeId, position);
 }

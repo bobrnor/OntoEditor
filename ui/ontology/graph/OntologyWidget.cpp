@@ -218,6 +218,9 @@ void OntologyWidget::updateData() {
         nodeItem->setPos(pos);
         m_ontologyView->scene()->addItem(nodeItem);
         existedNodes.insert(nodeItem->id(), nodeItem);
+        connect(nodeItem,
+                SIGNAL(nodeItemPositionChangedSignal(long, QPointF)),
+                SLOT(nodeItemPositionChangedSlot(long, QPointF)));
       }
     }
 
