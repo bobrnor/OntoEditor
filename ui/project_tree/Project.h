@@ -3,6 +3,8 @@
 
 #include <QString>
 
+#include "lib_json/json/json.h"
+
 #include "../../core/OntologyDataController.h"
 #include "ProjectFile.h"
 
@@ -14,6 +16,9 @@ class Project {
     OntologyDataController *m_problemsOntologyController;
 
     QString findCorrenspondingLanguage(const QString &term) const;
+
+    Json::Value serialize() const;
+    void deserialize(const Json::Value &json);
 
   public:
     Project();

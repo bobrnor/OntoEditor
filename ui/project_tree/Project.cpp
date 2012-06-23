@@ -194,12 +194,81 @@ bool Project::saveWorkspace(const QString &path) {
   return false;
 }
 
+Json::Value Project::serialize() const {
+
+  Json::Value json;
+  Json::Value filesJson = Json::Value(Json::arrayValue);
+  foreach (ProjectFile *file, m_files.values()) {
+    filesJson.append(file->serialize());
+  }
+  json["files"] = filesJson;
+
+  Json::Value languageOntologiesJson;
+  foreach (QString languageName, m_languageOntologies.keys()) {
+    OntologyDataController *languageOntology = m_languageOntologies.value(languageName);
+    languageOntologiesJson[languageName.toStdString()] = languageOntology->serialize();
+  }
+  json["language_ontologies"] = languageOntologiesJson;
+
+  json["problems_ontology"] = m_problemsOntologyController->serialize();
+
+  return json;
+}
+
+void Project::deserialize(const Json::Value &json) {
+
+  m_files.clear();
+
+  Json::Value filesJson = json["files"];
+  int filesCount = filesJson.size();
+  for (int i = 0; i < filesCount; ++i) {
+    ProjectFile *file = new ProjectFile("");
+    file->deserialize(filesJson[i]);
+    m_files.insert(file->name(), file);
+  }
+
+  m_languageOntologies.clear();
+
+  Json::Value languageOntologiesJson = json["language_ontologies"];
+  std::vector<std::string> members = languageOntologiesJson.getMemberNames();
+  for (int i = 0; i < members.size(); ++i) {
+    std::string member = members.at(i);
+    OntologyDataController *languageOntology = new OntologyDataController(languageOntologiesJson[member]);
+    m_languageOntologies.insert(QString::fromStdString(member), languageOntology);
+  }
+
+  m_problemsOntologyController = new OntologyDataController(json["problems_ontology"]);
+}
+
 bool Project::openProject(const QString &path) {
+
+  if (QFile::exists(path)) {
+    Json::Reader reader;
+    std::ifstream fileStream;
+    fileStream.open(path.toStdString().c_str());
+
+    Json::Value jsonState;
+    bool ok = reader.parse(fileStream, jsonState);
+    if (ok) {
+      deserialize(jsonState);
+      return true;
+    }
+  }
 
   return false;
 }
 
 bool Project::saveProject(const QString &path) {
 
+  QFile file(path);
+  if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    Json::Value jsonState = serialize();
+
+    QTextStream stream(&file);
+    stream.setCodec("UTF-8");
+    stream.setAutoDetectUnicode(true);
+    stream << QString::fromStdString(jsonState.toStyledString());
+    return true;
+  }
   return false;
 }

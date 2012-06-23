@@ -409,7 +409,7 @@ void MainWindow::openWorkspaceSlot() {
     m_problemsOntologyWidget->setDelegate(m_currentProject.problemsOntologyController());
     m_problemsOntologyWidget->dataChangedSlot();
 
-    updateOntologyTreeData();
+    updateOntologyTreeData();    
   }
 }
 
@@ -421,12 +421,32 @@ void MainWindow::saveWorkspaceSlot() {
 
 void MainWindow::openProjectSlot() {
 
-  Q_ASSERT(false);
+  QString filePath = QFileDialog::getOpenFileName(this, tr("Open dialog"), QString(), "*.pjs");
+  bool result = m_currentProject.openProject(filePath);
+
+  if (result) {
+    m_javaOntologyWidget->setDataSource(m_currentProject.getLanguageOntologyByName("java"));
+    m_javaOntologyWidget->setDelegate(m_currentProject.getLanguageOntologyByName("java"));
+    m_javaOntologyWidget->dataChangedSlot();
+
+    m_objcOntologyWidget->setDataSource(m_currentProject.getLanguageOntologyByName("objc"));
+    m_objcOntologyWidget->setDelegate(m_currentProject.getLanguageOntologyByName("objc"));
+    m_objcOntologyWidget->dataChangedSlot();
+
+    m_problemsOntologyWidget->setDataSource(m_currentProject.problemsOntologyController());
+    m_problemsOntologyWidget->setDelegate(m_currentProject.problemsOntologyController());
+    m_problemsOntologyWidget->dataChangedSlot();
+
+    updateOntologyTreeData();
+    m_sourceOntologyWidget->updateData();
+    m_projectTreeViewController->updateData();
+  }
 }
 
 void MainWindow::saveProjectSlot() {
 
-  Q_ASSERT(false);
+  QString filePath = QFileDialog::getSaveFileName(this, tr("Save dialog"), QString(), "*.pjs");
+  m_currentProject.saveProject(filePath);
 }
 
 void MainWindow::screenshotSlot() {

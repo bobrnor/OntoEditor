@@ -7,6 +7,68 @@ OntologyDataController::OntologyDataController() {
 
 OntologyDataController::OntologyDataController(const Json::Value &json) {
 
+  deserialize(json);
+}
+
+void OntologyDataController::setSourceCode(const QString &sourceCode) {
+
+  m_sourceCode = sourceCode;
+}
+
+void OntologyDataController::normalize() {
+
+  double minX = INFINITY;
+  double minY = INFINITY;
+
+  foreach (long nodeId, m_nodePositions.keys()) {
+    QPointF position = m_nodePositions.value(nodeId);
+    minX = qMin(position.x(), minX);
+    minY = qMin(position.y(), minY);
+  }
+
+  minX -= 200;
+  minY -= 200;
+
+  foreach (long nodeId, m_nodePositions.keys()) {
+    QPointF position = m_nodePositions.value(nodeId);
+    position.setX(position.x() - minX);
+    position.setY(position.y() - minY);
+    m_nodePositions.insert(nodeId, position);
+  }
+}
+
+Json::Value OntologyDataController::serialize() const {
+
+  Json::Value value;
+  value["last_id"] = Json::Value((Json::Int64)m_lastId);
+
+  Json::Value nodesJson = Json::Value(Json::arrayValue);
+  foreach (NodeData *nodeData, m_nodesList) {
+    Json::Value itemJson;
+    itemJson["id"] = Json::Value((Json::Int64)nodeData->id);
+    itemJson["name"] = Json::Value(nodeData->name.toStdString());
+    itemJson["position_x"] = Json::Value(nodePosition(nodeData->id).x());
+    itemJson["position_y"] = Json::Value(nodePosition(nodeData->id).y());
+    nodesJson.append(itemJson);
+  }
+  value["nodes"] = nodesJson;
+
+  Json::Value relationsJson = Json::Value(Json::arrayValue);
+  foreach (RelationData *relationData, m_relationsList) {
+    Json::Value itemJson;
+    itemJson["id"] = Json::Value((Json::Int64)relationData->id);
+    itemJson["name"] = Json::Value(relationData->name.toStdString());
+    itemJson["source_node_id"] = Json::Value((Json::Int64)relationData->sourceNodeId);
+    itemJson["destination_node_id"] = Json::Value((Json::Int64)relationData->destinationNodeId);
+    relationsJson.append(itemJson);
+  }
+  value["relations"] = relationsJson;
+
+  return value;
+}
+
+void OntologyDataController::deserialize(const Json::Value &json) {
+
   qDebug() << QString::fromStdString(json.toStyledString());
 
   m_lastId = json["last_id"].asInt64();
@@ -48,63 +110,6 @@ OntologyDataController::OntologyDataController(const Json::Value &json) {
   }
 
   normalize();
-}
-
-void OntologyDataController::setSourceCode(const QString &sourceCode) {
-
-  m_sourceCode = sourceCode;
-}
-
-void OntologyDataController::normalize() {
-
-  double minX = INFINITY;
-  double minY = INFINITY;
-
-  foreach (long nodeId, m_nodePositions.keys()) {
-    QPointF position = m_nodePositions.value(nodeId);
-    minX = qMin(position.x(), minX);
-    minY = qMin(position.y(), minY);
-  }
-
-  minX -= 200;
-  minY -= 200;
-
-  foreach (long nodeId, m_nodePositions.keys()) {
-    QPointF position = m_nodePositions.value(nodeId);
-    position.setX(position.x() - minX);
-    position.setY(position.y() - minY);
-    m_nodePositions.insert(nodeId, position);
-  }
-}
-
-Json::Value OntologyDataController::serialize() {
-
-  Json::Value value;
-  value["last_id"] = Json::Value((Json::Int64)m_lastId);
-
-  Json::Value nodesJson = Json::Value(Json::arrayValue);
-  foreach (NodeData *nodeData, m_nodesList) {
-    Json::Value itemJson;
-    itemJson["id"] = Json::Value((Json::Int64)nodeData->id);
-    itemJson["name"] = Json::Value(nodeData->name.toStdString());
-    itemJson["position_x"] = Json::Value(nodePosition(nodeData->id).x());
-    itemJson["position_y"] = Json::Value(nodePosition(nodeData->id).y());
-    nodesJson.append(itemJson);
-  }
-  value["nodes"] = nodesJson;
-
-  Json::Value relationsJson = Json::Value(Json::arrayValue);
-  foreach (RelationData *relationData, m_relationsList) {
-    Json::Value itemJson;
-    itemJson["id"] = Json::Value((Json::Int64)relationData->id);
-    itemJson["name"] = Json::Value(relationData->name.toStdString());
-    itemJson["source_node_id"] = Json::Value((Json::Int64)relationData->sourceNodeId);
-    itemJson["destination_node_id"] = Json::Value((Json::Int64)relationData->destinationNodeId);
-    relationsJson.append(itemJson);
-  }
-  value["relations"] = relationsJson;
-
-  return value;
 }
 
 // data source

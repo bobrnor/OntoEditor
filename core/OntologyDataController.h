@@ -66,7 +66,8 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
     QPointF nodePosition(long nodeId) const;
     void setNodePosition(long nodeId, const QPointF &position);
 
-    Json::Value serialize();
+    Json::Value serialize() const;
+    void deserialize(const Json::Value &json);
 };
 
 #endif // ONTOLOGYDATACONTROLLER_H

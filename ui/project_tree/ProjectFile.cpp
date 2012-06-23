@@ -67,3 +67,39 @@ QList<ProjectFileCategory*> ProjectFile::categories() const {
 
   return m_categories;
 }
+
+Json::Value ProjectFile::serialize() const {
+
+  Json::Value json;
+  json["name"] = Json::Value(m_name.toStdString());
+  json["source_ontology"] = m_sourceOntologyController->serialize();
+  json["destination_ontology"] = m_destinationOntologyController->serialize();
+  json["language_name"] = Json::Value(m_languageName.toStdString());
+
+  Json::Value categoriesJson = Json::Value(Json::arrayValue);
+  foreach (ProjectFileCategory *category, m_categories) {
+    categoriesJson.append(category->serialize());
+  }
+
+  json["categories"] = categoriesJson;
+
+  return json;
+}
+
+void ProjectFile::deserialize(const Json::Value &json) {
+
+  m_name = QString::fromStdString(json["name"].asString());
+  m_sourceOntologyController->deserialize(json["source_ontology"]);
+  m_destinationOntologyController->deserialize(json["destination_ontology"]);
+  m_languageName = QString::fromStdString(json["language_name"].asString());
+
+  m_categories.clear();
+
+  Json::Value categoriesJson = json["categories"];
+  int categoriesCount = categoriesJson.size();
+  for (int i = 0; i < categoriesCount; ++i) {
+    ProjectFileCategory *category = new ProjectFileCategory("", this);
+    category->deserialize(categoriesJson[i], this);
+    m_categories.append(category);
+  }
+}
