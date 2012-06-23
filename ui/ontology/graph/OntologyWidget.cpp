@@ -319,12 +319,25 @@ void OntologyWidget::editRelationSlot() {
       RelationItem *relationItem = static_cast<RelationItem *>(selectedItem);
 
       bool ok = false;
-      QString newName = QInputDialog::getText(this,
+
+      QStringList items;
+      int relationsCount = m_dataSource->relationCount();
+      for (int i = 0; i < relationsCount; ++i) {
+        RelationData *relation = m_dataSource->getRelationByIndex(i);
+        if (!items.contains(relation->name)) {
+          items.append(relation->name);
+        }
+      }
+
+      QString newName = QInputDialog::getItem(this,
                                               tr("Enter new node name"),
                                               tr("Name: "),
-                                              QLineEdit::Normal,
-                                              relationItem->name(),
-                                              &ok);
+                                              items,
+                                              0,
+                                              true,
+                                              &ok,
+                                              0);
+
       if (ok) {
         if (m_delegate != NULL) {
           m_delegate->relationNameChanged(relationItem->id(), newName);
