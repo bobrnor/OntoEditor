@@ -460,12 +460,14 @@ void MainWindow::screenshotSlot() {
 void MainWindow::transformSlot() {
 
   m_transformationHelper->process();
+
   ProjectFile *currentFile = m_currentProject.getProjectFileByName(m_currentFileName);
   if (currentFile != NULL) {
     qDebug() << m_currentFileName;
     QString code = m_currentProject.generateDestinationCode(m_currentFileName);
     qDebug() << "Generated code: " << code;
     currentFile->destinationOntologyController()->setSourceCode(code);
+    currentFile->destinationOntologyController()->normalize();
   }
 }
 

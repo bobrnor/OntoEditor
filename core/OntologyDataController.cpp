@@ -46,11 +46,35 @@ OntologyDataController::OntologyDataController(const Json::Value &json) {
     NodeData *destinationNode = m_nodesMap.value(relationData->destinationNodeId);
     destinationNode->relations.append(relationData->id);
   }
+
+  normalize();
 }
 
 void OntologyDataController::setSourceCode(const QString &sourceCode) {
 
   m_sourceCode = sourceCode;
+}
+
+void OntologyDataController::normalize() {
+
+  double minX = INFINITY;
+  double minY = INFINITY;
+
+  foreach (long nodeId, m_nodePositions.keys()) {
+    QPointF position = m_nodePositions.value(nodeId);
+    minX = qMin(position.x(), minX);
+    minY = qMin(position.y(), minY);
+  }
+
+  minX -= 200;
+  minY -= 200;
+
+  foreach (long nodeId, m_nodePositions.keys()) {
+    QPointF position = m_nodePositions.value(nodeId);
+    position.setX(position.x() - minX);
+    position.setY(position.y() - minY);
+    m_nodePositions.insert(nodeId, position);
+  }
 }
 
 Json::Value OntologyDataController::serialize() {

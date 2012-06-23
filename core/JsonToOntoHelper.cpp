@@ -118,11 +118,18 @@ void JsonToOntoHelper::processValue(const Json::Value &jsonValue, NodeData *curr
 
   qDebug() << "Create node: " << qString << "as instance of " << currentDestinationNode->name;
 
+  NodeData *languageNode = m_languageDataSource->findNode(qString, currentLanguageNode);
+
   NodeData *nodeForValue = m_destinationDataSource->findNode(qString, currentDestinationNode);
   if (nodeForValue == NULL) {
     // create node
     long nodeId = m_destinationDelegate->nodeCreated();
     m_destinationDelegate->nodeNameChanged(nodeId, qString);
+
+    if (languageNode != NULL) {
+      QPointF sourceNodePosition = m_languageDelegate->nodePosition(languageNode->id);
+      m_destinationDelegate->setNodePosition(nodeId, sourceNodePosition);
+    }
 
     // create relation
     long relationId = m_destinationDelegate->relationCreated(nodeId, currentDestinationNode->id);

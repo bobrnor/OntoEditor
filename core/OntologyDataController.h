@@ -32,6 +32,8 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
 
     void setSourceCode(const QString &sourceCode);
 
+    void normalize();
+
     // data source
     int nodeCount();
     int relationCount();
