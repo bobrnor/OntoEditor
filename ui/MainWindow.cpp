@@ -529,9 +529,9 @@ void MainWindow::currentFileChangedSlot(const QString &fileName) {
   if (file != NULL) {
     m_currentFileName = fileName;
 
-    m_transformationHelper->setSourceOntology(file->sourceOntologyController(), file->sourceOntologyController());
-    m_transformationHelper->setDestinationOntology(file->destinationOntologyController(), file->destinationOntologyController());
-    m_transformationHelper->setProblemsOntology(m_currentProject.problemsOntologyController(), m_currentProject.problemsOntologyController());
+    m_transformationHelper->setSourceOntology(file->sourceOntologyController());
+    m_transformationHelper->setDestinationOntology(file->destinationOntologyController());
+    m_transformationHelper->setProblemsOntology(m_currentProject.problemsOntologyController());
 
     m_sourceOntologyWidget->setDataSource(file->sourceOntologyController());
     m_sourceOntologyWidget->setDelegate(file->sourceOntologyController());
@@ -550,9 +550,9 @@ void MainWindow::categorySelectedSlot(const QString &fileName, const QString &ca
     if (m_currentFileName != fileName) {
       m_currentFileName = fileName;
 
-      m_transformationHelper->setSourceOntology(file->sourceOntologyController(), file->sourceOntologyController());
-      m_transformationHelper->setDestinationOntology(file->destinationOntologyController(), file->destinationOntologyController());
-      m_transformationHelper->setProblemsOntology(m_currentProject.problemsOntologyController(), m_currentProject.problemsOntologyController());
+      m_transformationHelper->setSourceOntology(file->sourceOntologyController());
+      m_transformationHelper->setDestinationOntology(file->destinationOntologyController());
+      m_transformationHelper->setProblemsOntology(m_currentProject.problemsOntologyController());
 
       m_sourceOntologyWidget->setDataSource(file->sourceOntologyController());
       m_sourceOntologyWidget->setDelegate(file->sourceOntologyController());

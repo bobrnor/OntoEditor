@@ -71,8 +71,6 @@ IOntologyDelegate *OntologyWidget::delegate() const {
 
 void OntologyWidget::showContextMenuSlot(const QPoint &pos) {
 
-  qDebug() << __FUNCTION__;
-
   QList<QGraphicsItem *> selectedItems = m_ontologyView->scene()->selectedItems();
 
   QMenu contextMenu;
@@ -147,8 +145,6 @@ void OntologyWidget::setEditRelationMode(bool on) {
 }
 
 void OntologyWidget::addNodeSlot() {
-
-  qDebug() << __FUNCTION__;
 
   QPointF scenePos = m_lastRightClickScenePosition;
 
@@ -265,8 +261,6 @@ void OntologyWidget::updateData() {
 
 void OntologyWidget::setRelationSlot() {
 
-  qDebug() << __FUNCTION__;
-
   QList<QGraphicsItem *> selectedItems = m_ontologyView->scene()->selectedItems();
   if (selectedItems.count() == 1) {
     QGraphicsItem *selectedItem = selectedItems.at(0);
@@ -290,8 +284,6 @@ void OntologyWidget::setRelationSlot() {
 }
 
 void OntologyWidget::editNodeSlot() {
-
-  qDebug() << __FUNCTION__;
 
   QList<QGraphicsItem *> selectedItems = m_ontologyView->scene()->selectedItems();
   if (selectedItems.count() == 1) {
@@ -319,8 +311,6 @@ void OntologyWidget::editNodeSlot() {
 }
 
 void OntologyWidget::editRelationSlot() {
-
-  qDebug() << __FUNCTION__;
 
   QList<QGraphicsItem *> selectedItems = m_ontologyView->scene()->selectedItems();
   if (selectedItems.count() == 1) {
@@ -362,8 +352,6 @@ void OntologyWidget::editRelationSlot() {
 
 void OntologyWidget::removeSelectedSlot() {
 
-  qDebug() << __FUNCTION__;
-
   QList<QGraphicsItem *> selectedItems = m_ontologyView->scene()->selectedItems();
   foreach (QGraphicsItem *item, selectedItems) {
     if (item->data(kIDTType) == kITNode) {
@@ -389,8 +377,6 @@ void OntologyWidget::removeSelectedSlot() {
 
 void OntologyWidget::sceneSelectionChangedSlot() {
 
-  qDebug() << __FUNCTION__;
-
   if (m_editRelationMode) {
     QList<QGraphicsItem *> selectedItems = m_ontologyView->scene()->selectedItems();
     if (selectedItems.count() == 1) {
@@ -408,8 +394,6 @@ void OntologyWidget::sceneSelectionChangedSlot() {
 
 void OntologyWidget::ontologyViewMousePositionChangedSlot(const QPoint &pos) {
 
-  qDebug() << __FUNCTION__;
-
   if (m_relationVisualizedLine != NULL) {
     QPointF scenePos = m_ontologyView->mapToScene(pos);
     m_relationVisualizedLine->setEndPoint(scenePos);
@@ -422,8 +406,6 @@ void OntologyWidget::dataChangedSlot() {
 }
 
 void OntologyWidget::itemSelectedSlot(long id) {
-
-  qDebug() << __FUNCTION__;
 
   m_ontologyView->scene()->clearSelection();
 
@@ -447,7 +429,6 @@ void OntologyWidget::itemSelectedSlot(long id) {
 
 void OntologyWidget::itemsSelectedSlot(const QSet<long> ids) {
 
-  qDebug() << __FUNCTION__;
   m_ontologyView->scene()->clearSelection();
 
   bool alreadyCentered = false;
@@ -474,19 +455,16 @@ void OntologyWidget::itemsSelectedSlot(const QSet<long> ids) {
 
 void OntologyWidget::zoomInSlot() {
 
-  qDebug() << __FUNCTION__;
   m_ontologyView->scale(1.2, 1.2);
 }
 
 void OntologyWidget::zoomOutSlot() {
 
-  qDebug() << __FUNCTION__;
   m_ontologyView->scale(0.8, 0.8);
 }
 
 void OntologyWidget::nodeItemPositionChangedSlot(long id, const QPointF &newPosition) {
 
-  qDebug() << __FUNCTION__;
   m_delegate->setNodePosition(id, newPosition);
 }
 
@@ -500,8 +478,6 @@ QImage OntologyWidget::makeScreenshot() const {
 
 void OntologyWidget::showOntologySlot() {
 
-  qDebug() << __FUNCTION__;
-
   if (m_sourceCodeShown) {
     m_sourceCodeShown = false;
     m_sourceCodeViewer->setVisible(false);
@@ -512,8 +488,6 @@ void OntologyWidget::showOntologySlot() {
 }
 
 void OntologyWidget::showSourceCodeSlot() {
-
-  qDebug() << __FUNCTION__;
 
   if (!m_sourceCodeShown) {
     m_sourceCodeShown = true;

@@ -25,6 +25,11 @@ class IOntologyDataSource {
     virtual QStringList pathToNode(long id) = 0;
 
     virtual QString sourceCode() const = 0;
+
+    virtual bool isNodeChanged(long id) const = 0;
+    virtual bool isRelationChanged(long id) const = 0;
+    virtual bool hasChanges() const = 0;
+    virtual void clearChanges() = 0;
 };
 
 #endif // IONTOLOGYDATASOURCE_H

@@ -4,21 +4,15 @@
 #include <QtGui>
 
 #include "lib_json/json/json.h"
-#include "core/IOntologyDataSource.h"
-#include "core/IOntologyDelegate.h"
+#include "core/OntologyDataController.h"
 
 class TransformationHelper : public QObject {
     Q_OBJECT
 
   private:
-    IOntologyDataSource *m_sourceDataSource;
-    IOntologyDelegate *m_sourceDelegate;
-
-    IOntologyDataSource *m_destinationDataSource;
-    IOntologyDelegate *m_destinationDelegate;
-
-    IOntologyDataSource *m_problemsDataSource;
-    IOntologyDelegate *m_problemsDelegate;
+    OntologyDataController *m_sourceDataController;
+    OntologyDataController *m_destinationDataController;
+    OntologyDataController *m_problemsDataController;
 
     QStandardItemModel *m_logModel;
     QStandardItem *m_currentItem;
@@ -38,17 +32,14 @@ class TransformationHelper : public QObject {
     void updateData();
     void process();
 
-    void setSourceOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
-    IOntologyDataSource *sourceDataSource() const;
-    IOntologyDelegate *sourceDelegate() const;
+    void setSourceOntology(OntologyDataController *dataController);
+    OntologyDataController *sourceDataController() const;
 
-    void setDestinationOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
-    IOntologyDataSource *destinationDataSource() const;
-    IOntologyDelegate *destinationDelegate() const;
+    void setDestinationOntology(OntologyDataController *dataController);
+    OntologyDataController *destinationDataController() const;
 
-    void setProblemsOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
-    IOntologyDataSource *problemsDataSource() const;
-    IOntologyDelegate *problemsDelegate() const;
+    void setProblemsOntology(OntologyDataController *dataController);
+    OntologyDataController *problemsDataController() const;
 
     QStandardItemModel *logModel() const;
 

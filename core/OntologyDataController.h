@@ -21,10 +21,21 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
 
     QMap<long, QPointF> m_nodePositions;
 
+    mutable QSet<long> m_changedNodeIds;
+    mutable QSet<long> m_changedRelationIds;
+
+    QList<OntologyDataController *> m_snapshots;
+
     QString m_sourceCode;
 
     void removeRelatedRelations(NodeData *nodeData);
     NodeData *otherNode(RelationData *relation, NodeData *node) const;
+
+    void makeSnapshot();
+    QList<OntologyDataController *> snapshots() const;
+    void clearSnapshots();
+
+    OntologyDataController(QList<NodeData *> nodeList, QList<RelationData *> relationList, QMap<long, QPointF> nodePositions);
 
   public:
     OntologyDataController();
@@ -54,6 +65,11 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
     QStringList pathToNode(long id);
 
     QString sourceCode() const;
+
+    bool isNodeChanged(long id) const;
+    bool isRelationChanged(long id) const;
+    bool hasChanges() const;
+    void clearChanges();
 
     // delegate
     long nodeCreated();

@@ -4,69 +4,47 @@
 
 TransformationHelper::TransformationHelper() {
 
-  m_sourceDataSource = NULL;
-  m_sourceDelegate = NULL;
-
-  m_destinationDataSource = NULL;
-  m_destinationDelegate = NULL;
+  m_sourceDataController = NULL;
+  m_destinationDataController = NULL;
+  m_problemsDataController = NULL;
 
   m_logModel = new QStandardItemModel();
   m_currentItem = NULL;
 }
 
-void TransformationHelper::setSourceOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
+void TransformationHelper::setSourceOntology(OntologyDataController *dataController) {
 
-  m_sourceDataSource = dataSource;
-  m_sourceDelegate = delegate;
+  m_sourceDataController = dataController;
 }
 
-IOntologyDataSource *TransformationHelper::sourceDataSource() const {
+OntologyDataController *TransformationHelper::sourceDataController() const {
 
-  return m_sourceDataSource;
+  return m_sourceDataController;
 }
 
-IOntologyDelegate *TransformationHelper::sourceDelegate() const {
+void TransformationHelper::setDestinationOntology(OntologyDataController *dataController) {
 
-  return m_sourceDelegate;
+  m_destinationDataController = dataController;
 }
 
-void TransformationHelper::setDestinationOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
+OntologyDataController *TransformationHelper::destinationDataController() const {
 
-  m_destinationDataSource = dataSource;
-  m_destinationDelegate = delegate;
+  return m_destinationDataController;
 }
 
-IOntologyDataSource *TransformationHelper::destinationDataSource() const {
+void TransformationHelper::setProblemsOntology(OntologyDataController *dataController) {
 
-  return m_destinationDataSource;
+  m_problemsDataController = dataController;
 }
 
-IOntologyDelegate *TransformationHelper::destinationDelegate() const {
+OntologyDataController *TransformationHelper::problemsDataController() const {
 
-  return m_destinationDelegate;
-}
-
-void TransformationHelper::setProblemsOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
-
-  m_problemsDataSource = dataSource;
-  m_problemsDelegate = delegate;
-}
-
-IOntologyDataSource *TransformationHelper::problemsDataSource() const {
-
-  return m_problemsDataSource;
-}
-
-IOntologyDelegate *TransformationHelper::problemsDelegate() const {
-
-  return m_problemsDelegate;
+  return m_problemsDataController;
 }
 
 bool TransformationHelper::isReady() const {
 
-  if (m_sourceDataSource != NULL && m_sourceDelegate != NULL
-      && m_destinationDataSource != NULL && m_destinationDelegate != NULL
-      && m_problemsDataSource != NULL && m_problemsDelegate != NULL) {
+  if (m_sourceDataController != NULL && m_destinationDataController != NULL && m_problemsDataController != NULL) {
     return true;
   }
   else {
@@ -98,11 +76,11 @@ QStandardItemModel *TransformationHelper::logModel() const {
 
 RelationData *TransformationHelper::transformRelation(NodeData *sourceNodeData) {
 
-  QStringList pathToSourceNode = m_sourceDataSource->pathToNode(sourceNodeData->id);
-  NodeData *sourceNodeInProblemsOntology = m_problemsDataSource->getNodeByPath(pathToSourceNode);
+  QStringList pathToSourceNode = m_sourceDataController->pathToNode(sourceNodeData->id);
+  NodeData *sourceNodeInProblemsOntology = m_problemsDataController->getNodeByPath(pathToSourceNode);
 
   foreach (long relationId, sourceNodeInProblemsOntology->relations) {
-    RelationData *relation = m_problemsDataSource->getRelationById(relationId);
+    RelationData *relation = m_problemsDataController->getRelationById(relationId);
     if (relation->name == "transform" || relation->name == "type_transform") {
       return relation;
     }
@@ -112,6 +90,8 @@ RelationData *TransformationHelper::transformRelation(NodeData *sourceNodeData) 
 }
 
 void TransformationHelper::transform() {
+
+
 
   m_logModel->clear();
   m_logModel->insertColumns(0, 1);
@@ -126,16 +106,16 @@ void TransformationHelper::transform() {
 
   QSet<long> passedInstanceNodes;
 
-  int relationsCount = m_sourceDataSource->relationCount();
+  int relationsCount = m_sourceDataController->relationCount();
   for (int i = 0; i < relationsCount; ++i) {
-    RelationData *relation = m_sourceDataSource->getRelationByIndex(i);
+    RelationData *relation = m_sourceDataController->getRelationByIndex(i);
     if (relation->name == "is_instance") {
 
       QStandardItem *searchForItem = new QStandardItem(tr("Search for instance..."));
       m_currentItem = m_logModel->itemFromIndex(rootIndex);
       m_currentItem->appendRow(searchForItem);
 
-      NodeData *nodeWithInstances = m_sourceDataSource->getNodeById(relation->destinationNodeId);
+      NodeData *nodeWithInstances = m_sourceDataController->getNodeById(relation->destinationNodeId);
 
       QStandardItem *foundItem = new QStandardItem(nodeWithInstances->name + tr(" found"));
       searchForItem->appendRow(foundItem);
@@ -153,7 +133,7 @@ void TransformationHelper::transform() {
           QStandardItem *foundTransItem = new QStandardItem(tr("Transformation target node found: ") + targetNode->name);
           m_currentItem->appendRow(foundTransItem);
 
-          QStringList targetNodePath = m_problemsDataSource->pathToNode(targetNode->id);
+          QStringList targetNodePath = m_problemsDataController->pathToNode(targetNode->id);
           NodeData *destinationNode = addPathToDestinationOntology(targetNodePath);
 
           QStandardItem *addPathItem = new QStandardItem(tr("Add transformation target node to destination ontology"));
@@ -194,9 +174,9 @@ void TransformationHelper::simpleTransform(NodeData *sourceNodeData, NodeData *d
   m_currentItem->appendRow(transItem);
 
   foreach (long relationId, sourceNodeData->relations) {
-    RelationData *relation = m_sourceDataSource->getRelationById(relationId);
+    RelationData *relation = m_sourceDataController->getRelationById(relationId);
     if (relation->name == "is_instance") {
-      NodeData *instanceNode = m_sourceDataSource->getNodeById(relation->sourceNodeId);
+      NodeData *instanceNode = m_sourceDataController->getNodeById(relation->sourceNodeId);
 
       QStandardItem *getItem = new QStandardItem(tr("GET ") + instanceNode->name);
       transItem->appendRow(getItem);
@@ -207,10 +187,10 @@ void TransformationHelper::simpleTransform(NodeData *sourceNodeData, NodeData *d
       QStandardItem *toItem = new QStandardItem(tr("PUT TO ") + destinationNodeData->name);
       transItem->appendRow(toItem);
 
-      long newNodeId = m_destinationDelegate->nodeCreated();
-      m_destinationDelegate->nodeNameChanged(newNodeId, instanceNode->name);
-      long newRelationId = m_destinationDelegate->relationCreated(newNodeId, destinationNodeData->id);
-      m_destinationDelegate->relationNameChanged(newRelationId, "is_instance");
+      long newNodeId = m_destinationDataController->nodeCreated();
+      m_destinationDataController->nodeNameChanged(newNodeId, instanceNode->name);
+      long newRelationId = m_destinationDataController->relationCreated(newNodeId, destinationNodeData->id);
+      m_destinationDataController->relationNameChanged(newRelationId, "is_instance");
     }
   }
 }
@@ -224,14 +204,14 @@ void TransformationHelper::typeTransform(NodeData *sourceNodeData, NodeData *des
   QStandardItem *transItem = new QStandardItem(tr("Transformation..."));
   m_currentItem->appendRow(transItem);
 
-  QStringList destinationNodePath = m_destinationDataSource->pathToNode(destinationNodeData->id);
-  NodeData *problemsDestinationNode = m_problemsDataSource->getNodeByPath(destinationNodePath);
+  QStringList destinationNodePath = m_destinationDataController->pathToNode(destinationNodeData->id);
+  NodeData *problemsDestinationNode = m_problemsDataController->getNodeByPath(destinationNodePath);
 
   foreach (long relationId, problemsDestinationNode->relations) {
-    RelationData *relationData = m_problemsDataSource->getRelationById(relationId);
+    RelationData *relationData = m_problemsDataController->getRelationById(relationId);
 
     if (relationData->name == "is_instance") {
-      NodeData *typeNodeData = m_problemsDataSource->getNodeById(relationData->sourceNodeId);
+      NodeData *typeNodeData = m_problemsDataController->getNodeById(relationData->sourceNodeId);
       Q_ASSERT(typeNodeData);
 
       QStandardItem *getItem = new QStandardItem(tr("GET ") + sourceNodeData->name);
@@ -243,10 +223,10 @@ void TransformationHelper::typeTransform(NodeData *sourceNodeData, NodeData *des
       QStandardItem *asItem = new QStandardItem(tr("AS ") + typeNodeData->name);
       transItem->appendRow(asItem);
 
-      long newNodeId = m_destinationDelegate->nodeCreated();
-      m_destinationDelegate->nodeNameChanged(newNodeId, typeNodeData->name);
-      long newRelationId = m_destinationDelegate->relationCreated(newNodeId, sourceNodeData->id);
-      m_destinationDelegate->relationNameChanged(newRelationId, "is_instance");
+      long newNodeId = m_destinationDataController->nodeCreated();
+      m_destinationDataController->nodeNameChanged(newNodeId, typeNodeData->name);
+      long newRelationId = m_destinationDataController->relationCreated(newNodeId, sourceNodeData->id);
+      m_destinationDataController->relationNameChanged(newRelationId, "is_instance");
     }
   }
 }
@@ -264,7 +244,7 @@ NodeData *TransformationHelper::transformationTargetNode(NodeData *sourceNode) {
     m_currentItem->appendRow(searchTargetTransItem);
     m_currentItem = searchTargetTransItem;
 
-    NodeData *targetNode = m_problemsDataSource->getNodeById(transformRelationData->destinationNodeId);
+    NodeData *targetNode = m_problemsDataController->getNodeById(transformRelationData->destinationNodeId);
     Q_ASSERT(targetNode);
     return targetNode;
   }
@@ -277,33 +257,33 @@ NodeData *TransformationHelper::addPathToDestinationOntology(const QStringList &
   NodeData *prevDestinationNode = NULL;
   NodeData *prevProblemsNode = NULL;
   foreach (QString nodeName, path) {
-    NodeData *destinationNode = m_destinationDataSource->findNode(nodeName, prevDestinationNode);
-    NodeData *problemsNode = m_problemsDataSource->findNode(nodeName, prevProblemsNode);
+    NodeData *destinationNode = m_destinationDataController->findNode(nodeName, prevDestinationNode);
+    NodeData *problemsNode = m_problemsDataController->findNode(nodeName, prevProblemsNode);
 
     Q_ASSERT(problemsNode != NULL);
 
     if (destinationNode == NULL) {
-      QPointF position = m_problemsDelegate->nodePosition(problemsNode->id);
-      long newNodeId = m_destinationDelegate->nodeCreated();
-      m_destinationDelegate->nodeNameChanged(newNodeId, problemsNode->name);
-      destinationNode = m_destinationDataSource->getNodeById(newNodeId);
+      QPointF position = m_problemsDataController->nodePosition(problemsNode->id);
+      long newNodeId = m_destinationDataController->nodeCreated();
+      m_destinationDataController->nodeNameChanged(newNodeId, problemsNode->name);
+      destinationNode = m_destinationDataController->getNodeById(newNodeId);
 
       if (prevDestinationNode != NULL) {
-        RelationData *relation = m_problemsDataSource->getRelationByNodes(problemsNode->id, prevProblemsNode->id);
+        RelationData *relation = m_problemsDataController->getRelationByNodes(problemsNode->id, prevProblemsNode->id);
         if (relation != NULL) {
-          long newRelationId = m_destinationDelegate->relationCreated(destinationNode->id, prevDestinationNode->id);
-          m_destinationDelegate->relationNameChanged(newRelationId, relation->name);
+          long newRelationId = m_destinationDataController->relationCreated(destinationNode->id, prevDestinationNode->id);
+          m_destinationDataController->relationNameChanged(newRelationId, relation->name);
         }
         else {
-          relation = m_problemsDataSource->getRelationByNodes(prevProblemsNode->id, problemsNode->id);
+          relation = m_problemsDataController->getRelationByNodes(prevProblemsNode->id, problemsNode->id);
           if (relation != NULL) {
-            long newRelationId = m_destinationDelegate->relationCreated(prevDestinationNode->id, destinationNode->id);
-            m_destinationDelegate->relationNameChanged(newRelationId, relation->name);
+            long newRelationId = m_destinationDataController->relationCreated(prevDestinationNode->id, destinationNode->id);
+            m_destinationDataController->relationNameChanged(newRelationId, relation->name);
           }
         }
       }
 
-      m_destinationDelegate->setNodePosition(newNodeId, position);
+      m_destinationDataController->setNodePosition(newNodeId, position);
     }
 
     prevDestinationNode = destinationNode;

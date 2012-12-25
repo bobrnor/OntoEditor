@@ -3,11 +3,41 @@
 OntologyDataController::OntologyDataController() {
 
   m_lastId = 0;
+
+  m_changedNodeIds = QSet<long>();
+  m_changedRelationIds = QSet<long>();
+  m_snapshots = QList<OntologyDataController *>();
 }
 
 OntologyDataController::OntologyDataController(const Json::Value &json) {
 
   deserialize(json);
+
+  m_changedNodeIds = QSet<long>();
+  m_changedRelationIds = QSet<long>();
+  m_snapshots = QList<OntologyDataController *>();
+}
+
+OntologyDataController::OntologyDataController(QList<NodeData *> nodeList, QList<RelationData *> relationList, QMap<long, QPointF> nodePositions) {
+
+  m_lastId = -1;
+
+  m_changedNodeIds = QSet<long>();
+  m_changedRelationIds = QSet<long>();
+  m_snapshots = QList<OntologyDataController *>();
+
+  foreach (NodeData *nodeData, nodeList) {
+    m_nodesMap.insert(nodeData->id, nodeData);
+    m_nodesList.append(nodeData);
+  }
+
+  foreach (RelationData *relationData, relationList) {
+    m_relationsMap.insert(relationData->id, relationData);
+    m_relationsList.append(relationData);
+    m_relationsMapByNodes.insert(QPair<long, long>(relationData->sourceNodeId, relationData->destinationNodeId), relationData);
+  }
+
+  m_nodePositions = nodePositions;
 }
 
 void OntologyDataController::setSourceCode(const QString &sourceCode) {
@@ -126,21 +156,27 @@ int OntologyDataController::relationCount() {
 
 NodeData *OntologyDataController::getNodeByIndex(int index) {
 
-  return m_nodesList.at(index);
+  NodeData *nodeData = m_nodesList.at(index);
+  m_changedNodeIds.insert(nodeData->id);
+  return nodeData;
 }
 
 RelationData *OntologyDataController::getRelationByIndex(int index) {
 
-  return m_relationsList.at(index);
+  RelationData *relationData = m_relationsList.at(index);
+  m_changedRelationIds.insert(relationData->id);
+  return relationData;
 }
 
 NodeData *OntologyDataController::getNodeById(long id) {
 
+  m_changedNodeIds.insert(id);
   return m_nodesMap.value(id);
 }
 
 RelationData *OntologyDataController::getRelationById(long id) {
 
+  m_changedRelationIds.insert(id);
   return m_relationsMap.value(id);
 }
 
@@ -152,19 +188,23 @@ NodeData *OntologyDataController::getNodeByPath(const QStringList &path) const {
     Q_ASSERT(node != NULL);
     prevNode = node;
   }
+  m_changedNodeIds.insert(prevNode->id);
   return prevNode;
 }
 
 RelationData *OntologyDataController::getRelationByNodes(long sourceNodeId, long destinationNodeId) {
 
   QPair<long, long> nodesPair(sourceNodeId, destinationNodeId);
-  return m_relationsMapByNodes.value(nodesPair);
+  RelationData *relationData = m_relationsMapByNodes.value(nodesPair);
+  m_changedRelationIds.insert(relationData->id);
+  return relationData;
 }
 
 NodeData *OntologyDataController::findNode(const QString &nodeName) const {
 
   foreach (NodeData *nodeData, m_nodesList) {
     if (nodeData->name.compare(nodeName, Qt::CaseInsensitive) == 0) {
+      m_changedNodeIds.insert(nodeData->id);
       return nodeData;
     }
   }
@@ -179,9 +219,11 @@ NodeData *OntologyDataController::findNode(const QString &nodeName, NodeData *st
 
   foreach (long relationId, startNode->relations) {
     RelationData *relation = m_relationsMap.value(relationId);
-    if (relation->name.compare("transform", Qt::CaseInsensitive) != 0) {
+    if (relation->name.compare("transform", Qt::CaseInsensitive) != 0
+        && relation->name.compare("type_transform", Qt::CaseInsensitive) != 0) {
       NodeData *node = otherNode(relation, startNode);
       if (node->name.compare(nodeName, Qt::CaseInsensitive) == 0) {
+        m_changedNodeIds.insert(node->id);
         return node;
       }
     }
@@ -193,6 +235,8 @@ NodeData *OntologyDataController::findNode(const QString &nodeName, NodeData *st
 }
 
 QStringList OntologyDataController::pathToNode(long id) {
+
+  m_changedNodeIds.insert(id);
 
   QStringList path;
   NodeData *currentNode = NULL;
@@ -243,6 +287,8 @@ long OntologyDataController::nodeCreated() {
   m_nodesMap.insert(node->id, node);
   m_nodesList.append(node);
 
+  m_changedNodeIds.insert(node->id);
+
   return node->id;
 }
 
@@ -268,6 +314,8 @@ long OntologyDataController::relationCreated(long sourceNodeId, long destination
   NodeData *destinationNode = m_nodesMap.value(relation->destinationNodeId);
   destinationNode->relations.append(relation->id);
 
+  m_changedRelationIds.insert(relation->id);
+
   return relation->id;
 }
 
@@ -275,12 +323,16 @@ void OntologyDataController::nodeNameChanged(long nodeId, const QString &name) {
 
   NodeData *node = m_nodesMap.value(nodeId);
   node->name = name;
+
+  m_changedNodeIds.insert(node->id);
 }
 
 void OntologyDataController::relationNameChanged(long relationId, const QString &name) {
 
   RelationData *relation = m_relationsMap.value(relationId);
   relation->name = name;
+
+  m_changedRelationIds.insert(relation->id);
 }
 
 void OntologyDataController::nodeRemoved(long nodeId) {
@@ -341,4 +393,45 @@ void OntologyDataController::setNodePosition(long nodeId, const QPointF &positio
 
   qDebug() << "Position changed!";
   m_nodePositions.insert(nodeId, position);
+}
+
+bool OntologyDataController::isNodeChanged(long id) const {
+
+  return m_changedNodeIds.contains(id);
+}
+
+bool OntologyDataController::isRelationChanged(long id) const {
+
+  return m_changedRelationIds.contains(id);
+}
+
+bool OntologyDataController::hasChanges() const {
+
+  return m_changedNodeIds.count() > 0 || m_changedRelationIds.count() > 0;
+}
+
+void OntologyDataController::clearChanges() {
+
+  m_changedNodeIds.clear();
+  m_changedRelationIds.clear();
+}
+
+void OntologyDataController::makeSnapshot() {
+
+  OntologyDataController *snapshot = new OntologyDataController(m_nodesList, m_relationsList, m_nodePositions);
+  m_snapshots.append(snapshot);
+}
+
+QList<OntologyDataController *> OntologyDataController::snapshots() const {
+
+  return m_snapshots;
+}
+
+void OntologyDataController::clearSnapshots() {
+
+  foreach (OntologyDataController *controller, m_snapshots) {
+    delete controller;
+  }
+
+  m_snapshots.clear();
 }
