@@ -31,6 +31,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
   m_transformationHelper = new TransformationHelper();
 
+  m_logTreeView = new QTreeView();
+  m_logTreeView->setHeaderHidden(true);
+  m_logTreeView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+  m_logTreeView->setModel(m_transformationHelper->logModel());
+  m_logTreeView->hide();
+
   m_zoomInShortcut = new QShortcut(this);
   m_zoomInShortcut->setKey(QKeySequence("Ctrl+="));
   m_zoomInShortcut->setEnabled(true);
@@ -488,6 +494,8 @@ void MainWindow::transformSlot() {
     currentFile->destinationOntologyController()->setSourceCode(code);
     currentFile->destinationOntologyController()->normalize();
   }
+
+  m_logTreeView->showNormal();
 }
 
 void MainWindow::currentTabChangedSlot(int index) {

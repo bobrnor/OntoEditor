@@ -9,6 +9,9 @@ TransformationHelper::TransformationHelper() {
 
   m_destinationDataSource = NULL;
   m_destinationDelegate = NULL;
+
+  m_logModel = new QStandardItemModel();
+  m_currentItem = NULL;
 }
 
 void TransformationHelper::setSourceOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
@@ -88,6 +91,11 @@ void TransformationHelper::process() {
   }
 }
 
+QStandardItemModel *TransformationHelper::logModel() const {
+
+  return m_logModel;
+}
+
 RelationData *TransformationHelper::transformRelation(NodeData *sourceNodeData) {
 
   QStringList pathToSourceNode = m_sourceDataSource->pathToNode(sourceNodeData->id);
@@ -105,20 +113,53 @@ RelationData *TransformationHelper::transformRelation(NodeData *sourceNodeData) 
 
 void TransformationHelper::transform() {
 
+  m_logModel->clear();
+  m_logModel->insertColumns(0, 1);
+  m_logModel->insertRows(0, 1);
+
+  QModelIndex rootIndex = m_logModel->index(0, 0);
+  m_logModel->insertColumn(0, rootIndex);
+  m_logModel->setData(rootIndex, tr("Log"));
+  m_logModel->itemFromIndex(rootIndex)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+
+  m_currentItem = NULL;
+
   QSet<long> passedInstanceNodes;
 
   int relationsCount = m_sourceDataSource->relationCount();
   for (int i = 0; i < relationsCount; ++i) {
     RelationData *relation = m_sourceDataSource->getRelationByIndex(i);
     if (relation->name == "is_instance") {
+
+      QStandardItem *searchForItem = new QStandardItem(tr("Search for instance..."));
+      m_currentItem = m_logModel->itemFromIndex(rootIndex);
+      m_currentItem->appendRow(searchForItem);
+
       NodeData *nodeWithInstances = m_sourceDataSource->getNodeById(relation->destinationNodeId);
+
+      QStandardItem *foundItem = new QStandardItem(nodeWithInstances->name + tr(" found"));
+      searchForItem->appendRow(foundItem);
+
       if (!passedInstanceNodes.contains(nodeWithInstances->id)) {
         passedInstanceNodes.insert(nodeWithInstances->id);
 
+        QStandardItem *searchTransItem = new QStandardItem(tr("Search in problem ontology"));
+        foundItem->appendRow(searchTransItem);
+        m_currentItem = foundItem;
+
         NodeData *targetNode = transformationTargetNode(nodeWithInstances);
         if (targetNode != NULL) {
+
+          QStandardItem *foundTransItem = new QStandardItem(tr("Transformation target node found: ") + targetNode->name);
+          m_currentItem->appendRow(foundTransItem);
+
           QStringList targetNodePath = m_problemsDataSource->pathToNode(targetNode->id);
           NodeData *destinationNode = addPathToDestinationOntology(targetNodePath);
+
+          QStandardItem *addPathItem = new QStandardItem(tr("Add transformation target node to destination ontology"));
+          foundTransItem->appendRow(addPathItem);
+
+          m_currentItem = addPathItem;
 
           RelationData *transformRelationData = transformRelation(nodeWithInstances);
           if (transformRelationData != NULL) {
@@ -130,6 +171,14 @@ void TransformationHelper::transform() {
             }
           }
         }
+        else {
+          QStandardItem *item = new QStandardItem(tr("Not found"));
+          foundItem->appendRow(item);
+        }
+      }
+      else {
+        QStandardItem *item = new QStandardItem(nodeWithInstances->name + tr(" already processed"));
+        foundItem->appendRow(item);
       }
     }
   }
@@ -141,10 +190,22 @@ void TransformationHelper::transform() {
 */
 void TransformationHelper::simpleTransform(NodeData *sourceNodeData, NodeData *destinationNodeData) {
 
+  QStandardItem *transItem = new QStandardItem(tr("Transformation..."));
+  m_currentItem->appendRow(transItem);
+
   foreach (long relationId, sourceNodeData->relations) {
     RelationData *relation = m_sourceDataSource->getRelationById(relationId);
     if (relation->name == "is_instance") {
       NodeData *instanceNode = m_sourceDataSource->getNodeById(relation->sourceNodeId);
+
+      QStandardItem *getItem = new QStandardItem(tr("GET ") + instanceNode->name);
+      transItem->appendRow(getItem);
+
+      QStandardItem *fromItem = new QStandardItem(tr("FROM ") + sourceNodeData->name);
+      transItem->appendRow(fromItem);
+
+      QStandardItem *toItem = new QStandardItem(tr("PUT TO ") + destinationNodeData->name);
+      transItem->appendRow(toItem);
 
       long newNodeId = m_destinationDelegate->nodeCreated();
       m_destinationDelegate->nodeNameChanged(newNodeId, instanceNode->name);
@@ -160,13 +221,27 @@ void TransformationHelper::simpleTransform(NodeData *sourceNodeData, NodeData *d
 */
 void TransformationHelper::typeTransform(NodeData *sourceNodeData, NodeData *destinationNodeData) {
 
+  QStandardItem *transItem = new QStandardItem(tr("Transformation..."));
+  m_currentItem->appendRow(transItem);
+
   QStringList destinationNodePath = m_destinationDataSource->pathToNode(destinationNodeData->id);
   NodeData *problemsDestinationNode = m_problemsDataSource->getNodeByPath(destinationNodePath);
+
   foreach (long relationId, problemsDestinationNode->relations) {
     RelationData *relationData = m_problemsDataSource->getRelationById(relationId);
+
     if (relationData->name == "is_instance") {
       NodeData *typeNodeData = m_problemsDataSource->getNodeById(relationData->sourceNodeId);
       Q_ASSERT(typeNodeData);
+
+      QStandardItem *getItem = new QStandardItem(tr("GET ") + sourceNodeData->name);
+      transItem->appendRow(getItem);
+
+      QStandardItem *toItem = new QStandardItem(tr("PUT TO ") + destinationNodeData->name);
+      transItem->appendRow(toItem);
+
+      QStandardItem *asItem = new QStandardItem(tr("AS ") + typeNodeData->name);
+      transItem->appendRow(asItem);
 
       long newNodeId = m_destinationDelegate->nodeCreated();
       m_destinationDelegate->nodeNameChanged(newNodeId, typeNodeData->name);
@@ -180,6 +255,15 @@ NodeData *TransformationHelper::transformationTargetNode(NodeData *sourceNode) {
 
   RelationData *transformRelationData = transformRelation(sourceNode);
   if (transformRelationData != NULL) {
+
+    QStandardItem *foundTransItem = new QStandardItem(tr("Node in problem ontology found"));
+    m_currentItem->appendRow(foundTransItem);
+    m_currentItem = foundTransItem;
+
+    QStandardItem *searchTargetTransItem = new QStandardItem(tr("Search for transformation target node..."));
+    m_currentItem->appendRow(searchTargetTransItem);
+    m_currentItem = searchTargetTransItem;
+
     NodeData *targetNode = m_problemsDataSource->getNodeById(transformRelationData->destinationNodeId);
     Q_ASSERT(targetNode);
     return targetNode;

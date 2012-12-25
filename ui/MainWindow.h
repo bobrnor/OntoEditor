@@ -33,6 +33,8 @@ class MainWindow : public QMainWindow {
     OntologyWidget *m_objcOntologyWidget;
     OntologyWidget *m_problemsOntologyWidget;
 
+    QTreeView *m_logTreeView;
+
     ProjectTreeViewController *m_projectTreeViewController;
     OntologyTreeViewController *m_ontologyTreeViewController;
 

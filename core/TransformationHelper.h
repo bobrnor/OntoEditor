@@ -20,6 +20,9 @@ class TransformationHelper : public QObject {
     IOntologyDataSource *m_problemsDataSource;
     IOntologyDelegate *m_problemsDelegate;
 
+    QStandardItemModel *m_logModel;
+    QStandardItem *m_currentItem;
+
     void transform();
     NodeData *transformationTargetNode(NodeData *sourceNode);
     NodeData *addPathToDestinationOntology(const QStringList &path);
@@ -46,6 +49,8 @@ class TransformationHelper : public QObject {
     void setProblemsOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
     IOntologyDataSource *problemsDataSource() const;
     IOntologyDelegate *problemsDelegate() const;
+
+    QStandardItemModel *logModel() const;
 
     bool isReady() const;
 
