@@ -270,13 +270,12 @@ void MainWindow::onProblemsOntologyWidgetShow() {
 
 void MainWindow::clearConnections() {
 
-  disconnect(this);
-  disconnect(m_ontologyTreeViewController);
-  disconnect(m_sourceOntologyWidget);
-  disconnect(m_destinationOntologyWidget);
-  disconnect(m_javaOntologyWidget);
-  disconnect(m_objcOntologyWidget);
-  disconnect(m_problemsOntologyWidget);
+  m_problemsOntologyWidget->disconnect();
+  m_ontologyTreeViewController->disconnect();
+  m_transformationHelper->disconnect();
+  m_zoomInShortcut->disconnect();
+  m_zoomOutShortcut->disconnect();
+  m_removeShortcut->disconnect();
 }
 
 void MainWindow::updateOntologyTreeData() {
