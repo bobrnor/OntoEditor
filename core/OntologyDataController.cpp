@@ -18,12 +18,13 @@ OntologyDataController::OntologyDataController(const Json::Value &json) {
   m_snapshots = QList<OntologyDataController *>();
 }
 
-OntologyDataController::OntologyDataController(QList<NodeData *> nodeList, QList<RelationData *> relationList, QMap<long, QPointF> nodePositions) {
+OntologyDataController::OntologyDataController(QList<NodeData *> nodeList,
+                                               QList<RelationData *> relationList,
+                                               QMap<long, QPointF> nodePositions,
+                                               QSet<long> changedNodeIds,
+                                               QSet<long> changedRelationIds) {
 
   m_lastId = -1;
-
-  m_changedNodeIds = QSet<long>();
-  m_changedRelationIds = QSet<long>();
   m_snapshots = QList<OntologyDataController *>();
 
   foreach (NodeData *nodeData, nodeList) {
@@ -38,6 +39,8 @@ OntologyDataController::OntologyDataController(QList<NodeData *> nodeList, QList
   }
 
   m_nodePositions = nodePositions;
+  m_changedNodeIds = changedNodeIds;
+  m_changedRelationIds = changedRelationIds;
 }
 
 void OntologyDataController::setSourceCode(const QString &sourceCode) {
@@ -418,7 +421,12 @@ void OntologyDataController::clearChanges() {
 
 void OntologyDataController::makeSnapshot() {
 
-  OntologyDataController *snapshot = new OntologyDataController(m_nodesList, m_relationsList, m_nodePositions);
+  OntologyDataController *snapshot = new OntologyDataController(m_nodesList,
+                                                                m_relationsList,
+                                                                m_nodePositions,
+                                                                m_changedNodeIds,
+                                                                m_changedRelationIds);
+
   m_snapshots.append(snapshot);
 }
 

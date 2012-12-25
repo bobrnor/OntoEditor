@@ -31,7 +31,11 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
     void removeRelatedRelations(NodeData *nodeData);
     NodeData *otherNode(RelationData *relation, NodeData *node) const;
 
-    OntologyDataController(QList<NodeData *> nodeList, QList<RelationData *> relationList, QMap<long, QPointF> nodePositions);
+    OntologyDataController(QList<NodeData *> nodeList,
+                           QList<RelationData *> relationList,
+                           QMap<long, QPointF> nodePositions,
+                           QSet<long> changedNodeIds,
+                           QSet<long> changedRelationIds);
 
   public:
     OntologyDataController();
