@@ -40,6 +40,8 @@ class MainWindow : public QMainWindow {
 
     TransformationHelper *m_transformationHelper;
 
+    long m_currentSnapshotIndex;
+
     QShortcut *m_zoomInShortcut;
     QShortcut *m_zoomOutShortcut;
     QShortcut *m_removeShortcut;
@@ -75,6 +77,11 @@ class MainWindow : public QMainWindow {
     void screenshotSlot();
 
     void transformSlot();
+
+    void moveToStartSlot();
+    void moveForwardSlot();
+    void moveBackwardSlot();
+    void moveToEndSlot();
 
     void currentTabChangedSlot(int index);
     void currentFileChangedSlot(const QString &fileName);

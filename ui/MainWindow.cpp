@@ -49,6 +49,20 @@ MainWindow::MainWindow(QWidget *parent) :
   m_removeShortcut->setKey(QKeySequence::Delete);
   m_removeShortcut->setEnabled(true);
 
+  QAction *toBeginAction = ui->toolBar->addAction(tr("Move to start"));
+  connect(toBeginAction, SIGNAL(triggered()), SLOT(moveToStartSlot()));
+
+  QAction *moveBackwardAction = ui->toolBar->addAction(tr("Move backward"));
+  connect(moveBackwardAction, SIGNAL(triggered()), SLOT(moveBackwardSlot()));
+
+  QAction *moveForwardAction = ui->toolBar->addAction(tr("Move forward"));
+  connect(moveForwardAction, SIGNAL(triggered()), SLOT(moveForwardSlot()));
+
+  QAction *toEndAction = ui->toolBar->addAction(tr("Move to the end"));
+  connect(toEndAction, SIGNAL(triggered()), SLOT(moveToEndSlot()));
+
+  m_currentSnapshotIndex = 0;
+
   connect(ui->tabWidget, SIGNAL(currentChanged(int)), SLOT(currentTabChangedSlot(int)));
   connect(m_projectTreeViewController, SIGNAL(currentFileChangedSignal(QString)), SLOT(currentFileChangedSlot(QString)));
   connect(m_projectTreeViewController, SIGNAL(categorySelectedSignal(QString,QString)), SLOT(categorySelectedSlot(QString,QString)));
@@ -484,6 +498,7 @@ void MainWindow::screenshotSlot() {
 
 void MainWindow::transformSlot() {
 
+  moveToEndSlot();
   m_transformationHelper->process();
 
   ProjectFile *currentFile = m_currentProject.getProjectFileByName(m_currentFileName);
@@ -494,6 +509,8 @@ void MainWindow::transformSlot() {
     currentFile->destinationOntologyController()->setSourceCode(code);
     currentFile->destinationOntologyController()->normalize();
   }
+
+  m_currentSnapshotIndex = m_currentProject.problemsOntologyController()->snapshots().count();
 
   m_logTreeView->showNormal();
 }
@@ -567,5 +584,123 @@ void MainWindow::categorySelectedSlot(const QString &fileName, const QString &ca
     if (category != NULL) {
       emit itemsSelectedSignal(category->relatedNodeIds());
     }
+  }
+}
+
+void MainWindow::moveToStartSlot() {
+
+  ProjectFile *currentFile = m_currentProject.getProjectFileByName(m_currentFileName);
+
+  if (currentFile != NULL) {
+    QList<OntologyDataController *> sourceSnapshots = currentFile->sourceOntologyController()->snapshots();
+    QList<OntologyDataController *> destinationSnapshots = currentFile->destinationOntologyController()->snapshots();
+    QList<OntologyDataController *> problemsSnapshots = m_currentProject.problemsOntologyController()->snapshots();
+
+    if (m_currentSnapshotIndex > 0)  {
+      m_currentSnapshotIndex = 0;
+
+      OntologyDataController *sourceDataController = sourceSnapshots.at(m_currentSnapshotIndex);
+      OntologyDataController *destinationDataController = destinationSnapshots.at(m_currentSnapshotIndex);
+      OntologyDataController *problemsDataController = problemsSnapshots.at(m_currentSnapshotIndex);
+
+      m_sourceOntologyWidget->setDataSource(sourceDataController);
+      m_sourceOntologyWidget->setDelegate(sourceDataController);
+      m_sourceOntologyWidget->dataChangedSlot();
+
+      m_destinationOntologyWidget->setDataSource(destinationDataController);
+      m_destinationOntologyWidget->setDelegate(destinationDataController);
+      m_destinationOntologyWidget->dataChangedSlot();
+
+      m_problemsOntologyWidget->setDataSource(problemsDataController);
+      m_problemsOntologyWidget->setDelegate(problemsDataController);
+      m_problemsOntologyWidget->dataChangedSlot();
+    }
+  }
+}
+
+void MainWindow::moveForwardSlot() {
+
+  ProjectFile *currentFile = m_currentProject.getProjectFileByName(m_currentFileName);
+
+  if (currentFile != NULL) {
+    QList<OntologyDataController *> sourceSnapshots = currentFile->sourceOntologyController()->snapshots();
+    QList<OntologyDataController *> destinationSnapshots = currentFile->destinationOntologyController()->snapshots();
+    QList<OntologyDataController *> problemsSnapshots = m_currentProject.problemsOntologyController()->snapshots();
+
+    if (m_currentSnapshotIndex < sourceSnapshots.count() - 1) {
+      m_currentSnapshotIndex++;
+
+      OntologyDataController *sourceDataController = sourceSnapshots.at(m_currentSnapshotIndex);
+      OntologyDataController *destinationDataController = destinationSnapshots.at(m_currentSnapshotIndex);
+      OntologyDataController *problemsDataController = problemsSnapshots.at(m_currentSnapshotIndex);
+
+      m_sourceOntologyWidget->setDataSource(sourceDataController);
+      m_sourceOntologyWidget->setDelegate(sourceDataController);
+      m_sourceOntologyWidget->dataChangedSlot();
+
+      m_destinationOntologyWidget->setDataSource(destinationDataController);
+      m_destinationOntologyWidget->setDelegate(destinationDataController);
+      m_destinationOntologyWidget->dataChangedSlot();
+
+      m_problemsOntologyWidget->setDataSource(problemsDataController);
+      m_problemsOntologyWidget->setDelegate(problemsDataController);
+      m_problemsOntologyWidget->dataChangedSlot();
+    }
+    else {
+      moveToEndSlot();
+    }
+  }
+}
+
+void MainWindow::moveBackwardSlot() {
+
+  ProjectFile *currentFile = m_currentProject.getProjectFileByName(m_currentFileName);
+
+  if (currentFile != NULL) {
+    QList<OntologyDataController *> sourceSnapshots = currentFile->sourceOntologyController()->snapshots();
+    QList<OntologyDataController *> destinationSnapshots = currentFile->destinationOntologyController()->snapshots();
+    QList<OntologyDataController *> problemsSnapshots = m_currentProject.problemsOntologyController()->snapshots();
+
+    if (m_currentSnapshotIndex > 0) {
+      m_currentSnapshotIndex--;
+
+      OntologyDataController *sourceDataController = sourceSnapshots.at(m_currentSnapshotIndex);
+      OntologyDataController *destinationDataController = destinationSnapshots.at(m_currentSnapshotIndex);
+      OntologyDataController *problemsDataController = problemsSnapshots.at(m_currentSnapshotIndex);
+
+      m_sourceOntologyWidget->setDataSource(sourceDataController);
+      m_sourceOntologyWidget->setDelegate(sourceDataController);
+      m_sourceOntologyWidget->dataChangedSlot();
+
+      m_destinationOntologyWidget->setDataSource(destinationDataController);
+      m_destinationOntologyWidget->setDelegate(destinationDataController);
+      m_destinationOntologyWidget->dataChangedSlot();
+
+      m_problemsOntologyWidget->setDataSource(problemsDataController);
+      m_problemsOntologyWidget->setDelegate(problemsDataController);
+      m_problemsOntologyWidget->dataChangedSlot();
+    }
+  }
+}
+
+void MainWindow::moveToEndSlot() {
+
+  ProjectFile *currentFile = m_currentProject.getProjectFileByName(m_currentFileName);
+  if (m_currentFileName != NULL) {
+    QList<OntologyDataController *> sourceSnapshots = currentFile->sourceOntologyController()->snapshots();
+
+    m_currentSnapshotIndex = sourceSnapshots.count();
+
+    m_sourceOntologyWidget->setDataSource(currentFile->sourceOntologyController());
+    m_sourceOntologyWidget->setDelegate(currentFile->sourceOntologyController());
+    m_sourceOntologyWidget->dataChangedSlot();
+
+    m_destinationOntologyWidget->setDataSource(currentFile->destinationOntologyController());
+    m_destinationOntologyWidget->setDelegate(currentFile->destinationOntologyController());
+    m_destinationOntologyWidget->dataChangedSlot();
+
+    m_problemsOntologyWidget->setDataSource(m_currentProject.problemsOntologyController());
+    m_problemsOntologyWidget->setDelegate(m_currentProject.problemsOntologyController());
+    m_problemsOntologyWidget->dataChangedSlot();
   }
 }

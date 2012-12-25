@@ -353,13 +353,15 @@ void OntologyDataController::relationRemoved(long relationId) {
 
   RelationData *relation = m_relationsMap.value(relationId);
 
-  m_relationsMap.remove(relationId);
-  m_relationsList.removeAll(relation);
+  if (relation != NULL) {
+    m_relationsMap.remove(relationId);
+    m_relationsList.removeAll(relation);
 
-  QPair<long, long> relationNodesPair(relation->sourceNodeId, relation->destinationNodeId);
-  m_relationsMapByNodes.remove(relationNodesPair);
+    QPair<long, long> relationNodesPair(relation->sourceNodeId, relation->destinationNodeId);
+    m_relationsMapByNodes.remove(relationNodesPair);
 
-  delete relation;
+    delete relation;
+  }
 }
 
 void OntologyDataController::removeRelatedRelations(NodeData *nodeData) {
