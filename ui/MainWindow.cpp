@@ -589,6 +589,8 @@ void MainWindow::categorySelectedSlot(const QString &fileName, const QString &ca
 
 void MainWindow::moveToStartSlot() {
 
+  qDebug() << "Move to start";
+
   ProjectFile *currentFile = m_currentProject.getProjectFileByName(m_currentFileName);
 
   if (currentFile != NULL) {
@@ -630,6 +632,8 @@ void MainWindow::moveForwardSlot() {
     if (m_currentSnapshotIndex < sourceSnapshots.count() - 1) {
       m_currentSnapshotIndex++;
 
+      qDebug() << "Move to " << m_currentSnapshotIndex << " snapshot";
+
       OntologyDataController *sourceDataController = sourceSnapshots.at(m_currentSnapshotIndex);
       OntologyDataController *destinationDataController = destinationSnapshots.at(m_currentSnapshotIndex);
       OntologyDataController *problemsDataController = problemsSnapshots.at(m_currentSnapshotIndex);
@@ -664,6 +668,8 @@ void MainWindow::moveBackwardSlot() {
     if (m_currentSnapshotIndex > 0) {
       m_currentSnapshotIndex--;
 
+      qDebug() << "Move to " << m_currentSnapshotIndex << " snapshot";
+
       OntologyDataController *sourceDataController = sourceSnapshots.at(m_currentSnapshotIndex);
       OntologyDataController *destinationDataController = destinationSnapshots.at(m_currentSnapshotIndex);
       OntologyDataController *problemsDataController = problemsSnapshots.at(m_currentSnapshotIndex);
@@ -684,6 +690,8 @@ void MainWindow::moveBackwardSlot() {
 }
 
 void MainWindow::moveToEndSlot() {
+
+  qDebug() << "Move to the end";
 
   ProjectFile *currentFile = m_currentProject.getProjectFileByName(m_currentFileName);
   if (m_currentFileName != NULL) {

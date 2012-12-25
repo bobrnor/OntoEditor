@@ -53,11 +53,11 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
     int nodeCount();
     int relationCount();
 
-    NodeData *getNodeByIndex(int index);
-    RelationData *getRelationByIndex(int index);
+    NodeData *getNodeByIndex(int index, bool asChanges = false);
+    RelationData *getRelationByIndex(int index, bool asChanges = false);
 
-    NodeData *getNodeById(long id);
-    RelationData *getRelationById(long id);
+    NodeData *getNodeById(long id, bool asChanges = false);
+    RelationData *getRelationById(long id, bool asChanges = false);
 
     NodeData *getNodeByPath(const QStringList &path) const;
 

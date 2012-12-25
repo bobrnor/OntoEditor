@@ -91,7 +91,7 @@ RelationData *TransformationHelper::transformRelation(NodeData *sourceNodeData) 
   NodeData *sourceNodeInProblemsOntology = m_problemsDataController->getNodeByPath(pathToSourceNode);
 
   foreach (long relationId, sourceNodeInProblemsOntology->relations) {
-    RelationData *relation = m_problemsDataController->getRelationById(relationId);
+    RelationData *relation = m_problemsDataController->getRelationById(relationId, true);
     if (relation->name == "transform" || relation->name == "type_transform") {
       return relation;
     }
@@ -123,7 +123,7 @@ void TransformationHelper::transform() {
 
   int relationsCount = m_sourceDataController->relationCount();
   for (int i = 0; i < relationsCount; ++i) {
-    RelationData *relation = m_sourceDataController->getRelationByIndex(i);
+    RelationData *relation = m_sourceDataController->getRelationByIndex(i, true);
     if (relation->name == "is_instance") {
 
       QStandardItem *searchForItem = new QStandardItem(tr("Search for instance..."));
@@ -132,7 +132,7 @@ void TransformationHelper::transform() {
 
       makeSnapshots();
 
-      NodeData *nodeWithInstances = m_sourceDataController->getNodeById(relation->destinationNodeId);
+      NodeData *nodeWithInstances = m_sourceDataController->getNodeById(relation->destinationNodeId, true);
 
       QStandardItem *foundItem = new QStandardItem(nodeWithInstances->name + tr(" found"));
       searchForItem->appendRow(foundItem);
@@ -146,9 +146,10 @@ void TransformationHelper::transform() {
         foundItem->appendRow(searchTransItem);
         m_currentItem = foundItem;
 
+        NodeData *targetNode = transformationTargetNode(nodeWithInstances);
+
         makeSnapshots();
 
-        NodeData *targetNode = transformationTargetNode(nodeWithInstances);
         if (targetNode != NULL) {
 
           QStandardItem *foundTransItem = new QStandardItem(tr("Transformation target node found: ") + targetNode->name);
@@ -161,8 +162,6 @@ void TransformationHelper::transform() {
 
           QStandardItem *addPathItem = new QStandardItem(tr("Add transformation target node to destination ontology"));
           foundTransItem->appendRow(addPathItem);
-
-          makeSnapshots();
 
           m_currentItem = addPathItem;
 
@@ -199,9 +198,9 @@ void TransformationHelper::simpleTransform(NodeData *sourceNodeData, NodeData *d
   m_currentItem->appendRow(transItem);
 
   foreach (long relationId, sourceNodeData->relations) {
-    RelationData *relation = m_sourceDataController->getRelationById(relationId);
+    RelationData *relation = m_sourceDataController->getRelationById(relationId, true);
     if (relation->name == "is_instance") {
-      NodeData *instanceNode = m_sourceDataController->getNodeById(relation->sourceNodeId);
+      NodeData *instanceNode = m_sourceDataController->getNodeById(relation->sourceNodeId, true);
 
       QStandardItem *getItem = new QStandardItem(tr("GET ") + instanceNode->name);
       transItem->appendRow(getItem);
@@ -235,10 +234,10 @@ void TransformationHelper::typeTransform(NodeData *sourceNodeData, NodeData *des
   NodeData *problemsDestinationNode = m_problemsDataController->getNodeByPath(destinationNodePath);
 
   foreach (long relationId, problemsDestinationNode->relations) {
-    RelationData *relationData = m_problemsDataController->getRelationById(relationId);
+    RelationData *relationData = m_problemsDataController->getRelationById(relationId, true);
 
     if (relationData->name == "is_instance") {
-      NodeData *typeNodeData = m_problemsDataController->getNodeById(relationData->sourceNodeId);
+      NodeData *typeNodeData = m_problemsDataController->getNodeById(relationData->sourceNodeId, true);
       Q_ASSERT(typeNodeData);
 
       QStandardItem *getItem = new QStandardItem(tr("GET ") + sourceNodeData->name);
@@ -275,7 +274,7 @@ NodeData *TransformationHelper::transformationTargetNode(NodeData *sourceNode) {
     m_currentItem->appendRow(searchTargetTransItem);
     m_currentItem = searchTargetTransItem;
 
-    NodeData *targetNode = m_problemsDataController->getNodeById(transformRelationData->destinationNodeId);
+    NodeData *targetNode = m_problemsDataController->getNodeById(transformRelationData->destinationNodeId, true);
     Q_ASSERT(targetNode);
 
     makeSnapshots();
@@ -300,7 +299,7 @@ NodeData *TransformationHelper::addPathToDestinationOntology(const QStringList &
       QPointF position = m_problemsDataController->nodePosition(problemsNode->id);
       long newNodeId = m_destinationDataController->nodeCreated();
       m_destinationDataController->nodeNameChanged(newNodeId, problemsNode->name);
-      destinationNode = m_destinationDataController->getNodeById(newNodeId);
+      destinationNode = m_destinationDataController->getNodeById(newNodeId, true);
 
       if (prevDestinationNode != NULL) {
         RelationData *relation = m_problemsDataController->getRelationByNodes(problemsNode->id, prevProblemsNode->id);

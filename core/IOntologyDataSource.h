@@ -9,11 +9,11 @@ class IOntologyDataSource {
     virtual int nodeCount() = 0;
     virtual int relationCount() = 0;
 
-    virtual NodeData *getNodeByIndex(int index) = 0;
-    virtual RelationData *getRelationByIndex(int index) = 0;
+    virtual NodeData *getNodeByIndex(int index, bool asChanges = false) = 0;
+    virtual RelationData *getRelationByIndex(int index, bool asChanges = false) = 0;
 
-    virtual NodeData *getNodeById(long id) = 0;
-    virtual RelationData *getRelationById(long id) = 0;
+    virtual NodeData *getNodeById(long id, bool asChanges = false) = 0;
+    virtual RelationData *getRelationById(long id, bool asChanges = false) = 0;
 
     virtual NodeData *getNodeByPath(const QStringList &path) const = 0;
 

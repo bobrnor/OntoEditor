@@ -35,6 +35,11 @@ void NodeItem::appendRelation(RelationItem *relation) {
   }
 }
 
+void NodeItem::setRelatedDataSource(IOntologyDataSource *dataSource) {
+
+  m_dataSource = dataSource;
+}
+
 void NodeItem::removeRelation(RelationItem *relation) {
 
   m_relations.removeAll(relation);
@@ -70,6 +75,13 @@ void NodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     dashPattern.append(2.0);
     pen.setDashPattern(dashPattern);
     pen.setColor(Qt::blue);
+  }
+  else if (m_dataSource->isNodeChanged(m_id)) {
+    QVector<qreal> dashPattern;
+    dashPattern.append(2.0);
+    dashPattern.append(2.0);
+    pen.setDashPattern(dashPattern);
+    pen.setColor(Qt::red);
   }
 
   QTextOption textOption;

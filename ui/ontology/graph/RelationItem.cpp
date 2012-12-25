@@ -88,6 +88,11 @@ NodeItem *RelationItem::destinationNode() const {
   return m_destinationNode;
 }
 
+void RelationItem::setRelatedDataSource(IOntologyDataSource *dataSource) {
+
+  m_dataSource = dataSource;
+}
+
 void RelationItem::removeFromNodes() {
 
   if (m_sourceNode != NULL) {
@@ -139,6 +144,13 @@ void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     dashPattern.append(2.0);
     pen.setDashPattern(dashPattern);
     pen.setColor(Qt::blue);
+  }
+  else if (m_dataSource->isRelationChanged(m_id)) {
+    QVector<qreal> dashPattern;
+    dashPattern.append(2.0);
+    dashPattern.append(2.0);
+    pen.setDashPattern(dashPattern);
+    pen.setColor(Qt::red);
   }
 
   painter->setPen(pen);

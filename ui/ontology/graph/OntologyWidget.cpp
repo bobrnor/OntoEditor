@@ -155,6 +155,7 @@ void OntologyWidget::addNodeSlot() {
   }
 
   NodeItem *newNode = new NodeItem(NULL);
+  newNode->setRelatedDataSource(m_dataSource);
   newNode->setId(newNodeId);
   newNode->setPos(scenePos);
   connect(newNode, SIGNAL(nodeItemPositionChangedSignal(long, QPointF)), SLOT(nodeItemPositionChangedSlot(long, QPointF)));
@@ -170,6 +171,7 @@ void OntologyWidget::setRelation(NodeItem *sourceNode, NodeItem *destinationNode
   }
 
   RelationItem *relationItem = new RelationItem();
+  relationItem->setRelatedDataSource(m_dataSource);
   relationItem->setId(newRelationId);
   relationItem->setSourceNode(sourceNode);
   relationItem->setDestinationNode(destinationNode);
@@ -205,6 +207,7 @@ void OntologyWidget::updateData() {
       NodeData *nodeData = m_dataSource->getNodeByIndex(i);
       if (invalidatedNodesMap.contains(nodeData->id)) {
         NodeItem *nodeItem = invalidatedNodesMap.value(nodeData->id);
+        nodeItem->setRelatedDataSource(m_dataSource);
         nodeItem->setName(nodeData->name);
         invalidatedNodesMap.remove(nodeItem->id());
         existedNodes.insert(nodeItem->id(), nodeItem);
@@ -213,6 +216,7 @@ void OntologyWidget::updateData() {
         QPointF pos = m_delegate->nodePosition(nodeData->id);
 
         NodeItem *nodeItem = new NodeItem();
+        nodeItem->setRelatedDataSource(m_dataSource);
         nodeItem->setId(nodeData->id);
         nodeItem->setName(nodeData->name);
         nodeItem->setPos(pos);
@@ -229,11 +233,13 @@ void OntologyWidget::updateData() {
       RelationData *relationData = m_dataSource->getRelationByIndex(i);
       if (invalidatedRelationsMap.contains(relationData->id)) {
         RelationItem *relationItem = invalidatedRelationsMap.value(relationData->id);
+        relationItem->setRelatedDataSource(m_dataSource);
         relationItem->setName(relationData->name);
         invalidatedRelationsMap.remove(relationItem->id());
       }
       else {
         RelationItem *relationItem = new RelationItem();
+        relationItem->setRelatedDataSource(m_dataSource);
         relationItem->setId(relationData->id);
         relationItem->setName(relationData->name);
 
@@ -257,6 +263,8 @@ void OntologyWidget::updateData() {
       delete invalidRelation;
     }
   }
+
+  m_ontologyView->scene()->invalidate();
 }
 
 void OntologyWidget::setRelationSlot() {
