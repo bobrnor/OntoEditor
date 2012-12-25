@@ -26,6 +26,8 @@ class TransformationHelper : public QObject {
 
     RelationData *transformRelation(NodeData *sourceNodeData);
 
+    void makeSnapshots();
+
   public:
     TransformationHelper();
 

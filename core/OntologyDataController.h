@@ -31,10 +31,6 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
     void removeRelatedRelations(NodeData *nodeData);
     NodeData *otherNode(RelationData *relation, NodeData *node) const;
 
-    void makeSnapshot();
-    QList<OntologyDataController *> snapshots() const;
-    void clearSnapshots();
-
     OntologyDataController(QList<NodeData *> nodeList, QList<RelationData *> relationList, QMap<long, QPointF> nodePositions);
 
   public:
@@ -44,6 +40,10 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
     void setSourceCode(const QString &sourceCode);
 
     void normalize();
+
+    void makeSnapshot();
+    QList<OntologyDataController *> snapshots() const;
+    void clearSnapshots();
 
     // data source
     int nodeCount();

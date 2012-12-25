@@ -74,6 +74,17 @@ QStandardItemModel *TransformationHelper::logModel() const {
   return m_logModel;
 }
 
+void TransformationHelper::makeSnapshots() {
+
+  m_sourceDataController->makeSnapshot();
+  m_destinationDataController->makeSnapshot();
+  m_problemsDataController->makeSnapshot();
+
+  m_sourceDataController->clearChanges();
+  m_destinationDataController->clearChanges();
+  m_problemsDataController->clearChanges();
+}
+
 RelationData *TransformationHelper::transformRelation(NodeData *sourceNodeData) {
 
   QStringList pathToSourceNode = m_sourceDataController->pathToNode(sourceNodeData->id);
@@ -91,7 +102,11 @@ RelationData *TransformationHelper::transformRelation(NodeData *sourceNodeData) 
 
 void TransformationHelper::transform() {
 
+  m_sourceDataController->clearSnapshots();
+  m_destinationDataController->clearSnapshots();
+  m_problemsDataController->clearSnapshots();
 
+  makeSnapshots();
 
   m_logModel->clear();
   m_logModel->insertColumns(0, 1);
@@ -115,10 +130,14 @@ void TransformationHelper::transform() {
       m_currentItem = m_logModel->itemFromIndex(rootIndex);
       m_currentItem->appendRow(searchForItem);
 
+      makeSnapshots();
+
       NodeData *nodeWithInstances = m_sourceDataController->getNodeById(relation->destinationNodeId);
 
       QStandardItem *foundItem = new QStandardItem(nodeWithInstances->name + tr(" found"));
       searchForItem->appendRow(foundItem);
+
+      makeSnapshots();
 
       if (!passedInstanceNodes.contains(nodeWithInstances->id)) {
         passedInstanceNodes.insert(nodeWithInstances->id);
@@ -127,17 +146,23 @@ void TransformationHelper::transform() {
         foundItem->appendRow(searchTransItem);
         m_currentItem = foundItem;
 
+        makeSnapshots();
+
         NodeData *targetNode = transformationTargetNode(nodeWithInstances);
         if (targetNode != NULL) {
 
           QStandardItem *foundTransItem = new QStandardItem(tr("Transformation target node found: ") + targetNode->name);
           m_currentItem->appendRow(foundTransItem);
 
+          makeSnapshots();
+
           QStringList targetNodePath = m_problemsDataController->pathToNode(targetNode->id);
           NodeData *destinationNode = addPathToDestinationOntology(targetNodePath);
 
           QStandardItem *addPathItem = new QStandardItem(tr("Add transformation target node to destination ontology"));
           foundTransItem->appendRow(addPathItem);
+
+          makeSnapshots();
 
           m_currentItem = addPathItem;
 
@@ -187,6 +212,8 @@ void TransformationHelper::simpleTransform(NodeData *sourceNodeData, NodeData *d
       QStandardItem *toItem = new QStandardItem(tr("PUT TO ") + destinationNodeData->name);
       transItem->appendRow(toItem);
 
+      makeSnapshots();
+
       long newNodeId = m_destinationDataController->nodeCreated();
       m_destinationDataController->nodeNameChanged(newNodeId, instanceNode->name);
       long newRelationId = m_destinationDataController->relationCreated(newNodeId, destinationNodeData->id);
@@ -223,6 +250,8 @@ void TransformationHelper::typeTransform(NodeData *sourceNodeData, NodeData *des
       QStandardItem *asItem = new QStandardItem(tr("AS ") + typeNodeData->name);
       transItem->appendRow(asItem);
 
+      makeSnapshots();
+
       long newNodeId = m_destinationDataController->nodeCreated();
       m_destinationDataController->nodeNameChanged(newNodeId, typeNodeData->name);
       long newRelationId = m_destinationDataController->relationCreated(newNodeId, sourceNodeData->id);
@@ -240,12 +269,17 @@ NodeData *TransformationHelper::transformationTargetNode(NodeData *sourceNode) {
     m_currentItem->appendRow(foundTransItem);
     m_currentItem = foundTransItem;
 
+    makeSnapshots();
+
     QStandardItem *searchTargetTransItem = new QStandardItem(tr("Search for transformation target node..."));
     m_currentItem->appendRow(searchTargetTransItem);
     m_currentItem = searchTargetTransItem;
 
     NodeData *targetNode = m_problemsDataController->getNodeById(transformRelationData->destinationNodeId);
     Q_ASSERT(targetNode);
+
+    makeSnapshots();
+
     return targetNode;
   }
 
@@ -288,6 +322,8 @@ NodeData *TransformationHelper::addPathToDestinationOntology(const QStringList &
 
     prevDestinationNode = destinationNode;
     prevProblemsNode = problemsNode;
+
+    makeSnapshots();
   }
 
   return prevDestinationNode;
