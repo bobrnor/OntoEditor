@@ -69,6 +69,7 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
     bool isNodeChanged(long id) const;
     bool isRelationChanged(long id) const;
     bool hasChanges() const;
+    int changesCount() const;
     void clearChanges();
 
     // delegate

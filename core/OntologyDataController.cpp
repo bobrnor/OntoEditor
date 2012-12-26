@@ -422,6 +422,11 @@ bool OntologyDataController::hasChanges() const {
   return m_changedNodeIds.count() > 0 || m_changedRelationIds.count() > 0;
 }
 
+int OntologyDataController::changesCount() const {
+
+  return m_changedNodeIds.count() + m_changedRelationIds.count();
+}
+
 void OntologyDataController::clearChanges() {
 
   m_changedNodeIds.clear();

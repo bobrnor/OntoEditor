@@ -29,6 +29,7 @@ class IOntologyDataSource {
     virtual bool isNodeChanged(long id) const = 0;
     virtual bool isRelationChanged(long id) const = 0;
     virtual bool hasChanges() const = 0;
+    virtual int changesCount() const = 0;
     virtual void clearChanges() = 0;
 };
 

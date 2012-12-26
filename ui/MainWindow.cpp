@@ -618,6 +618,23 @@ void MainWindow::moveToStartSlot() {
 
       m_logTreeView->setModel(snapshot->logModelSnapshot());
       m_logTreeView->expandAll();
+
+      if (sourceDataController->changesCount() > destinationDataController->changesCount()) {
+        if (sourceDataController->changesCount() > problemsDataController->changesCount()) {
+          ui->tabWidget->setCurrentIndex(0);
+        }
+        else {
+          ui->tabWidget->setCurrentIndex(4);
+        }
+      }
+      else {
+        if (destinationDataController->changesCount() > problemsDataController->changesCount()) {
+          ui->tabWidget->setCurrentIndex(1);
+        }
+        else {
+          ui->tabWidget->setCurrentIndex(4);
+        }
+      }
     }
   }
 }
@@ -652,6 +669,23 @@ void MainWindow::moveForwardSlot() {
 
       m_logTreeView->setModel(snapshot->logModelSnapshot());
       m_logTreeView->expandAll();
+
+      if (sourceDataController->changesCount() > destinationDataController->changesCount()) {
+        if (sourceDataController->changesCount() > problemsDataController->changesCount()) {
+          ui->tabWidget->setCurrentIndex(0);
+        }
+        else {
+          ui->tabWidget->setCurrentIndex(4);
+        }
+      }
+      else {
+        if (destinationDataController->changesCount() > problemsDataController->changesCount()) {
+          ui->tabWidget->setCurrentIndex(1);
+        }
+        else {
+          ui->tabWidget->setCurrentIndex(4);
+        }
+      }
     }
     else {
       moveToEndSlot();
@@ -689,6 +723,23 @@ void MainWindow::moveBackwardSlot() {
 
       m_logTreeView->setModel(snapshot->logModelSnapshot());
       m_logTreeView->expandAll();
+
+      if (sourceDataController->changesCount() > destinationDataController->changesCount()) {
+        if (sourceDataController->changesCount() > problemsDataController->changesCount()) {
+          ui->tabWidget->setCurrentIndex(0);
+        }
+        else {
+          ui->tabWidget->setCurrentIndex(4);
+        }
+      }
+      else {
+        if (destinationDataController->changesCount() > problemsDataController->changesCount()) {
+          ui->tabWidget->setCurrentIndex(1);
+        }
+        else {
+          ui->tabWidget->setCurrentIndex(4);
+        }
+      }
     }
   }
 }
@@ -715,5 +766,7 @@ void MainWindow::moveToEndSlot() {
 
     m_logTreeView->setModel(m_transformationHelper->logModel());
     m_logTreeView->expandAll();
+
+    ui->tabWidget->setCurrentIndex(1);
   }
 }
