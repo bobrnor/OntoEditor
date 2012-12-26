@@ -5,6 +5,7 @@
 
 #include "lib_json/json/json.h"
 #include "core/OntologyDataController.h"
+#include "core/Snapshot.h"
 
 class TransformationHelper : public QObject {
     Q_OBJECT
@@ -17,6 +18,8 @@ class TransformationHelper : public QObject {
     QStandardItemModel *m_logModel;
     QStandardItem *m_currentItem;
 
+    QList<Snapshot *> m_snapshots;
+
     void transform();
     NodeData *transformationTargetNode(NodeData *sourceNode);
     NodeData *addPathToDestinationOntology(const QStringList &path);
@@ -27,6 +30,7 @@ class TransformationHelper : public QObject {
     RelationData *transformRelation(NodeData *sourceNodeData);
 
     void makeSnapshots();
+    QStandardItem *deepCopyModelItem(QStandardItem *item);
 
   public:
     TransformationHelper();
@@ -46,6 +50,9 @@ class TransformationHelper : public QObject {
     QStandardItemModel *logModel() const;
 
     bool isReady() const;
+
+    QList<Snapshot *> snapshots();
+    void clearSnapshots();
 
   signals:
     void dataChangedSignal();

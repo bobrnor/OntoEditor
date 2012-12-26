@@ -510,8 +510,9 @@ void MainWindow::transformSlot() {
     currentFile->destinationOntologyController()->normalize();
   }
 
-  m_currentSnapshotIndex = m_currentProject.problemsOntologyController()->snapshots().count();
+  m_currentSnapshotIndex = m_transformationHelper->snapshots().count();
 
+  m_logTreeView->expandAll();
   m_logTreeView->showNormal();
 }
 
@@ -594,16 +595,14 @@ void MainWindow::moveToStartSlot() {
   ProjectFile *currentFile = m_currentProject.getProjectFileByName(m_currentFileName);
 
   if (currentFile != NULL) {
-    QList<OntologyDataController *> sourceSnapshots = currentFile->sourceOntologyController()->snapshots();
-    QList<OntologyDataController *> destinationSnapshots = currentFile->destinationOntologyController()->snapshots();
-    QList<OntologyDataController *> problemsSnapshots = m_currentProject.problemsOntologyController()->snapshots();
-
     if (m_currentSnapshotIndex > 0)  {
       m_currentSnapshotIndex = 0;
 
-      OntologyDataController *sourceDataController = sourceSnapshots.at(m_currentSnapshotIndex);
-      OntologyDataController *destinationDataController = destinationSnapshots.at(m_currentSnapshotIndex);
-      OntologyDataController *problemsDataController = problemsSnapshots.at(m_currentSnapshotIndex);
+      Snapshot *snapshot = m_transformationHelper->snapshots().at(m_currentSnapshotIndex);
+
+      OntologyDataController *sourceDataController = snapshot->sourceOntologySnapshot();
+      OntologyDataController *destinationDataController = snapshot->destinationOntologySnapshot();
+      OntologyDataController *problemsDataController = snapshot->problemsOntologySnapshot();
 
       m_sourceOntologyWidget->setDataSource(sourceDataController);
       m_sourceOntologyWidget->setDelegate(sourceDataController);
@@ -616,6 +615,9 @@ void MainWindow::moveToStartSlot() {
       m_problemsOntologyWidget->setDataSource(problemsDataController);
       m_problemsOntologyWidget->setDelegate(problemsDataController);
       m_problemsOntologyWidget->dataChangedSlot();
+
+      m_logTreeView->setModel(snapshot->logModelSnapshot());
+      m_logTreeView->expandAll();
     }
   }
 }
@@ -625,18 +627,16 @@ void MainWindow::moveForwardSlot() {
   ProjectFile *currentFile = m_currentProject.getProjectFileByName(m_currentFileName);
 
   if (currentFile != NULL) {
-    QList<OntologyDataController *> sourceSnapshots = currentFile->sourceOntologyController()->snapshots();
-    QList<OntologyDataController *> destinationSnapshots = currentFile->destinationOntologyController()->snapshots();
-    QList<OntologyDataController *> problemsSnapshots = m_currentProject.problemsOntologyController()->snapshots();
-
-    if (m_currentSnapshotIndex < sourceSnapshots.count() - 1) {
+    if (m_currentSnapshotIndex < m_transformationHelper->snapshots().count() - 1) {
       m_currentSnapshotIndex++;
 
       qDebug() << "Move to " << m_currentSnapshotIndex << " snapshot";
 
-      OntologyDataController *sourceDataController = sourceSnapshots.at(m_currentSnapshotIndex);
-      OntologyDataController *destinationDataController = destinationSnapshots.at(m_currentSnapshotIndex);
-      OntologyDataController *problemsDataController = problemsSnapshots.at(m_currentSnapshotIndex);
+      Snapshot *snapshot = m_transformationHelper->snapshots().at(m_currentSnapshotIndex);
+
+      OntologyDataController *sourceDataController = snapshot->sourceOntologySnapshot();
+      OntologyDataController *destinationDataController = snapshot->destinationOntologySnapshot();
+      OntologyDataController *problemsDataController = snapshot->problemsOntologySnapshot();
 
       m_sourceOntologyWidget->setDataSource(sourceDataController);
       m_sourceOntologyWidget->setDelegate(sourceDataController);
@@ -649,6 +649,9 @@ void MainWindow::moveForwardSlot() {
       m_problemsOntologyWidget->setDataSource(problemsDataController);
       m_problemsOntologyWidget->setDelegate(problemsDataController);
       m_problemsOntologyWidget->dataChangedSlot();
+
+      m_logTreeView->setModel(snapshot->logModelSnapshot());
+      m_logTreeView->expandAll();
     }
     else {
       moveToEndSlot();
@@ -661,18 +664,16 @@ void MainWindow::moveBackwardSlot() {
   ProjectFile *currentFile = m_currentProject.getProjectFileByName(m_currentFileName);
 
   if (currentFile != NULL) {
-    QList<OntologyDataController *> sourceSnapshots = currentFile->sourceOntologyController()->snapshots();
-    QList<OntologyDataController *> destinationSnapshots = currentFile->destinationOntologyController()->snapshots();
-    QList<OntologyDataController *> problemsSnapshots = m_currentProject.problemsOntologyController()->snapshots();
-
     if (m_currentSnapshotIndex > 0) {
       m_currentSnapshotIndex--;
 
       qDebug() << "Move to " << m_currentSnapshotIndex << " snapshot";
 
-      OntologyDataController *sourceDataController = sourceSnapshots.at(m_currentSnapshotIndex);
-      OntologyDataController *destinationDataController = destinationSnapshots.at(m_currentSnapshotIndex);
-      OntologyDataController *problemsDataController = problemsSnapshots.at(m_currentSnapshotIndex);
+      Snapshot *snapshot = m_transformationHelper->snapshots().at(m_currentSnapshotIndex);
+
+      OntologyDataController *sourceDataController = snapshot->sourceOntologySnapshot();
+      OntologyDataController *destinationDataController = snapshot->destinationOntologySnapshot();
+      OntologyDataController *problemsDataController = snapshot->problemsOntologySnapshot();
 
       m_sourceOntologyWidget->setDataSource(sourceDataController);
       m_sourceOntologyWidget->setDelegate(sourceDataController);
@@ -685,6 +686,9 @@ void MainWindow::moveBackwardSlot() {
       m_problemsOntologyWidget->setDataSource(problemsDataController);
       m_problemsOntologyWidget->setDelegate(problemsDataController);
       m_problemsOntologyWidget->dataChangedSlot();
+
+      m_logTreeView->setModel(snapshot->logModelSnapshot());
+      m_logTreeView->expandAll();
     }
   }
 }
@@ -695,9 +699,7 @@ void MainWindow::moveToEndSlot() {
 
   ProjectFile *currentFile = m_currentProject.getProjectFileByName(m_currentFileName);
   if (m_currentFileName != NULL) {
-    QList<OntologyDataController *> sourceSnapshots = currentFile->sourceOntologyController()->snapshots();
-
-    m_currentSnapshotIndex = sourceSnapshots.count();
+    m_currentSnapshotIndex = m_transformationHelper->snapshots().count();
 
     m_sourceOntologyWidget->setDataSource(currentFile->sourceOntologyController());
     m_sourceOntologyWidget->setDelegate(currentFile->sourceOntologyController());
@@ -710,5 +712,8 @@ void MainWindow::moveToEndSlot() {
     m_problemsOntologyWidget->setDataSource(m_currentProject.problemsOntologyController());
     m_problemsOntologyWidget->setDelegate(m_currentProject.problemsOntologyController());
     m_problemsOntologyWidget->dataChangedSlot();
+
+    m_logTreeView->setModel(m_transformationHelper->logModel());
+    m_logTreeView->expandAll();
   }
 }

@@ -24,8 +24,6 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
     mutable QSet<long> m_changedNodeIds;
     mutable QSet<long> m_changedRelationIds;
 
-    QList<OntologyDataController *> m_snapshots;
-
     QString m_sourceCode;
 
     void removeRelatedRelations(NodeData *nodeData);
@@ -45,9 +43,7 @@ class OntologyDataController : public IOntologyDataSource, public IOntologyDeleg
 
     void normalize();
 
-    void makeSnapshot();
-    QList<OntologyDataController *> snapshots() const;
-    void clearSnapshots();
+    OntologyDataController *makeSnapshot();
 
     // data source
     int nodeCount();

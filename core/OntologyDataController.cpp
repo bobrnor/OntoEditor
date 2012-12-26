@@ -6,7 +6,6 @@ OntologyDataController::OntologyDataController() {
 
   m_changedNodeIds = QSet<long>();
   m_changedRelationIds = QSet<long>();
-  m_snapshots = QList<OntologyDataController *>();
 }
 
 OntologyDataController::OntologyDataController(const Json::Value &json) {
@@ -15,7 +14,6 @@ OntologyDataController::OntologyDataController(const Json::Value &json) {
 
   m_changedNodeIds = QSet<long>();
   m_changedRelationIds = QSet<long>();
-  m_snapshots = QList<OntologyDataController *>();
 }
 
 OntologyDataController::OntologyDataController(QList<NodeData *> nodeList,
@@ -25,7 +23,6 @@ OntologyDataController::OntologyDataController(QList<NodeData *> nodeList,
                                                QSet<long> changedRelationIds) {
 
   m_lastId = -1;
-  m_snapshots = QList<OntologyDataController *>();
 
   foreach (NodeData *nodeData, nodeList) {
     m_nodesMap.insert(nodeData->id, nodeData);
@@ -431,7 +428,7 @@ void OntologyDataController::clearChanges() {
   m_changedRelationIds.clear();
 }
 
-void OntologyDataController::makeSnapshot() {
+OntologyDataController *OntologyDataController::makeSnapshot() {
 
   OntologyDataController *snapshot = new OntologyDataController(m_nodesList,
                                                                 m_relationsList,
@@ -439,19 +436,5 @@ void OntologyDataController::makeSnapshot() {
                                                                 m_changedNodeIds,
                                                                 m_changedRelationIds);
 
-  m_snapshots.append(snapshot);
-}
-
-QList<OntologyDataController *> OntologyDataController::snapshots() const {
-
-  return m_snapshots;
-}
-
-void OntologyDataController::clearSnapshots() {
-
-  foreach (OntologyDataController *controller, m_snapshots) {
-    delete controller;
-  }
-
-  m_snapshots.clear();
+  return snapshot;
 }

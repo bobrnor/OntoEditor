@@ -32,7 +32,8 @@ SOURCES += main.cpp \
     ui/project_tree/ProjectTreeViewController.cpp \
     ui/project_tree/ProjectFileCategory.cpp \
     ui/project_tree/ProjectFile.cpp \
-    ui/project_tree/Project.cpp
+    ui/project_tree/Project.cpp \
+    core/Snapshot.cpp
 
 HEADERS  += \
     lib_json/json_tool.h \
@@ -68,7 +69,8 @@ HEADERS  += \
     ui/project_tree/ProjectTreeViewController.h \
     ui/project_tree/ProjectFileCategory.h \
     ui/project_tree/ProjectFile.h \
-    ui/project_tree/Project.h
+    ui/project_tree/Project.h \
+    core/Snapshot.h
 
 FORMS += \
     MainWindow.ui \

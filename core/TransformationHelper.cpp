@@ -74,11 +74,34 @@ QStandardItemModel *TransformationHelper::logModel() const {
   return m_logModel;
 }
 
+QStandardItem *TransformationHelper::deepCopyModelItem(QStandardItem *item) {
+
+  QStandardItem *itemCopy = new QStandardItem(item->text());
+  for (int i = 0; i < item->rowCount(); ++i) {
+    QStandardItem *childCopy = deepCopyModelItem(item->child(i));
+    itemCopy->appendRow(childCopy);
+  }
+
+  return itemCopy;
+}
+
 void TransformationHelper::makeSnapshots() {
 
-  m_sourceDataController->makeSnapshot();
-  m_destinationDataController->makeSnapshot();
-  m_problemsDataController->makeSnapshot();
+  Snapshot *snapshot = new Snapshot();
+  snapshot->setSourceOntologySnapshot(m_sourceDataController->makeSnapshot());
+  snapshot->setDestinationOntologySnapshot(m_destinationDataController->makeSnapshot());
+  snapshot->setProblemsOntologySnapshot(m_problemsDataController->makeSnapshot());
+
+  QModelIndex rootIndex = m_logModel->index(0, 0);
+  QStandardItem *rootItem = m_logModel->itemFromIndex(rootIndex);
+
+  QStandardItemModel *modelCopy = new QStandardItemModel();
+  QStandardItem *rootItemCopy = deepCopyModelItem(rootItem);
+  modelCopy->appendRow(rootItemCopy);
+
+  snapshot->setLogModelSnapshot(modelCopy);
+
+  m_snapshots.append(snapshot);
 
   m_sourceDataController->clearChanges();
   m_destinationDataController->clearChanges();
@@ -102,11 +125,7 @@ RelationData *TransformationHelper::transformRelation(NodeData *sourceNodeData) 
 
 void TransformationHelper::transform() {
 
-  m_sourceDataController->clearSnapshots();
-  m_destinationDataController->clearSnapshots();
-  m_problemsDataController->clearSnapshots();
-
-  makeSnapshots();
+  clearSnapshots();
 
   m_logModel->clear();
   m_logModel->insertColumns(0, 1);
@@ -118,6 +137,8 @@ void TransformationHelper::transform() {
   m_logModel->itemFromIndex(rootIndex)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
   m_currentItem = NULL;
+
+  makeSnapshots();
 
   QSet<long> passedInstanceNodes;
 
@@ -162,6 +183,8 @@ void TransformationHelper::transform() {
 
           QStandardItem *addPathItem = new QStandardItem(tr("Add transformation target node to destination ontology"));
           foundTransItem->appendRow(addPathItem);
+
+          makeSnapshots();
 
           m_currentItem = addPathItem;
 
@@ -326,4 +349,18 @@ NodeData *TransformationHelper::addPathToDestinationOntology(const QStringList &
   }
 
   return prevDestinationNode;
+}
+
+QList<Snapshot *> TransformationHelper::snapshots() {
+
+  return m_snapshots;
+}
+
+void TransformationHelper::clearSnapshots() {
+
+  foreach (Snapshot *snapshot, m_snapshots) {
+    delete snapshot;
+  }
+
+  m_snapshots.clear();
 }
