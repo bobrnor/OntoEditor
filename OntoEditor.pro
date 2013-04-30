@@ -52,8 +52,6 @@ HEADERS  += \
     core/OntologyDataController.h \
     core/NodeData.h \
     core/JsonToOntoHelper.h \
-    core/IOntologyDelegate.h \
-    core/IOntologyDataSource.h \
     ui/MainWindow.h \
     ui/ontology/graph/RelationVisualizedLine.h \
     ui/ontology/graph/RelationItem.h \

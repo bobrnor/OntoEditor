@@ -3,8 +3,7 @@
 
 #include <QtGui>
 
-#include "../../../core/IOntologyDataSource.h"
-#include "../../../core/IOntologyDelegate.h"
+#include "../../../core/OntologyDataController.h"
 
 struct TVNodeData {
     NodeData *nodeData;
@@ -17,8 +16,7 @@ class OntologyTreeViewController : public QObject {
   private:
     QTreeView *m_objectsTreeView;
     QStandardItemModel *m_objectsModel;
-    IOntologyDataSource *m_dataSource;
-    IOntologyDelegate *m_delegate;
+    OntologyDataController *m_dataController;
 
     QMap<long, TVNodeData> m_treeData;
 
@@ -35,11 +33,8 @@ class OntologyTreeViewController : public QObject {
 
     QTreeView *treeView() const;
 
-    void setDataSource(IOntologyDataSource *dataSource);
-    IOntologyDataSource *dataSource() const;
-
-    void setDelegate(IOntologyDelegate *delegate);
-    IOntologyDelegate *delegate() const;
+    void setDataController(OntologyDataController *dataController);
+    OntologyDataController *dataController() const;
 
     void setDragEnabled(bool enabled);
     bool isDragEnabled() const;

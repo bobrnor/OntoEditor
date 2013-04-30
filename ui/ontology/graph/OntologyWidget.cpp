@@ -35,8 +35,7 @@ OntologyWidget::OntologyWidget(QWidget *parent) :
 
   connect(m_ontologyView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(showContextMenuSlot(QPoint)));
 
-  m_dataSource = NULL;
-  m_delegate = NULL;
+  m_dataController = NULL;
   m_relationVisualizedLine = NULL;
   m_editRelationMode = false;
   m_sourceCodeShown = false;
@@ -49,24 +48,14 @@ OntologyWidget::~OntologyWidget() {
   delete ui;
 }
 
-void OntologyWidget::setDataSource(IOntologyDataSource *dataSource) {
+void OntologyWidget::setDataController(OntologyDataController *dataController) {
 
-  m_dataSource = dataSource;
+  m_dataController = dataController;
 }
 
-IOntologyDataSource *OntologyWidget::dataSource() const {
+OntologyDataController *OntologyWidget::dataController() const {
 
-  return m_dataSource;
-}
-
-void OntologyWidget::setDelegate(IOntologyDelegate *delegate) {
-
-  m_delegate = delegate;
-}
-
-IOntologyDelegate *OntologyWidget::delegate() const {
-
-  return m_delegate;
+  return m_dataController;
 }
 
 void OntologyWidget::showContextMenuSlot(const QPoint &pos) {
@@ -149,13 +138,13 @@ void OntologyWidget::addNodeSlot() {
   QPointF scenePos = m_lastRightClickScenePosition;
 
   long newNodeId = -1;
-  if (m_delegate != NULL) {
-    newNodeId = m_delegate->nodeCreated();
+  if (m_dataController != NULL) {
+    newNodeId = m_dataController->nodeCreated();
     emit dataChangedSignal();
   }
 
   NodeItem *newNode = new NodeItem(NULL);
-  newNode->setRelatedDataSource(m_dataSource);
+  newNode->setRelatedDataControlelr(m_dataController);
   newNode->setId(newNodeId);
   newNode->setPos(scenePos);
   connect(newNode, SIGNAL(nodeItemPositionChangedSignal(long, QPointF)), SLOT(nodeItemPositionChangedSlot(long, QPointF)));
@@ -165,13 +154,13 @@ void OntologyWidget::addNodeSlot() {
 void OntologyWidget::setRelation(NodeItem *sourceNode, NodeItem *destinationNode) {
 
   long newRelationId = -1;
-  if (m_delegate != NULL) {
-    newRelationId = m_delegate->relationCreated(sourceNode->id(), destinationNode->id());
+  if (m_dataController != NULL) {
+    newRelationId = m_dataController->relationCreated(sourceNode->id(), destinationNode->id());
     emit dataChangedSignal();
   }
 
   RelationItem *relationItem = new RelationItem();
-  relationItem->setRelatedDataSource(m_dataSource);
+  relationItem->setRelatedDataController(m_dataController);
   relationItem->setId(newRelationId);
   relationItem->setSourceNode(sourceNode);
   relationItem->setDestinationNode(destinationNode);
@@ -180,7 +169,7 @@ void OntologyWidget::setRelation(NodeItem *sourceNode, NodeItem *destinationNode
 
 void OntologyWidget::updateData() {
 
-  if (m_dataSource == NULL || m_delegate == NULL) {
+  if (m_dataController == NULL) {
     this->setEnabled(false);
   }
   else {
@@ -202,21 +191,21 @@ void OntologyWidget::updateData() {
     }
 
     QMap<long, NodeItem *> existedNodes;
-    int nodeCount = m_dataSource->nodeCount();
+    int nodeCount = m_dataController->nodeCount();
     for (int i = 0; i < nodeCount; ++i) {
-      NodeData *nodeData = m_dataSource->getNodeByIndex(i);
+      NodeData *nodeData = m_dataController->getNodeByIndex(i);
       if (invalidatedNodesMap.contains(nodeData->id)) {
         NodeItem *nodeItem = invalidatedNodesMap.value(nodeData->id);
-        nodeItem->setRelatedDataSource(m_dataSource);
+        nodeItem->setRelatedDataControlelr(m_dataController);
         nodeItem->setName(nodeData->name);
         invalidatedNodesMap.remove(nodeItem->id());
         existedNodes.insert(nodeItem->id(), nodeItem);
       }
       else {
-        QPointF pos = m_delegate->nodePosition(nodeData->id);
+        QPointF pos = m_dataController->nodePosition(nodeData->id);
 
         NodeItem *nodeItem = new NodeItem();
-        nodeItem->setRelatedDataSource(m_dataSource);
+        nodeItem->setRelatedDataControlelr(m_dataController);
         nodeItem->setId(nodeData->id);
         nodeItem->setName(nodeData->name);
         nodeItem->setPos(pos);
@@ -228,18 +217,18 @@ void OntologyWidget::updateData() {
       }
     }
 
-    int relationCount = m_dataSource->relationCount();
+    int relationCount = m_dataController->relationCount();
     for (int i = 0; i < relationCount; ++i) {
-      RelationData *relationData = m_dataSource->getRelationByIndex(i);
+      RelationData *relationData = m_dataController->getRelationByIndex(i);
       if (invalidatedRelationsMap.contains(relationData->id)) {
         RelationItem *relationItem = invalidatedRelationsMap.value(relationData->id);
-        relationItem->setRelatedDataSource(m_dataSource);
+        relationItem->setRelatedDataController(m_dataController);
         relationItem->setName(relationData->name);
         invalidatedRelationsMap.remove(relationItem->id());
       }
       else {
         RelationItem *relationItem = new RelationItem();
-        relationItem->setRelatedDataSource(m_dataSource);
+        relationItem->setRelatedDataController(m_dataController);
         relationItem->setId(relationData->id);
         relationItem->setName(relationData->name);
 
@@ -307,8 +296,8 @@ void OntologyWidget::editNodeSlot() {
                                               nodeItem->name(),
                                               &ok);
       if (ok) {
-        if (m_delegate != NULL) {
-          m_delegate->nodeNameChanged(nodeItem->id(), newName);
+        if (m_dataController != NULL) {
+          m_dataController->nodeNameChanged(nodeItem->id(), newName);
           emit dataChangedSignal();
         }
         nodeItem->setName(newName);
@@ -329,9 +318,9 @@ void OntologyWidget::editRelationSlot() {
       bool ok = false;
 
       QStringList items;
-      int relationsCount = m_dataSource->relationCount();
+      int relationsCount = m_dataController->relationCount();
       for (int i = 0; i < relationsCount; ++i) {
-        RelationData *relation = m_dataSource->getRelationByIndex(i);
+        RelationData *relation = m_dataController->getRelationByIndex(i);
         if (!items.contains(relation->name)) {
           items.append(relation->name);
         }
@@ -347,8 +336,8 @@ void OntologyWidget::editRelationSlot() {
                                               0);
 
       if (ok) {
-        if (m_delegate != NULL) {
-          m_delegate->relationNameChanged(relationItem->id(), newName);
+        if (m_dataController != NULL) {
+          m_dataController->relationNameChanged(relationItem->id(), newName);
           emit dataChangedSignal();
         }
         relationItem->setName(newName);
@@ -365,15 +354,15 @@ void OntologyWidget::removeSelectedSlot() {
     if (item->data(kIDTType) == kITNode) {
       NodeItem *nodeItem = static_cast<NodeItem *>(item);
       nodeItem->removeAllRelations();
-      if (m_delegate != NULL) {
-        m_delegate->nodeRemoved(nodeItem->id());
+      if (m_dataController != NULL) {
+        m_dataController->nodeRemoved(nodeItem->id());
       }
     }
     else if (item->data(kIDTType) == kITRelation) {
       RelationItem *relationItem = static_cast<RelationItem *>(item);
       relationItem->removeFromNodes();
-      if (m_delegate != NULL) {
-        m_delegate->relationRemoved(relationItem->id());
+      if (m_dataController != NULL) {
+        m_dataController->relationRemoved(relationItem->id());
       }
     }
     m_ontologyView->scene()->removeItem(item);
@@ -473,7 +462,7 @@ void OntologyWidget::zoomOutSlot() {
 
 void OntologyWidget::nodeItemPositionChangedSlot(long id, const QPointF &newPosition) {
 
-  m_delegate->setNodePosition(id, newPosition);
+  m_dataController->setNodePosition(id, newPosition);
 }
 
 QImage OntologyWidget::makeScreenshot() const {
@@ -499,9 +488,9 @@ void OntologyWidget::showSourceCodeSlot() {
 
   if (!m_sourceCodeShown) {
     m_sourceCodeShown = true;
-    if (m_dataSource != NULL) {
-      qDebug() << m_dataSource->sourceCode();
-      m_sourceCodeViewer->setText(m_dataSource->sourceCode());
+    if (m_dataController != NULL) {
+      qDebug() << m_dataController->sourceCode();
+      m_sourceCodeViewer->setText(m_dataController->sourceCode());
     }
 
     m_ontologyView->setVisible(false);

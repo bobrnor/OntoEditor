@@ -136,13 +136,11 @@ void MainWindow::onSourceOntologyWidgetShow() {
   clearConnections();
 
   if (m_currentFileName.isEmpty()) {
-    m_ontologyTreeViewController->setDataSource(NULL);
-    m_ontologyTreeViewController->setDelegate(NULL);
+    m_ontologyTreeViewController->setDataController(NULL);
   }
   else {
     const ProjectFile *file = m_currentProject.getProjectFileByName(m_currentFileName);
-    m_ontologyTreeViewController->setDataSource(file->sourceOntologyController());
-    m_ontologyTreeViewController->setDelegate(file->sourceOntologyController());
+    m_ontologyTreeViewController->setDataController(file->sourceOntologyController());
   }
 
   connect(this, SIGNAL(showOntologyGraphSignal()), m_sourceOntologyWidget, SLOT(showOntologySlot()));
@@ -175,13 +173,11 @@ void MainWindow::onDestinationOntologyWidgetShow() {
   clearConnections();
 
   if (m_currentFileName.isEmpty()) {
-    m_ontologyTreeViewController->setDataSource(NULL);
-    m_ontologyTreeViewController->setDelegate(NULL);
+    m_ontologyTreeViewController->setDataController(NULL);
   }
   else {
     const ProjectFile *file = m_currentProject.getProjectFileByName(m_currentFileName);
-    m_ontologyTreeViewController->setDataSource(file->destinationOntologyController());
-    m_ontologyTreeViewController->setDelegate(file->destinationOntologyController());
+    m_ontologyTreeViewController->setDataController(file->destinationOntologyController());
   }
 
   connect(this, SIGNAL(showOntologyGraphSignal()), m_destinationOntologyWidget, SLOT(showOntologySlot()));
@@ -211,8 +207,7 @@ void MainWindow::onJavaOntologyWidgetShow() {
 
   clearConnections();
 
-  m_ontologyTreeViewController->setDataSource(m_currentProject.getLanguageOntologyByName("java"));
-  m_ontologyTreeViewController->setDelegate(m_currentProject.getLanguageOntologyByName("java"));
+  m_ontologyTreeViewController->setDataController(m_currentProject.getLanguageOntologyByName("java"));
 
   connect(m_javaOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_javaOntologyWidget, SLOT(dataChangedSlot()));
@@ -238,8 +233,7 @@ void MainWindow::onObjcOntologyWidgetShow() {
 
   clearConnections();
 
-  m_ontologyTreeViewController->setDataSource(m_currentProject.getLanguageOntologyByName("objc"));
-  m_ontologyTreeViewController->setDelegate(m_currentProject.getLanguageOntologyByName("objc"));
+  m_ontologyTreeViewController->setDataController(m_currentProject.getLanguageOntologyByName("objc"));
 
   connect(m_objcOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_objcOntologyWidget, SLOT(dataChangedSlot()));
@@ -265,8 +259,7 @@ void MainWindow::onProblemsOntologyWidgetShow() {
 
   clearConnections();
 
-  m_ontologyTreeViewController->setDataSource(m_currentProject.problemsOntologyController());
-  m_ontologyTreeViewController->setDelegate(m_currentProject.problemsOntologyController());
+  m_ontologyTreeViewController->setDataController(m_currentProject.problemsOntologyController());
 
   connect(m_problemsOntologyWidget, SIGNAL(dataChangedSignal()), m_ontologyTreeViewController, SLOT(dataChangedSlot()));
   connect(m_ontologyTreeViewController, SIGNAL(dataChangedSignal()), m_problemsOntologyWidget, SLOT(dataChangedSlot()));
@@ -304,41 +297,34 @@ void MainWindow::updateOntologyTreeData() {
   switch (index) {
     case 0:
       if (m_currentFileName.isEmpty()) {
-        m_ontologyTreeViewController->setDataSource(NULL);
-        m_ontologyTreeViewController->setDelegate(NULL);
+        m_ontologyTreeViewController->setDataController(NULL);
       }
       else {
         const ProjectFile *file = m_currentProject.getProjectFileByName(m_currentFileName);
-        m_ontologyTreeViewController->setDataSource(file->sourceOntologyController());
-        m_ontologyTreeViewController->setDelegate(file->sourceOntologyController());
+        m_ontologyTreeViewController->setDataController(file->sourceOntologyController());
       }
       break;
 
     case 1:
       if (m_currentFileName.isEmpty()) {
-        m_ontologyTreeViewController->setDataSource(NULL);
-        m_ontologyTreeViewController->setDelegate(NULL);
+        m_ontologyTreeViewController->setDataController(NULL);
       }
       else {
         const ProjectFile *file = m_currentProject.getProjectFileByName(m_currentFileName);
-        m_ontologyTreeViewController->setDataSource(file->destinationOntologyController());
-        m_ontologyTreeViewController->setDelegate(file->destinationOntologyController());
+        m_ontologyTreeViewController->setDataController(file->destinationOntologyController());
       }
       break;
 
     case 2:
-      m_ontologyTreeViewController->setDataSource(m_currentProject.getLanguageOntologyByName("java"));
-      m_ontologyTreeViewController->setDelegate(m_currentProject.getLanguageOntologyByName("java"));
+      m_ontologyTreeViewController->setDataController(m_currentProject.getLanguageOntologyByName("java"));
       break;
 
     case 3:
-      m_ontologyTreeViewController->setDataSource(m_currentProject.getLanguageOntologyByName("objc"));
-      m_ontologyTreeViewController->setDelegate(m_currentProject.getLanguageOntologyByName("objc"));
+      m_ontologyTreeViewController->setDataController(m_currentProject.getLanguageOntologyByName("objc"));
       break;
 
     case 4:
-      m_ontologyTreeViewController->setDataSource(m_currentProject.problemsOntologyController());
-      m_ontologyTreeViewController->setDelegate(m_currentProject.problemsOntologyController());
+      m_ontologyTreeViewController->setDataController(m_currentProject.problemsOntologyController());
       break;
   }
 
@@ -416,16 +402,13 @@ void MainWindow::openWorkspaceSlot() {
   bool result = m_currentProject.openWorkspace(filePath);
 
   if (result) {
-    m_javaOntologyWidget->setDataSource(m_currentProject.getLanguageOntologyByName("java"));
-    m_javaOntologyWidget->setDelegate(m_currentProject.getLanguageOntologyByName("java"));
+    m_javaOntologyWidget->setDataController(m_currentProject.getLanguageOntologyByName("java"));
     m_javaOntologyWidget->dataChangedSlot();
 
-    m_objcOntologyWidget->setDataSource(m_currentProject.getLanguageOntologyByName("objc"));
-    m_objcOntologyWidget->setDelegate(m_currentProject.getLanguageOntologyByName("objc"));
+    m_objcOntologyWidget->setDataController(m_currentProject.getLanguageOntologyByName("objc"));
     m_objcOntologyWidget->dataChangedSlot();
 
-    m_problemsOntologyWidget->setDataSource(m_currentProject.problemsOntologyController());
-    m_problemsOntologyWidget->setDelegate(m_currentProject.problemsOntologyController());
+    m_problemsOntologyWidget->setDataController(m_currentProject.problemsOntologyController());
     m_problemsOntologyWidget->dataChangedSlot();
 
     updateOntologyTreeData();    
@@ -444,16 +427,13 @@ void MainWindow::openProjectSlot() {
   bool result = m_currentProject.openProject(filePath);
 
   if (result) {
-    m_javaOntologyWidget->setDataSource(m_currentProject.getLanguageOntologyByName("java"));
-    m_javaOntologyWidget->setDelegate(m_currentProject.getLanguageOntologyByName("java"));
+    m_javaOntologyWidget->setDataController(m_currentProject.getLanguageOntologyByName("java"));
     m_javaOntologyWidget->dataChangedSlot();
 
-    m_objcOntologyWidget->setDataSource(m_currentProject.getLanguageOntologyByName("objc"));
-    m_objcOntologyWidget->setDelegate(m_currentProject.getLanguageOntologyByName("objc"));
+    m_objcOntologyWidget->setDataController(m_currentProject.getLanguageOntologyByName("objc"));
     m_objcOntologyWidget->dataChangedSlot();
 
-    m_problemsOntologyWidget->setDataSource(m_currentProject.problemsOntologyController());
-    m_problemsOntologyWidget->setDelegate(m_currentProject.problemsOntologyController());
+    m_problemsOntologyWidget->setDataController(m_currentProject.problemsOntologyController());
     m_problemsOntologyWidget->dataChangedSlot();
 
     updateOntologyTreeData();
@@ -551,12 +531,10 @@ void MainWindow::currentFileChangedSlot(const QString &fileName) {
     m_transformationHelper->setDestinationOntology(file->destinationOntologyController());
     m_transformationHelper->setProblemsOntology(m_currentProject.problemsOntologyController());
 
-    m_sourceOntologyWidget->setDataSource(file->sourceOntologyController());
-    m_sourceOntologyWidget->setDelegate(file->sourceOntologyController());
+    m_sourceOntologyWidget->setDataController(file->sourceOntologyController());
     m_sourceOntologyWidget->dataChangedSlot();
 
-    m_destinationOntologyWidget->setDataSource(file->destinationOntologyController());
-    m_destinationOntologyWidget->setDelegate(file->destinationOntologyController());
+    m_destinationOntologyWidget->setDataController(file->destinationOntologyController());
     m_destinationOntologyWidget->dataChangedSlot();
   }
 }
@@ -572,12 +550,10 @@ void MainWindow::categorySelectedSlot(const QString &fileName, const QString &ca
       m_transformationHelper->setDestinationOntology(file->destinationOntologyController());
       m_transformationHelper->setProblemsOntology(m_currentProject.problemsOntologyController());
 
-      m_sourceOntologyWidget->setDataSource(file->sourceOntologyController());
-      m_sourceOntologyWidget->setDelegate(file->sourceOntologyController());
+      m_sourceOntologyWidget->setDataController(file->sourceOntologyController());
       m_sourceOntologyWidget->dataChangedSlot();
 
-      m_destinationOntologyWidget->setDataSource(file->destinationOntologyController());
-      m_destinationOntologyWidget->setDelegate(file->destinationOntologyController());
+      m_destinationOntologyWidget->setDataController(file->destinationOntologyController());
       m_destinationOntologyWidget->dataChangedSlot();
     }
 
@@ -604,16 +580,13 @@ void MainWindow::moveToStartSlot() {
       OntologyDataController *destinationDataController = snapshot->destinationOntologySnapshot();
       OntologyDataController *problemsDataController = snapshot->problemsOntologySnapshot();
 
-      m_sourceOntologyWidget->setDataSource(sourceDataController);
-      m_sourceOntologyWidget->setDelegate(sourceDataController);
+      m_sourceOntologyWidget->setDataController(sourceDataController);
       m_sourceOntologyWidget->dataChangedSlot();
 
-      m_destinationOntologyWidget->setDataSource(destinationDataController);
-      m_destinationOntologyWidget->setDelegate(destinationDataController);
+      m_destinationOntologyWidget->setDataController(destinationDataController);
       m_destinationOntologyWidget->dataChangedSlot();
 
-      m_problemsOntologyWidget->setDataSource(problemsDataController);
-      m_problemsOntologyWidget->setDelegate(problemsDataController);
+      m_problemsOntologyWidget->setDataController(problemsDataController);
       m_problemsOntologyWidget->dataChangedSlot();
 
       m_logTreeView->setModel(snapshot->logModelSnapshot());
@@ -655,16 +628,13 @@ void MainWindow::moveForwardSlot() {
       OntologyDataController *destinationDataController = snapshot->destinationOntologySnapshot();
       OntologyDataController *problemsDataController = snapshot->problemsOntologySnapshot();
 
-      m_sourceOntologyWidget->setDataSource(sourceDataController);
-      m_sourceOntologyWidget->setDelegate(sourceDataController);
+      m_sourceOntologyWidget->setDataController(sourceDataController);
       m_sourceOntologyWidget->dataChangedSlot();
 
-      m_destinationOntologyWidget->setDataSource(destinationDataController);
-      m_destinationOntologyWidget->setDelegate(destinationDataController);
+      m_destinationOntologyWidget->setDataController(destinationDataController);
       m_destinationOntologyWidget->dataChangedSlot();
 
-      m_problemsOntologyWidget->setDataSource(problemsDataController);
-      m_problemsOntologyWidget->setDelegate(problemsDataController);
+      m_problemsOntologyWidget->setDataController(problemsDataController);
       m_problemsOntologyWidget->dataChangedSlot();
 
       m_logTreeView->setModel(snapshot->logModelSnapshot());
@@ -709,16 +679,13 @@ void MainWindow::moveBackwardSlot() {
       OntologyDataController *destinationDataController = snapshot->destinationOntologySnapshot();
       OntologyDataController *problemsDataController = snapshot->problemsOntologySnapshot();
 
-      m_sourceOntologyWidget->setDataSource(sourceDataController);
-      m_sourceOntologyWidget->setDelegate(sourceDataController);
+      m_sourceOntologyWidget->setDataController(sourceDataController);
       m_sourceOntologyWidget->dataChangedSlot();
 
-      m_destinationOntologyWidget->setDataSource(destinationDataController);
-      m_destinationOntologyWidget->setDelegate(destinationDataController);
+      m_destinationOntologyWidget->setDataController(destinationDataController);
       m_destinationOntologyWidget->dataChangedSlot();
 
-      m_problemsOntologyWidget->setDataSource(problemsDataController);
-      m_problemsOntologyWidget->setDelegate(problemsDataController);
+      m_problemsOntologyWidget->setDataController(problemsDataController);
       m_problemsOntologyWidget->dataChangedSlot();
 
       m_logTreeView->setModel(snapshot->logModelSnapshot());
@@ -752,16 +719,13 @@ void MainWindow::moveToEndSlot() {
   if (m_currentFileName != NULL) {
     m_currentSnapshotIndex = m_transformationHelper->snapshots().count();
 
-    m_sourceOntologyWidget->setDataSource(currentFile->sourceOntologyController());
-    m_sourceOntologyWidget->setDelegate(currentFile->sourceOntologyController());
+    m_sourceOntologyWidget->setDataController(currentFile->sourceOntologyController());
     m_sourceOntologyWidget->dataChangedSlot();
 
-    m_destinationOntologyWidget->setDataSource(currentFile->destinationOntologyController());
-    m_destinationOntologyWidget->setDelegate(currentFile->destinationOntologyController());
+    m_destinationOntologyWidget->setDataController(currentFile->destinationOntologyController());
     m_destinationOntologyWidget->dataChangedSlot();
 
-    m_problemsOntologyWidget->setDataSource(m_currentProject.problemsOntologyController());
-    m_problemsOntologyWidget->setDelegate(m_currentProject.problemsOntologyController());
+    m_problemsOntologyWidget->setDataController(m_currentProject.problemsOntologyController());
     m_problemsOntologyWidget->dataChangedSlot();
 
     m_logTreeView->setModel(m_transformationHelper->logModel());

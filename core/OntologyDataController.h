@@ -5,10 +5,10 @@
 
 #include "lib_json/json/json.h"
 
-#include "core/IOntologyDataSource.h"
-#include "core/IOntologyDelegate.h"
+#include "NodeData.h"
+#include "RelationData.h"
 
-class OntologyDataController : public IOntologyDataSource, public IOntologyDelegate {
+class OntologyDataController {
   private:
     long m_lastId;
     // mapping

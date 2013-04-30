@@ -17,8 +17,7 @@ OntologyTreeViewController::OntologyTreeViewController() {
 
   m_objectsModel = new QStandardItemModel();
   m_objectsTreeView->setModel(m_objectsModel);
-  m_dataSource = NULL;
-  m_delegate = NULL;
+  m_dataController = NULL;
 
   clearTreeView();
 
@@ -58,24 +57,14 @@ QTreeView *OntologyTreeViewController::treeView() const {
   return m_objectsTreeView;
 }
 
-void OntologyTreeViewController::setDataSource(IOntologyDataSource *dataSource) {
+void OntologyTreeViewController::setDataController(OntologyDataController *dataController) {
 
-  m_dataSource = dataSource;
+  m_dataController = dataController;
 }
 
-IOntologyDataSource *OntologyTreeViewController::dataSource() const {
+OntologyDataController *OntologyTreeViewController::dataController() const {
 
-  return m_dataSource;
-}
-
-void OntologyTreeViewController::setDelegate(IOntologyDelegate *delegate) {
-
-  m_delegate = delegate;
-}
-
-IOntologyDelegate *OntologyTreeViewController::delegate() const {
-
-  return m_delegate;
+  return m_dataController;
 }
 
 void OntologyTreeViewController::setDragEnabled(bool enabled) {
@@ -92,12 +81,12 @@ void OntologyTreeViewController::updateTreeDataBottomToTop() {
 
   m_treeData.clear();
 
-  if (m_dataSource != NULL && m_delegate != NULL) {
+  if (m_dataController != NULL && m_dataController != NULL) {
     QMap<long, int> parentCounts;
 
-    int nodesCount = m_dataSource->nodeCount();
+    int nodesCount = m_dataController->nodeCount();
     for (int i = 0; i < nodesCount; ++i) {
-      NodeData *nodeData = m_dataSource->getNodeByIndex(i);
+      NodeData *nodeData = m_dataController->getNodeByIndex(i);
       TVNodeData tvNodeData;
       tvNodeData.nodeData = nodeData;
       // FIX: leak
@@ -107,9 +96,9 @@ void OntologyTreeViewController::updateTreeDataBottomToTop() {
       parentCounts.insert(nodeData->id, 0);
     }
 
-    int relationsCount = m_dataSource->relationCount();
+    int relationsCount = m_dataController->relationCount();
     for (int i = 0; i < relationsCount; ++i) {
-      RelationData *relationData = m_dataSource->getRelationByIndex(i);
+      RelationData *relationData = m_dataController->getRelationByIndex(i);
       TVNodeData sourceNodeData = m_treeData.value(relationData->sourceNodeId);
       TVNodeData destinationNodeData = m_treeData.value(relationData->destinationNodeId);
 
@@ -149,12 +138,12 @@ void OntologyTreeViewController::updateTreeDataTopToBottom() {
 
   m_treeData.clear();
 
-  if (m_dataSource != NULL && m_delegate != NULL) {
+  if (m_dataController != NULL && m_dataController != NULL) {
     QMap<long, int> childCounts;
 
-    int nodesCount = m_dataSource->nodeCount();
+    int nodesCount = m_dataController->nodeCount();
     for (int i = 0; i < nodesCount; ++i) {
-      NodeData *nodeData = m_dataSource->getNodeByIndex(i);
+      NodeData *nodeData = m_dataController->getNodeByIndex(i);
       TVNodeData tvNodeData;
       tvNodeData.nodeData = nodeData;
       // FIX: leak
@@ -164,9 +153,9 @@ void OntologyTreeViewController::updateTreeDataTopToBottom() {
       childCounts.insert(nodeData->id, 0);
     }
 
-    int relationsCount = m_dataSource->relationCount();
+    int relationsCount = m_dataController->relationCount();
     for (int i = 0; i < relationsCount; ++i) {
-      RelationData *relationData = m_dataSource->getRelationByIndex(i);
+      RelationData *relationData = m_dataController->getRelationByIndex(i);
       TVNodeData sourceNodeData = m_treeData.value(relationData->sourceNodeId);
       TVNodeData destinationNodeData = m_treeData.value(relationData->destinationNodeId);
 
@@ -241,10 +230,10 @@ void OntologyTreeViewController::updateData() {
 
   clearTreeView();
 
-  if (m_dataSource != NULL && m_delegate != NULL) {
+  if (m_dataController != NULL && m_dataController != NULL) {
     QModelIndex nodesIndex = m_objectsModel->index(1, 0);
     int currentNodeRowsCount = m_objectsModel->rowCount(nodesIndex);
-    int nodesCount = m_dataSource->nodeCount();
+    int nodesCount = m_dataController->nodeCount();
 
     int countDiff = currentNodeRowsCount - nodesCount;
     if (countDiff > 0) {
@@ -256,7 +245,7 @@ void OntologyTreeViewController::updateData() {
 
     for (int i = 0; i < nodesCount; ++i) {
       QModelIndex index = m_objectsModel->index(i, 0, nodesIndex);
-      NodeData *nodeData = m_dataSource->getNodeByIndex(i);
+      NodeData *nodeData = m_dataController->getNodeByIndex(i);
       m_objectsModel->setData(index, nodeData->name/* + "[" + QString::number(nodeData->id) + "]"*/);
       m_objectsModel->setData(index, (qlonglong)nodeData->id, Qt::UserRole);
       m_objectsModel->itemFromIndex(index)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
@@ -264,7 +253,7 @@ void OntologyTreeViewController::updateData() {
 
     QModelIndex relationsIndex = m_objectsModel->index(2, 0);
     int currentRelationRowsCount = m_objectsModel->rowCount(relationsIndex);
-    int relationsCount = m_dataSource->relationCount();
+    int relationsCount = m_dataController->relationCount();
 
     countDiff = currentRelationRowsCount - relationsCount;
     if (countDiff > 0) {
@@ -276,7 +265,7 @@ void OntologyTreeViewController::updateData() {
 
     for (int i = 0; i < relationsCount; ++i) {
       QModelIndex index = m_objectsModel->index(i, 0, relationsIndex);
-      RelationData *relationData = m_dataSource->getRelationByIndex(i);
+      RelationData *relationData = m_dataController->getRelationByIndex(i);
       m_objectsModel->setData(index, relationData->name/* + "[" + QString::number(relationData->id) + "]"*/);
       m_objectsModel->setData(index, (qlonglong)relationData->id, Qt::UserRole);
       m_objectsModel->itemFromIndex(index)->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);

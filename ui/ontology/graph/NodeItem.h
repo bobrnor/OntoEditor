@@ -6,7 +6,7 @@
 #include "ItemDataKey.h"
 #include "ItemType.h"
 #include "OntologyGraphElement.h"
-#include "core/IOntologyDataSource.h"
+#include "core/OntologyDataController.h"
 
 class RelationItem;
 
@@ -16,7 +16,7 @@ class NodeItem : public QObject, public QGraphicsRectItem, public OntologyGraphE
   private:
     QList<RelationItem *> m_relations;
 
-    IOntologyDataSource *m_dataSource;
+    OntologyDataController *m_dataController;
 
   protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -31,7 +31,7 @@ class NodeItem : public QObject, public QGraphicsRectItem, public OntologyGraphE
 
     void removeAllRelations();
 
-    void setRelatedDataSource(IOntologyDataSource *dataSource);
+    void setRelatedDataControlelr(OntologyDataController *dataController);
 
     Json::Value jsonRepresentation() const;
 

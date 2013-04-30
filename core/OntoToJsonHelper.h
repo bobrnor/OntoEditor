@@ -4,12 +4,12 @@
 #include "lib_json/json/json.h"
 #include <QList>
 
-class IOntologyDataSource;
+class OntologyDataController;
 class NodeData;
 
 class OntoToJsonHelper {
   private:
-    IOntologyDataSource *m_ontoDataSource;
+    OntologyDataController *m_dataController;
 
   protected:
     void putNodeIntoJson(NodeData *node, Json::Value *jsonValue) const;
@@ -17,7 +17,7 @@ class OntoToJsonHelper {
     QList<NodeData *> getAllInstances(NodeData *node) const;
 
   public:
-    OntoToJsonHelper(IOntologyDataSource *dataSource);
+    OntoToJsonHelper(OntologyDataController *dataController);
 
     Json::Value generateJson();
 };

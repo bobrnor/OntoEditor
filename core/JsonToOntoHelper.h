@@ -3,18 +3,14 @@
 
 #include "lib_json/json/json.h"
 
-class IOntologyDelegate;
-class IOntologyDataSource;
+class OntologyDataController;
 class NodeData;
 
 class JsonToOntoHelper {
 
   private:
-    IOntologyDataSource *m_languageDataSource;
-    IOntologyDelegate *m_languageDelegate;
-
-    IOntologyDataSource *m_destinationDataSource;
-    IOntologyDelegate *m_destinationDelegate;
+    OntologyDataController *m_languageOntologyDataController;
+    OntologyDataController *m_destinationOntologyDataController;
 
   protected:
     void process(const Json::Value &jsonValue, NodeData *currentLanguageNode, NodeData *currentDestinationNode);
@@ -27,8 +23,8 @@ class JsonToOntoHelper {
   public:
     JsonToOntoHelper();
 
-    void setLanguageOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
-    void setDestinationOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate);
+    void setLanguageOntology(OntologyDataController *dataController);
+    void setDestinationOntology(OntologyDataController *dataController);
 
     void fillOntology(const Json::Value &json);
 };

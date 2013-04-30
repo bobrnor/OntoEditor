@@ -6,8 +6,7 @@
 #include "lib_json/json/json.h"
 
 #include "OntologyGraphicsView.h"
-#include "../../../core/IOntologyDelegate.h"
-#include "../../../core/IOntologyDataSource.h"
+#include "../../../core/OntologyDataController.h"
 
 class RelationVisualizedLine;
 class NodeItem;
@@ -23,11 +22,8 @@ class OntologyWidget : public QWidget {
     explicit OntologyWidget(QWidget *parent = 0);
     ~OntologyWidget();
 
-    void setDelegate(IOntologyDelegate *delegate);
-    IOntologyDelegate *delegate() const;
-
-    void setDataSource(IOntologyDataSource *dataSource);
-    IOntologyDataSource *dataSource() const;
+    void setDataController(OntologyDataController *dataController);
+    OntologyDataController *dataController() const;
 
     QImage makeScreenshot() const;
 
@@ -40,8 +36,7 @@ class OntologyWidget : public QWidget {
     OntologyGraphicsView *m_ontologyView;
     QPointF m_lastRightClickScenePosition;
     RelationVisualizedLine *m_relationVisualizedLine;
-    IOntologyDataSource *m_dataSource;
-    IOntologyDelegate *m_delegate;
+    OntologyDataController *m_dataController;
 
     bool m_editRelationMode;
     bool m_sourceCodeShown;

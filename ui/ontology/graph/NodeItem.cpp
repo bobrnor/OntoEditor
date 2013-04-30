@@ -35,9 +35,9 @@ void NodeItem::appendRelation(RelationItem *relation) {
   }
 }
 
-void NodeItem::setRelatedDataSource(IOntologyDataSource *dataSource) {
+void NodeItem::setRelatedDataControlelr(OntologyDataController *dataController) {
 
-  m_dataSource = dataSource;
+  m_dataController = dataController;
 }
 
 void NodeItem::removeRelation(RelationItem *relation) {
@@ -76,7 +76,7 @@ void NodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     pen.setDashPattern(dashPattern);
     pen.setColor(Qt::blue);
   }
-  else if (m_dataSource->isNodeChanged(m_id)) {
+  else if (m_dataController->isNodeChanged(m_id)) {
     QVector<qreal> dashPattern;
     dashPattern.append(2.0);
     dashPattern.append(2.0);

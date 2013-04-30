@@ -6,7 +6,7 @@
 #include "ItemDataKey.h"
 #include "ItemType.h"
 #include "OntologyGraphElement.h"
-#include "core/IOntologyDataSource.h"
+#include "core/OntologyDataController.h".h"
 
 class NodeItem;
 
@@ -15,7 +15,7 @@ class RelationItem : public QGraphicsLineItem, public OntologyGraphElement {
     NodeItem *m_sourceNode;
     NodeItem *m_destinationNode;
 
-    IOntologyDataSource *m_dataSource;
+    OntologyDataController *m_dataController;
 
   protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -38,7 +38,7 @@ class RelationItem : public QGraphicsLineItem, public OntologyGraphElement {
     virtual void setDestinationNode(NodeItem *node);
     virtual NodeItem *destinationNode() const;
 
-    void setRelatedDataSource(IOntologyDataSource *dataSource);
+    void setRelatedDataController(OntologyDataController *dataController);
 };
 
 #endif // RELATIONITEM_H

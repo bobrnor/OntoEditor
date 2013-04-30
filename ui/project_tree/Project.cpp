@@ -77,8 +77,8 @@ OntologyDataController *Project::problemsOntologyController() const {
 QString Project::findCorrenspondingLanguage(const QString &term) const {
 
   foreach (QString languageName, m_languageOntologies.keys()) {
-    IOntologyDataSource *languageDataSource = m_languageOntologies.value(languageName);
-    NodeData *node = languageDataSource->findNode(term);
+    OntologyDataController *languageOntologyDataController = m_languageOntologies.value(languageName);
+    NodeData *node = languageOntologyDataController->findNode(term);
     if (node != NULL) {
       return languageName;
     }
@@ -118,8 +118,8 @@ bool Project::importSourceFile(const QString &path) {
           m_files.insert(file->name(), file);
 
           JsonToOntoHelper jtoHelper;
-          jtoHelper.setLanguageOntology(m_languageOntologies.value(language), m_languageOntologies.value(language));
-          jtoHelper.setDestinationOntology(file->sourceOntologyController(), file->sourceOntologyController());
+          jtoHelper.setLanguageOntology(m_languageOntologies.value(language));
+          jtoHelper.setDestinationOntology(file->sourceOntologyController());
           jtoHelper.fillOntology(jsonState);
 
           file->sourceOntologyController()->setSourceCode(QString::fromStdString(jsonState.toStyledString()));

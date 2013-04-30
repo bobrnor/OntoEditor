@@ -2,27 +2,22 @@
 
 #include <QDebug>
 
-#include "IOntologyDataSource.h"
-#include "IOntologyDelegate.h"
+#include "OntologyDataController.h"
 
 JsonToOntoHelper::JsonToOntoHelper() {
 
-  m_languageDataSource = NULL;
-  m_languageDelegate = NULL;
-  m_destinationDataSource = NULL;
-  m_destinationDelegate = NULL;
+  m_languageOntologyDataController = NULL;
+  m_destinationOntologyDataController = NULL;
 }
 
-void JsonToOntoHelper::setLanguageOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
+void JsonToOntoHelper::setLanguageOntology(OntologyDataController *dataController) {
 
-  m_languageDataSource = dataSource;
-  m_languageDelegate = delegate;
+  m_languageOntologyDataController = dataController;
 }
 
-void JsonToOntoHelper::setDestinationOntology(IOntologyDataSource *dataSource, IOntologyDelegate *delegate) {
+void JsonToOntoHelper::setDestinationOntology(OntologyDataController *dataController) {
 
-  m_destinationDataSource = dataSource;
-  m_destinationDelegate = delegate;
+  m_destinationOntologyDataController = dataController;
 }
 
 void JsonToOntoHelper::fillOntology(const Json::Value &json) {
@@ -36,32 +31,32 @@ NodeData *JsonToOntoHelper::copyNode(NodeData *currentLanguageNode, NodeData *cu
   NodeData *sourceNode = currentLanguageNode;
   NodeData *prevSourceNode = NULL;
   if (currentDestinationNode != NULL) {
-    prevSourceNode = m_languageDataSource->findNode(currentDestinationNode->name, sourceNode);
+    prevSourceNode = m_languageOntologyDataController->findNode(currentDestinationNode->name, sourceNode);
   }
 
-  int newNodeId = m_destinationDelegate->nodeCreated();
-  m_destinationDelegate->nodeNameChanged(newNodeId, sourceNode->name);
+  int newNodeId = m_destinationOntologyDataController->nodeCreated();
+  m_destinationOntologyDataController->nodeNameChanged(newNodeId, sourceNode->name);
 
   if (prevSourceNode != NULL) {
     foreach (long relationId, sourceNode->relations) {
-      RelationData *relation = m_languageDataSource->getRelationById(relationId);
+      RelationData *relation = m_languageOntologyDataController->getRelationById(relationId);
       if (relation->sourceNodeId == prevSourceNode->id) {
-        long newRelationId = m_destinationDelegate->relationCreated(currentDestinationNode->id, newNodeId);
-        m_destinationDelegate->relationNameChanged(newRelationId, relation->name);
+        long newRelationId = m_destinationOntologyDataController->relationCreated(currentDestinationNode->id, newNodeId);
+        m_destinationOntologyDataController->relationNameChanged(newRelationId, relation->name);
         break;
       }
       else if (relation->destinationNodeId == prevSourceNode->id) {
-        long newRelationId = m_destinationDelegate->relationCreated(newNodeId, currentDestinationNode->id);
-        m_destinationDelegate->relationNameChanged(newRelationId, relation->name);
+        long newRelationId = m_destinationOntologyDataController->relationCreated(newNodeId, currentDestinationNode->id);
+        m_destinationOntologyDataController->relationNameChanged(newRelationId, relation->name);
         break;
       }
     }
   }
 
-  QPointF sourceNodePosition = m_languageDelegate->nodePosition(sourceNode->id);
-  m_destinationDelegate->setNodePosition(newNodeId, sourceNodePosition);
+  QPointF sourceNodePosition = m_languageOntologyDataController->nodePosition(sourceNode->id);
+  m_destinationOntologyDataController->setNodePosition(newNodeId, sourceNodePosition);
 
-  return m_destinationDataSource->getNodeById(newNodeId);
+  return m_destinationOntologyDataController->getNodeById(newNodeId);
 }
 
 void JsonToOntoHelper::process(const Json::Value &jsonValue, NodeData *currentLanguageNode, NodeData *currentDestinationNode) {
@@ -96,7 +91,7 @@ void JsonToOntoHelper::processJsonValue(const Json::Value &jsonValue, NodeData *
 
     QString qMemberName = QString::fromStdString(memberName);
     qDebug() << "Process " << qMemberName << " as json value";
-    NodeData *nodeForMember = m_languageDataSource->findNode(qMemberName, currentLanguageNode);
+    NodeData *nodeForMember = m_languageOntologyDataController->findNode(qMemberName, currentLanguageNode);
 
     Q_ASSERT_X(nodeForMember != NULL,
                "Processing json value",
@@ -118,21 +113,21 @@ void JsonToOntoHelper::processValue(const Json::Value &jsonValue, NodeData *curr
 
   qDebug() << "Create node: " << qString << "as instance of " << currentDestinationNode->name;
 
-  NodeData *languageNode = m_languageDataSource->findNode(qString, currentLanguageNode);
+  NodeData *languageNode = m_languageOntologyDataController->findNode(qString, currentLanguageNode);
 
-  NodeData *nodeForValue = m_destinationDataSource->findNode(qString, currentDestinationNode);
+  NodeData *nodeForValue = m_destinationOntologyDataController->findNode(qString, currentDestinationNode);
   if (nodeForValue == NULL) {
     // create node
-    long nodeId = m_destinationDelegate->nodeCreated();
-    m_destinationDelegate->nodeNameChanged(nodeId, qString);
+    long nodeId = m_destinationOntologyDataController->nodeCreated();
+    m_destinationOntologyDataController->nodeNameChanged(nodeId, qString);
 
     if (languageNode != NULL) {
-      QPointF sourceNodePosition = m_languageDelegate->nodePosition(languageNode->id);
-      m_destinationDelegate->setNodePosition(nodeId, sourceNodePosition);
+      QPointF sourceNodePosition = m_languageOntologyDataController->nodePosition(languageNode->id);
+      m_destinationOntologyDataController->setNodePosition(nodeId, sourceNodePosition);
     }
 
     // create relation
-    long relationId = m_destinationDelegate->relationCreated(nodeId, currentDestinationNode->id);
-    m_destinationDelegate->relationNameChanged(relationId, "is_instance");
+    long relationId = m_destinationOntologyDataController->relationCreated(nodeId, currentDestinationNode->id);
+    m_destinationOntologyDataController->relationNameChanged(relationId, "is_instance");
   }
 }

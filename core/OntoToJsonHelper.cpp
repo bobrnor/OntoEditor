@@ -2,17 +2,16 @@
 
 #include <QDebug>
 
-#include "IOntologyDataSource.h"
-#include "IOntologyDelegate.h"
+#include "OntologyDataController.h"
 
-OntoToJsonHelper::OntoToJsonHelper(IOntologyDataSource *dataSource) {
+OntoToJsonHelper::OntoToJsonHelper(OntologyDataController *dataController) {
 
-  m_ontoDataSource = dataSource;
+  m_dataController = dataController;
 }
 
 Json::Value OntoToJsonHelper::generateJson() {
 
-  NodeData *someNode = m_ontoDataSource->getNodeByIndex(0);
+  NodeData *someNode = m_dataController->getNodeByIndex(0);
   NodeData *root = rootNode(someNode);
   if (root == NULL) {
     root = someNode;
@@ -32,7 +31,7 @@ void OntoToJsonHelper::putNodeIntoJson(NodeData *node, Json::Value *jsonValue) c
   Json::Value nodeJson;
 
   foreach (long relationId, node->relations) {
-    RelationData *relation = m_ontoDataSource->getRelationById(relationId);
+    RelationData *relation = m_dataController->getRelationById(relationId);
     if (relation->name.compare("transform", Qt::CaseInsensitive) != 0
         /*&& relation->name.compare("is_element", Qt::CaseInsensitive) != 0*/) {
 
@@ -57,7 +56,7 @@ void OntoToJsonHelper::putNodeIntoJson(NodeData *node, Json::Value *jsonValue) c
           break;
         }
         else {
-          NodeData *nextNode = m_ontoDataSource->getNodeById(relation->sourceNodeId);
+          NodeData *nextNode = m_dataController->getNodeById(relation->sourceNodeId);
           putNodeIntoJson(nextNode, &nodeJson);
         }
       }
@@ -72,9 +71,9 @@ QList<NodeData *> OntoToJsonHelper::getAllInstances(NodeData *node) const {
   QList<NodeData *> instances;
 
   foreach (long relationId, node->relations) {
-    RelationData *relation = m_ontoDataSource->getRelationById(relationId);
+    RelationData *relation = m_dataController->getRelationById(relationId);
     if (relation->destinationNodeId == node->id && relation->name.compare("is_instance") == 0) {
-      NodeData *instanceNode = m_ontoDataSource->getNodeById(relation->sourceNodeId);
+      NodeData *instanceNode = m_dataController->getNodeById(relation->sourceNodeId);
       instances.append(instanceNode);
     }
   }
@@ -85,9 +84,9 @@ QList<NodeData *> OntoToJsonHelper::getAllInstances(NodeData *node) const {
 NodeData *OntoToJsonHelper::rootNode(NodeData *node) const {
 
   foreach (long relationId, node->relations) {
-    RelationData *relation = m_ontoDataSource->getRelationById(relationId);
+    RelationData *relation = m_dataController->getRelationById(relationId);
     if (relation->sourceNodeId == node->id) {
-      NodeData *parentNode = m_ontoDataSource->getNodeById(relation->destinationNodeId);
+      NodeData *parentNode = m_dataController->getNodeById(relation->destinationNodeId);
       NodeData *root = rootNode(parentNode);
       if (root == NULL) {
         return parentNode;
