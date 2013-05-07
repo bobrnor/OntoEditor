@@ -27,18 +27,12 @@ class MainWindow : public QMainWindow {
     Project m_currentProject;
     QString m_currentFileName;
 
-    OntologyWidget *m_sourceOntologyWidget;
-    OntologyWidget *m_destinationOntologyWidget;
-    OntologyWidget *m_javaOntologyWidget;
-    OntologyWidget *m_objcOntologyWidget;
-    OntologyWidget *m_problemsOntologyWidget;
+    QList<OntologyWidget *> m_openOntologies;
 
     QTreeView *m_logTreeView;
 
     ProjectTreeViewController *m_projectTreeViewController;
     OntologyTreeViewController *m_ontologyTreeViewController;
-
-    TransformationHelper *m_transformationHelper;
 
     long m_currentSnapshotIndex;
 
@@ -48,28 +42,16 @@ class MainWindow : public QMainWindow {
 
     void setupMenu();
 
-    void setupSourceOntologyWidget();
-    void setupDestinationOntologyWidget();
-    void setupJavaOntologyWidget();
-    void setupObjcOntologyWidget();
-    void setupProblemsOntologyWidget();
-
-    void onSourceOntologyWidgetShow();
-    void onDestinationOntologyWidgetShow();
-    void onJavaOntologyWidgetShow();
-    void onObjcOntologyWidgetShow();
-    void onProblemsOntologyWidgetShow();
+    OntologyWidget createNewOntologyWidget();
 
     void clearConnections();
-
     void updateOntologyTreeData();
 
   private slots:
     void importSourceFileSlot();
-    void exportGeneratedFileSlot();
 
-    void openWorkspaceSlot();
-    void saveWorkspaceSlot();
+    void openOntologyFileSlot();
+    void saveOntologyFileSlot();
 
     void openProjectSlot();
     void saveProjectSlot();
@@ -89,9 +71,6 @@ class MainWindow : public QMainWindow {
 
   signals:
     void itemsSelectedSignal(const QSet<long> ids);
-
-    void showOntologyGraphSignal();
-    void showSourceCodeSignal();
 };
 
 #endif // MAINWINDOW_H

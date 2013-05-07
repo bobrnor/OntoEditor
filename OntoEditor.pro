@@ -16,7 +16,6 @@ SOURCES += main.cpp \
     lib_json/json_writer.cpp \
     lib_json/json_value.cpp \
     lib_json/json_reader.cpp \
-    core/TransformationHelper.cpp \
     core/OntoToJsonHelper.cpp \
     core/OntologyDataController.cpp \
     core/JsonToOntoHelper.cpp \
@@ -46,7 +45,6 @@ HEADERS  += \
     lib_json/json/features.h \
     lib_json/json/config.h \
     lib_json/json/autolink.h \
-    core/TransformationHelper.h \
     core/RelationData.h \
     core/OntoToJsonHelper.h \
     core/OntologyDataController.h \
