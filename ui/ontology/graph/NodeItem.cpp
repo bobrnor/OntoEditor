@@ -9,6 +9,10 @@
 NodeItem::NodeItem(QGraphicsItem *parent) :
   QGraphicsRectItem(parent, NULL), OntologyGraphElement() {
 
+  m_backgroundColor = Qt::white;
+  m_textColor = Qt::black;
+  m_shapeName = "rect";
+
   QRectF rect(QPointF(-75, -40), QSizeF(150, 80));
   setRect(rect);
 
@@ -65,31 +69,76 @@ QVariant NodeItem::itemChange(GraphicsItemChange change, const QVariant &value) 
   return QGraphicsRectItem::itemChange(change, value);
 }
 
+void NodeItem::attributesChanged() {
+
+  if (m_attributes.keys().contains("text_color")) {
+    QString textColorHex = m_attributes.value("text_color");
+    m_textColor = QColor(textColorHex);
+  }
+
+  if (m_attributes.keys().contains("bg_color")) {
+    QString bgColorHex = m_attributes.value("bg_color");
+    m_backgroundColor = QColor(bgColorHex);
+  }
+
+  if (m_attributes.keys().contains("shape_name")) {
+    m_shapeName = m_attributes.value("shape_name");
+  }
+
+  if (this->scene() != NULL) {
+    this->scene()->invalidate();
+  }
+}
+
 void NodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
-  QPen pen = this->pen();
+  QPen shapePen = this->pen();
+  QPen textPen = this->pen();
+  QBrush shapeBrush = this->brush();
 
   if (isSelected()) {
     QVector<qreal> dashPattern;
     dashPattern.append(2.0);
     dashPattern.append(2.0);
-    pen.setDashPattern(dashPattern);
-    pen.setColor(Qt::blue);
+    shapePen.setDashPattern(dashPattern);
+    shapePen.setColor(Qt::blue);
+    textPen.setColor(Qt::blue);
+    shapeBrush.setColor(m_backgroundColor);
   }
   else if (m_dataController->isNodeChanged(m_id)) {
     QVector<qreal> dashPattern;
     dashPattern.append(2.0);
     dashPattern.append(2.0);
-    pen.setDashPattern(dashPattern);
-    pen.setColor(Qt::red);
+    shapePen.setDashPattern(dashPattern);
+    shapePen.setColor(Qt::red);
+    textPen.setColor(Qt::red);
+    shapeBrush.setColor(m_backgroundColor);
+  }
+  else {
+    shapeBrush.setColor(m_backgroundColor);
+    textPen.setColor(m_textColor);
   }
 
   QTextOption textOption;
   textOption.setAlignment(Qt::AlignCenter);
   textOption.setWrapMode(QTextOption::WordWrap);
-  painter->setPen(pen);
-  painter->drawRect(this->rect());
-  painter->fillRect(this->rect(), this->brush());
+  painter->setPen(shapePen);
+  painter->setBrush(shapeBrush);
+
+  if (m_shapeName == "rect") {
+    painter->drawRect(this->rect());
+  }
+  else if (m_shapeName == "ellipse") {
+    painter->drawEllipse(this->rect());
+  }
+  else if (m_shapeName == "rounded_rect") {
+    painter->drawRoundedRect(this->rect(), 5.0, 5.0);
+  }
+  else {
+    painter->drawRect(this->rect());
+  }
+
+  painter->setPen(textPen);
   painter->drawText(boundingRect(), m_name, textOption);
 }
 

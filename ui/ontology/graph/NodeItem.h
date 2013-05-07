@@ -15,12 +15,17 @@ class NodeItem : public QObject, public QGraphicsRectItem, public OntologyGraphE
 
   private:
     QList<RelationItem *> m_relations;
+    QColor m_backgroundColor;
+    QColor m_textColor;
+    QString m_shapeName;
 
     OntologyDataController *m_dataController;
 
   protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
+    void attributesChanged();
 
   public:
     explicit NodeItem(QGraphicsItem *parent = 0);

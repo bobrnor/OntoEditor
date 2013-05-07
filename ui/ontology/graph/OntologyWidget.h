@@ -55,6 +55,7 @@ class OntologyWidget : public QWidget {
     void editNodeSlot();
     void editRelationSlot();
     void removeSelectedSlot();
+    void editAttrsSlot();
 
     void sceneSelectionChangedSlot();
 

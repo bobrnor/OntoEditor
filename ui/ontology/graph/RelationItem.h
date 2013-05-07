@@ -15,12 +15,16 @@ class RelationItem : public QGraphicsLineItem, public OntologyGraphElement {
     NodeItem *m_sourceNode;
     NodeItem *m_destinationNode;
 
+    double m_width;
+
     OntologyDataController *m_dataController;
 
   protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
+
+    void attributesChanged();
 
   public:
     explicit RelationItem(QGraphicsItem *parent = 0);

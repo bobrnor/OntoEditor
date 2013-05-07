@@ -1,5 +1,6 @@
 #include "OntologyWidget.h"
 #include "ui_OntologyWidget.h"
+#include "ui_AttributeEditor.h"
 
 #include <QMenu>
 #include <QDebug>
@@ -101,6 +102,12 @@ void OntologyWidget::showContextMenuSlot(const QPoint &pos) {
   }
   else {
     connect(removeAction, SIGNAL(triggered()), SLOT(removeSelectedSlot()));
+  }
+
+  if (m_ontologyView->scene()->selectedItems().count() == 1) {
+    contextMenu.addSeparator();
+    QAction *editAttrsAction = contextMenu.addAction(tr("Edit attributes..."));
+    connect(editAttrsAction, SIGNAL(triggered()), SLOT(editAttrsSlot()));
   }
 
   m_lastRightClickScenePosition = m_ontologyView->mapToScene(pos);
@@ -370,6 +377,28 @@ void OntologyWidget::removeSelectedSlot() {
   }
   updateData();
   emit dataChangedSignal();
+}
+
+void OntologyWidget::editAttrsSlot() {
+
+  QGraphicsItem *selectedItem = m_ontologyView->scene()->selectedItems().at(0);
+  OntologyGraphElement *element = NULL;
+  if (selectedItem->data(kIDTType) == kITNode) {
+    element = static_cast<OntologyGraphElement *>(static_cast<NodeItem *>(selectedItem));
+  }
+  else if (selectedItem->data(kIDTType) == kITRelation) {
+    element = static_cast<OntologyGraphElement *>(static_cast<RelationItem *>(selectedItem));
+  }
+
+  Ui::AttributeEditor editor = Ui::AttributeEditor();
+
+  QDialog *dialog = new QDialog(this);
+  editor.setupUi(dialog);
+  editor.textEdit->appendPlainText(element->attributesAsText());
+
+  if (dialog->exec() == QDialog::Accepted) {
+    element->setAttributes(editor.textEdit->toPlainText());
+  }
 }
 
 void OntologyWidget::sceneSelectionChangedSlot() {

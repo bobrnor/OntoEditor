@@ -66,4 +66,5 @@ HEADERS  += \
 
 FORMS += \
     MainWindow.ui \
-    OntologyWidget.ui
+    OntologyWidget.ui \
+    AttributeEditor.ui

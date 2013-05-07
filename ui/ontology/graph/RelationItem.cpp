@@ -17,6 +17,7 @@ RelationItem::RelationItem(QGraphicsItem *parent) :
 
   setPen(QPen(Qt::black, 1));
   setZValue(-1);
+  m_width = 1.0;
 
   setFlag(ItemIsSelectable);
 
@@ -111,6 +112,18 @@ void RelationItem::adjust() {
   if (m_sourceNode != NULL && m_destinationNode != NULL) {
     setLine(QLineF(m_sourceNode->pos(), m_destinationNode->pos()));
   }
+
+  if (this->scene() != NULL) {
+    this->scene()->invalidate();
+  }
+}
+
+void RelationItem::attributesChanged() {
+
+  if (m_attributes.keys().contains("line_width")) {
+    QString lineWidth = m_attributes.value("line_width");
+    m_width = lineWidth.toDouble();
+  }
 }
 
 void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
@@ -137,6 +150,7 @@ void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
   path.lineTo(arrowP2);
 
   QPen pen = this->pen();
+  pen.setWidthF(m_width);
 
   if (isSelected()) {
     QVector<qreal> dashPattern;
