@@ -67,18 +67,12 @@ MainWindow::~MainWindow() {
   delete ui;
 }
 
-OntologyWidget * MainWindow::createNewOntologyWidget() {
+OntologyWidget * MainWindow::createNewOntologyWidget(ProjectFile *file) {
 
   OntologyWidget *newWidget = new OntologyWidget(this);
-
-//  QVBoxLayout *layout = new QVBoxLayout();
-//  layout->setMargin(0);
-//  dsTab->setLayout(layout);
-//  layout->addWidget(newWidget);
-
-  ui->tabWidget->addTab(newWidget, "Test");
-
+  newWidget->setDataController(file->ontologyController());
   m_openOntologyWidgets.append(newWidget);
+  ui->tabWidget->addTab(newWidget, file->name());
 
   return newWidget;
 }
@@ -150,10 +144,23 @@ void MainWindow::importSourceFileSlot() {
 
 void MainWindow::openOntologyFileSlot() {
 
+  QString filePath = QFileDialog::getOpenFileName(this, tr("Open dialog"), QString(), "*");
+  ProjectFile *file = m_currentProject.openFile(filePath);
+
+  if (file != NULL) {
+    OntologyWidget *widget = createNewOntologyWidget(file);
+    widget->dataChangedSlot();
+  }
+
+  updateOntologyTreeData();
+  m_projectTreeViewController->updateData();
 }
 
 void MainWindow::saveOntologyFileSlot() {
 
+  int index = ui->tabWidget->currentIndex();
+  ProjectFile *file = m_currentProject.getProjectFileByIndex(index);
+  m_currentProject.saveFile(file);
 }
 
 void MainWindow::openProjectSlot() {
@@ -162,11 +169,10 @@ void MainWindow::openProjectSlot() {
   bool result = m_currentProject.openProject(filePath);
 
   if (result) {
-    foreach (QString fileName, m_currentProject.availableFileNames()) {
-      ProjectFile *file = m_currentProject.getProjectFileByName(fileName);
+    for (int i = 0; i < m_currentProject.filesCount(); ++i) {
+      ProjectFile *file = m_currentProject.getProjectFileByIndex(i);
 
-      OntologyWidget *widget = createNewOntologyWidget();
-      widget->setDataController(file->ontologyController());
+      OntologyWidget *widget = createNewOntologyWidget(file);
       widget->dataChangedSlot();
     }
 
@@ -217,20 +223,27 @@ void MainWindow::currentTabChangedSlot(int index) {
 
 void MainWindow::currentFileChangedSlot(const QString &fileName) {
 
-  ProjectFile *file = m_currentProject.getProjectFileByName(fileName);
-  if (file != NULL) {
-    m_currentFileName = fileName;
+  for (int i = 0; i < m_currentProject.filesCount(); ++i) {
+    ProjectFile *file = m_currentProject.getProjectFileByIndex(i);
+    if (file->name() == fileName) {
+      ui->tabWidget->setCurrentIndex(i);
+    }
   }
 }
 
 void MainWindow::categorySelectedSlot(const QString &fileName, const QString &categoryName) {
 
-  ProjectFile *file = m_currentProject.getProjectFileByName(fileName);
-  if (file != NULL) {
-    if (m_currentFileName != fileName) {
-      m_currentFileName = fileName;
-    }
+  ProjectFile *file = NULL;
 
+  for (int i = 0; i < m_currentProject.filesCount(); ++i) {
+    ProjectFile *projFile = m_currentProject.getProjectFileByIndex(i);
+    if (projFile->name() == fileName) {
+      file = projFile;
+      break;
+    }
+  }
+
+  if (file != NULL) {
     ProjectFileCategory *category = file->getCategoryByName(categoryName);
     if (category != NULL) {
       emit itemsSelectedSignal(category->relatedNodeIds());

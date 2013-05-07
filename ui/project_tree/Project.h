@@ -11,7 +11,7 @@
 class Project {
 
   private:
-    QMap<QString, ProjectFile *> m_files;
+    QList<ProjectFile *> m_files;
 
     Json::Value serialize() const;
     void deserialize(const Json::Value &json);
@@ -20,10 +20,13 @@ class Project {
     Project();
     ~Project();
 
-    bool openFile(const QString &path);
-    bool saveFile(const QString &fileName, const QString &path);
+    ProjectFile *openFile(const QString &path);
+    bool saveFile(const ProjectFile *file, const QString &path);
+    bool saveFile(const ProjectFile *file);
+    ProjectFile *getProjectFileByIndex(int index) const;
     ProjectFile *getProjectFileByName(const QString &name) const;
-    QList<QString> availableFileNames() const;
+//    ProjectFile *getProjectFileByName(const QString &name) const;
+//    QList<QString> availableFileNames() const;
     int filesCount() const;
 
     bool openProject(const QString &path);

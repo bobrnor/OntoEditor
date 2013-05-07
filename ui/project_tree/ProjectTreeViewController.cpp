@@ -55,13 +55,13 @@ void ProjectTreeViewController::updateData() {
   if (m_project != NULL) {
     m_treeWidget->setColumnCount(1);
 
-    QList<QString> fileNames = m_project->availableFileNames();
-    foreach (QString fileName, fileNames) {
+    for (int i = 0; i < m_project->filesCount(); ++i) {
+      ProjectFile *file = m_project->getProjectFileByIndex(i);
+      QString fileName = file->name();
       QTreeWidgetItem *item = new QTreeWidgetItem(m_treeWidget, QStringList(fileName));
       item->setData(0, Qt::UserRole, QVariant(fileName));
       item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
-      ProjectFile *file = m_project->getProjectFileByName(fileName);
       if (file->categories().count() > 0) {
         foreach (ProjectFileCategory *category, file->categories()) {
           QTreeWidgetItem *categoryItem = new QTreeWidgetItem(item, QStringList(category->name()));

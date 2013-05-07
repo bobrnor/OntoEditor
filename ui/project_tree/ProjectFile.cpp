@@ -1,6 +1,6 @@
 #include "ProjectFile.h"
 
-ProjectFile::ProjectFile(QString name) : m_name(name) {
+ProjectFile::ProjectFile(const QString &path, const QString &name) : m_path(path), m_name(name) {
 
   m_ontologyController = new OntologyDataController();
 }
@@ -10,9 +10,14 @@ ProjectFile::~ProjectFile() {
   delete m_ontologyController;
 }
 
-QString ProjectFile::name() const {
+const QString &ProjectFile::name() const {
 
   return m_name;
+}
+
+const QString &ProjectFile::path() const {
+
+  return m_path;
 }
 
 OntologyDataController *ProjectFile::ontologyController() const {
@@ -55,6 +60,7 @@ Json::Value ProjectFile::serialize() const {
 
   Json::Value json;
   json["name"] = Json::Value(m_name.toStdString());
+  json["path"] = Json::Value(m_path.toStdString());
   json["ontology"] = m_ontologyController->serialize();
 
   Json::Value categoriesJson = Json::Value(Json::arrayValue);
@@ -70,6 +76,7 @@ Json::Value ProjectFile::serialize() const {
 void ProjectFile::deserialize(const Json::Value &json) {
 
   m_name = QString::fromStdString(json["name"].asString());
+  m_path = QString::fromStdString(json["path"].asString());
   m_ontologyController->deserialize(json["ontology"]);
 
   m_categories.clear();

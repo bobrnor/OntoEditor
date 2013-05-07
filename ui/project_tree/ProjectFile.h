@@ -10,15 +10,17 @@ class ProjectFile {
 
   private:
     QString m_name;
+    QString m_path;
 
     OntologyDataController *m_ontologyController;
     QList<ProjectFileCategory *> m_categories;
 
   public:
-    ProjectFile(QString name);
+    ProjectFile(const QString &path, const QString &name);
     ~ProjectFile();
 
-    QString name() const;
+    const QString &name() const;
+    const QString &path() const;
 
     OntologyDataController *ontologyController() const;
 

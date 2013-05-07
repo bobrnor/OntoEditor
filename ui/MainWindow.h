@@ -24,7 +24,6 @@ class MainWindow : public QMainWindow {
     Ui::MainWindow *ui;
 
     Project m_currentProject;
-    QString m_currentFileName;
 
     QList<OntologyWidget *> m_openOntologyWidgets;
 
@@ -41,7 +40,7 @@ class MainWindow : public QMainWindow {
 
     void setupMenu();
 
-    OntologyWidget *createNewOntologyWidget();
+    OntologyWidget *createNewOntologyWidget(ProjectFile *file);
 
     void clearConnections();
     void updateOntologyTreeData();
