@@ -71,7 +71,7 @@ void ProjectTreeViewController::updateData() {
 
           if (category->relatedNodeIds().count() > 0) {
             foreach (long nodeId, category->relatedNodeIds()) {
-              NodeData *nodeData = file->sourceOntologyController()->getNodeById(nodeId);
+              NodeData *nodeData = file->ontologyController()->getNodeById(nodeId);
               Q_ASSERT(nodeData != NULL);
               QTreeWidgetItem *nodeItem = new QTreeWidgetItem(categoryItem, QStringList(nodeData->name));
 //              categoryItem->setData(0, Qt::UserRole, QVariant(fileName));

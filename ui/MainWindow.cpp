@@ -67,7 +67,7 @@ MainWindow::~MainWindow() {
   delete ui;
 }
 
-void MainWindow::createNewOntologyWidget() {
+OntologyWidget * MainWindow::createNewOntologyWidget() {
 
   OntologyWidget *newWidget = new OntologyWidget(this);
 
@@ -76,7 +76,11 @@ void MainWindow::createNewOntologyWidget() {
 //  dsTab->setLayout(layout);
 //  layout->addWidget(newWidget);
 
-  ui->tabWidget->addTab(newWidget);
+  ui->tabWidget->addTab(newWidget, "Test");
+
+  m_openOntologyWidgets.append(newWidget);
+
+  return newWidget;
 }
 
 void MainWindow::clearConnections() {
@@ -90,7 +94,7 @@ void MainWindow::clearConnections() {
 void MainWindow::updateOntologyTreeData() {
 
   int index = ui->tabWidget->currentIndex();
-  OntologyWidget *widget = m_openOntologies[index];
+  OntologyWidget *widget = m_openOntologyWidgets[index];
   m_ontologyTreeViewController->setDataController(widget->dataController());
   m_ontologyTreeViewController->updateData();
 }
@@ -158,17 +162,15 @@ void MainWindow::openProjectSlot() {
   bool result = m_currentProject.openProject(filePath);
 
   if (result) {
-    m_javaOntologyWidget->setDataController(m_currentProject.getLanguageOntologyByName("java"));
-    m_javaOntologyWidget->dataChangedSlot();
+    foreach (QString fileName, m_currentProject.availableFileNames()) {
+      ProjectFile *file = m_currentProject.getProjectFileByName(fileName);
 
-    m_objcOntologyWidget->setDataController(m_currentProject.getLanguageOntologyByName("objc"));
-    m_objcOntologyWidget->dataChangedSlot();
-
-    m_problemsOntologyWidget->setDataController(m_currentProject.problemsOntologyController());
-    m_problemsOntologyWidget->dataChangedSlot();
+      OntologyWidget *widget = createNewOntologyWidget();
+      widget->setDataController(file->ontologyController());
+      widget->dataChangedSlot();
+    }
 
     updateOntologyTreeData();
-    m_sourceOntologyWidget->updateData();
     m_projectTreeViewController->updateData();
   }
 }
@@ -182,34 +184,14 @@ void MainWindow::saveProjectSlot() {
 void MainWindow::screenshotSlot() {
 
   QString filePath = QFileDialog::getSaveFileName(this, tr("Save dialog"), QString(), "*.png");
-  QImage screenshot;
-  switch (ui->tabWidget->currentIndex()) {
-    case 0:
-      screenshot = m_sourceOntologyWidget->makeScreenshot();
-      break;
-
-    case 1:
-      screenshot = m_destinationOntologyWidget->makeScreenshot();
-      break;
-
-    case 2:
-      screenshot = m_javaOntologyWidget->makeScreenshot();
-      break;
-
-    case 3:
-      screenshot = m_objcOntologyWidget->makeScreenshot();
-      break;
-
-    case 4:
-      screenshot = m_problemsOntologyWidget->makeScreenshot();
-      break;
-  }
+  OntologyWidget *widget = m_openOntologyWidgets[ui->tabWidget->currentIndex()];
+  QImage screenshot = widget->makeScreenshot();
   screenshot.save(filePath);
 }
 
 void MainWindow::currentTabChangedSlot(int index) {
 
-  OntologyWidget *widget = m_openOntologies[index];
+  OntologyWidget *widget = m_openOntologyWidgets[index];
 
   clearConnections();
 
@@ -238,16 +220,6 @@ void MainWindow::currentFileChangedSlot(const QString &fileName) {
   ProjectFile *file = m_currentProject.getProjectFileByName(fileName);
   if (file != NULL) {
     m_currentFileName = fileName;
-
-    m_transformationHelper->setSourceOntology(file->sourceOntologyController());
-    m_transformationHelper->setDestinationOntology(file->destinationOntologyController());
-    m_transformationHelper->setProblemsOntology(m_currentProject.problemsOntologyController());
-
-    m_sourceOntologyWidget->setDataController(file->sourceOntologyController());
-    m_sourceOntologyWidget->dataChangedSlot();
-
-    m_destinationOntologyWidget->setDataController(file->destinationOntologyController());
-    m_destinationOntologyWidget->dataChangedSlot();
   }
 }
 
@@ -257,16 +229,6 @@ void MainWindow::categorySelectedSlot(const QString &fileName, const QString &ca
   if (file != NULL) {
     if (m_currentFileName != fileName) {
       m_currentFileName = fileName;
-
-      m_transformationHelper->setSourceOntology(file->sourceOntologyController());
-      m_transformationHelper->setDestinationOntology(file->destinationOntologyController());
-      m_transformationHelper->setProblemsOntology(m_currentProject.problemsOntologyController());
-
-      m_sourceOntologyWidget->setDataController(file->sourceOntologyController());
-      m_sourceOntologyWidget->dataChangedSlot();
-
-      m_destinationOntologyWidget->setDataController(file->destinationOntologyController());
-      m_destinationOntologyWidget->dataChangedSlot();
     }
 
     ProjectFileCategory *category = file->getCategoryByName(categoryName);
@@ -274,6 +236,10 @@ void MainWindow::categorySelectedSlot(const QString &fileName, const QString &ca
       emit itemsSelectedSignal(category->relatedNodeIds());
     }
   }
+}
+
+void MainWindow::transformSlot() {
+
 }
 
 void MainWindow::moveToStartSlot() {

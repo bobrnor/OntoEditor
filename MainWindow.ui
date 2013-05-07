@@ -32,7 +32,7 @@
          <enum>QTabWidget::Rounded</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>-1</number>
         </property>
         <property name="elideMode">
          <enum>Qt::ElideMiddle</enum>
@@ -43,31 +43,6 @@
         <property name="documentMode">
          <bool>true</bool>
         </property>
-        <widget class="QWidget" name="sourceOntologyTab">
-         <attribute name="title">
-          <string>Source Ontology</string>
-         </attribute>
-        </widget>
-        <widget class="QWidget" name="destinationOntologyTab">
-         <attribute name="title">
-          <string>Destination Ontology</string>
-         </attribute>
-        </widget>
-        <widget class="QWidget" name="javaOntologyTab">
-         <attribute name="title">
-          <string>Java Ontology</string>
-         </attribute>
-        </widget>
-        <widget class="QWidget" name="objcObtologyTab">
-         <attribute name="title">
-          <string>Objective C Ontology</string>
-         </attribute>
-        </widget>
-        <widget class="QWidget" name="problemsOntology">
-         <attribute name="title">
-          <string>Problem's Ontology</string>
-         </attribute>
-        </widget>
        </widget>
       </item>
      </layout>

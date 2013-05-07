@@ -4,7 +4,6 @@
 #include <QMainWindow>
 
 #include "core/OntologyDataController.h"
-#include "core/TransformationHelper.h"
 #include "ui/ontology/graph/OntologyWidget.h"
 #include "ui/ontology/treeview/OntologyTreeViewController.h"
 #include "ui/project_tree/ProjectTreeViewController.h"
@@ -27,7 +26,7 @@ class MainWindow : public QMainWindow {
     Project m_currentProject;
     QString m_currentFileName;
 
-    QList<OntologyWidget *> m_openOntologies;
+    QList<OntologyWidget *> m_openOntologyWidgets;
 
     QTreeView *m_logTreeView;
 
@@ -42,7 +41,7 @@ class MainWindow : public QMainWindow {
 
     void setupMenu();
 
-    OntologyWidget createNewOntologyWidget();
+    OntologyWidget *createNewOntologyWidget();
 
     void clearConnections();
     void updateOntologyTreeData();

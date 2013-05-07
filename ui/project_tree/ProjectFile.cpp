@@ -2,39 +2,22 @@
 
 ProjectFile::ProjectFile(QString name) : m_name(name) {
 
-  m_sourceOntologyController = new OntologyDataController();
-  m_destinationOntologyController = new OntologyDataController();
+  m_ontologyController = new OntologyDataController();
 }
 
 ProjectFile::~ProjectFile() {
 
-  delete m_sourceOntologyController;
-  delete m_destinationOntologyController;
+  delete m_ontologyController;
 }
 
 QString ProjectFile::name() const {
 
-  return QString(m_name).append(" (").append(m_languageName).append(")");
+  return m_name;
 }
 
-void ProjectFile::setLanguageName(const QString &languageName) {
+OntologyDataController *ProjectFile::ontologyController() const {
 
-  m_languageName = languageName;
-}
-
-QString ProjectFile::languageName() const {
-
-  return m_languageName;
-}
-
-OntologyDataController *ProjectFile::sourceOntologyController() const {
-
-  return m_sourceOntologyController;
-}
-
-OntologyDataController *ProjectFile::destinationOntologyController() const {
-
-  return m_destinationOntologyController;
+  return m_ontologyController;
 }
 
 void ProjectFile::addCategory(ProjectFileCategory *category) {
@@ -72,9 +55,7 @@ Json::Value ProjectFile::serialize() const {
 
   Json::Value json;
   json["name"] = Json::Value(m_name.toStdString());
-  json["source_ontology"] = m_sourceOntologyController->serialize();
-  json["destination_ontology"] = m_destinationOntologyController->serialize();
-  json["language_name"] = Json::Value(m_languageName.toStdString());
+  json["ontology"] = m_ontologyController->serialize();
 
   Json::Value categoriesJson = Json::Value(Json::arrayValue);
   foreach (ProjectFileCategory *category, m_categories) {
@@ -89,9 +70,7 @@ Json::Value ProjectFile::serialize() const {
 void ProjectFile::deserialize(const Json::Value &json) {
 
   m_name = QString::fromStdString(json["name"].asString());
-  m_sourceOntologyController->deserialize(json["source_ontology"]);
-  m_destinationOntologyController->deserialize(json["destination_ontology"]);
-  m_languageName = QString::fromStdString(json["language_name"].asString());
+  m_ontologyController->deserialize(json["ontology"]);
 
   m_categories.clear();
 

@@ -16,9 +16,7 @@ SOURCES += main.cpp \
     lib_json/json_writer.cpp \
     lib_json/json_value.cpp \
     lib_json/json_reader.cpp \
-    core/OntoToJsonHelper.cpp \
     core/OntologyDataController.cpp \
-    core/JsonToOntoHelper.cpp \
     ui/MainWindow.cpp \
     ui/ontology/graph/RelationVisualizedLine.cpp \
     ui/ontology/graph/RelationItem.cpp \
@@ -46,10 +44,8 @@ HEADERS  += \
     lib_json/json/config.h \
     lib_json/json/autolink.h \
     core/RelationData.h \
-    core/OntoToJsonHelper.h \
     core/OntologyDataController.h \
     core/NodeData.h \
-    core/JsonToOntoHelper.h \
     ui/MainWindow.h \
     ui/ontology/graph/RelationVisualizedLine.h \
     ui/ontology/graph/RelationItem.h \
