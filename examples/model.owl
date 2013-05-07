@@ -1,0 +1,2131 @@
+<?xml version = '1.0' ?><rdf:RDF 
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+xmlns:part="http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#"
+xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+xmlns:owl="http://www.w3.org/2002/07/owl#"
+xmlns="http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/example2.owl#"
+xml:base="http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/example2.owl">
+<owl:Ontology rdf:about="Data Source=.;MultipleActiveResultSets=true;Initial Catalog=NightBase;Integrated Security=true">
+<owl:imports rdf:resource="http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl"/>
+<owl:imports rdf:resource="attrib.owl"/>
+</owl:Ontology>
+
+<rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
+	классами описаны основные понятия myid - собственное поле.
+	</rdfs:comment>
+
+<owl:Class rdf:ID="arquests" myid="1">
+
+ <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
+	Синонимы. Введены по идее не совсем средствами owl. sel - обтвенное поле
+	</rdfs:comment>
+
+<Synonyms sel=0 >
+<arquests>
+
+</arquests>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+
+<rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
+	так задаем наличие атрибутов. Конвенция: понятия.имя атрибута
+	</rdfs:comment>
+
+
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#arquests.name" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#arquests.description" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#arquests.resourceurl" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#arquests.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#arquests.resourcename" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
+	так задаем  инфраструктурные метаданные. поля метаданных начинаются с $
+	</rdfs:comment>
+<owl:hasValue rdf:resource="#arquests.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="arquests.name" mypropid="0">
+<Synonyms sel=0>
+
+<rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
+	синонимы могут содежать поля, полученные из модели пользователя
+	</rdfs:comment>
+
+<name>
+<field type="System.Boolean">
+True
+</field>
+
+</name>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
+	Сами атрибуты тоже описаны как классы.
+	</rdfs:comment>
+<owl:Class rdf:ID="arquests.description" mypropid="0">
+<Synonyms sel=0>
+<description>
+<field type="System.Boolean">
+True
+</field>
+
+</description>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="arquests.resourceurl" mypropid="0">
+<Synonyms sel=0>
+<resourceurl>
+<field type="System.Boolean">
+True
+</field>
+
+</resourceurl>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="arquests.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>1</AttributeAvg>
+<AttributeMin>1</AttributeMin>
+<AttributeMax>1</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="arquests.resourcename" mypropid="0">
+<Synonyms sel=0>
+<resourcename>
+<field type="System.Boolean">
+True
+</field>
+
+</resourcename>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="arquests.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>ARQuests</AttributeVal>
+</owl:Class>
+
+<owl:Class rdf:ID="allquesttypes" myid="2">
+<Synonyms sel=0>
+<allquesttypes>
+
+</allquesttypes>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#allquesttypes.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#allquesttypes.questtype" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#allquesttypes.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="allquesttypes.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+<rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
+	Домен атрибута
+	</rdfs:comment>
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="allquesttypes.questtype" mypropid="0">
+<Synonyms sel=0>
+<questtype>
+<field type="System.Boolean">
+True
+</field>
+
+</questtype>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
+	Значение атрибута
+	</rdfs:comment>
+<AttributeVal>$вывод</AttributeVal>
+</owl:Class>
+<owl:Class rdf:ID="allquesttypes.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>AllQuestTypes</AttributeVal>
+</owl:Class>
+
+<owl:Class rdf:ID="attributes" myid="3">
+<Synonyms sel=0>
+<attributes>
+
+</attributes>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#attributes.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#attributes.attributename" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#attributes.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="attributes.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>2</AttributeAvg>
+<AttributeMin>1</AttributeMin>
+<AttributeMax>3</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="attributes.attributename" mypropid="0">
+<Synonyms sel=0>
+<attributename>
+<field type="System.Boolean">
+True
+</field>
+
+</attributename>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>$вывод</AttributeVal>
+</owl:Class>
+<owl:Class rdf:ID="attributes.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>Attributes</AttributeVal>
+</owl:Class>
+
+<owl:Class rdf:ID="категории" myid="4">
+<Synonyms sel=1>
+<categories>
+
+</categories>
+
+<категории>
+<язык>
+
+</язык>
+
+</категории>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#категории.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#категории.categoryname" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#категории.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="категории.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>202</AttributeAvg>
+<AttributeMin>172</AttributeMin>
+<AttributeMax>233</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="категории.categoryname" mypropid="0">
+<Synonyms sel=0>
+<categoryname>
+<field type="System.Boolean">
+True
+</field>
+
+</categoryname>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>$вывод</AttributeVal>
+</owl:Class>
+<owl:Class rdf:ID="категории.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+<rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
+	Домен атрибута
+	</rdfs:comment>
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>Categories</AttributeVal>
+</owl:Class>
+
+<owl:Class rdf:ID="checkinquests" myid="5">
+<Synonyms sel=0>
+<checkinquests>
+
+</checkinquests>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#checkinquests.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#checkinquests.name" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#checkinquests.description" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#checkinquests.place" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#checkinquests.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="checkinquests.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Guid"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="checkinquests.name" mypropid="0">
+<Synonyms sel=0>
+<name>
+<field type="System.Boolean">
+True
+</field>
+
+</name>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="checkinquests.description" mypropid="0">
+<Synonyms sel=0>
+<description>
+<field type="System.Boolean">
+True
+</field>
+
+</description>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="checkinquests.place" mypropid="0">
+<Synonyms sel=0>
+<place>
+<field type="System.Boolean">
+True
+</field>
+
+</place>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="checkinquests.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+<rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
+	Домен атрибута
+	</rdfs:comment>
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>CheckinQuests</AttributeVal>
+</owl:Class>
+
+<owl:Class rdf:ID="eventplaces" myid="6">
+<Synonyms sel=0>
+<eventplaces>
+
+</eventplaces>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
+	указание на связь eventplaces и places
+	</rdfs:comment>
+<owl:Restriction>
+<owl:onProperty rdf:resource="http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly" myLinkId="1"/>
+<owl:someValuesFrom rdf:resource="#places" myLinkId="1">
+<Synonyms sel=0>
+<rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">
+	Более осмысленные синонимы с полями от модели пользователя. Так как у пользователя не был задан язык, то поле пустое
+	</rdfs:comment>
+<место>
+<язык>
+
+</язык>
+
+</место>
+
+<места>
+<язык>
+
+</язык>
+
+</места>
+
+<где>
+<язык>
+
+</язык>
+
+</где>
+
+</Synonyms>
+
+
+</owl:someValuesFrom></owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly" myLinkId="2"/>
+<owl:someValuesFrom rdf:resource="#nightevents" myLinkId="2">
+<Synonyms sel=0>
+</Synonyms>
+
+
+</owl:someValuesFrom></owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#eventplaces.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#eventplaces.idplace" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#eventplaces.idevent" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#eventplaces.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="eventplaces.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>1800</AttributeAvg>
+<AttributeMin>1663</AttributeMin>
+<AttributeMax>1938</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="eventplaces.idplace" mypropid="0">
+<Synonyms sel=0>
+<idplace>
+<field type="System.Boolean">
+True
+</field>
+
+</idplace>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>180</AttributeAvg>
+<AttributeMin>131</AttributeMin>
+<AttributeMax>249</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="eventplaces.idevent" mypropid="0">
+<Synonyms sel=0>
+<idevent>
+<field type="System.Boolean">
+True
+</field>
+
+</idevent>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>1426</AttributeAvg>
+<AttributeMin>1322</AttributeMin>
+<AttributeMax>1538</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="eventplaces.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>EventPlaces</AttributeVal>
+</owl:Class>
+
+<owl:Class rdf:ID="eventwhos" myid="7">
+<Synonyms sel=0>
+<eventwhos>
+
+</eventwhos>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly" myLinkId="3"/>
+<owl:someValuesFrom rdf:resource="#whos" myLinkId="3">
+<Synonyms sel=0>
+</Synonyms>
+
+
+</owl:someValuesFrom></owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly" myLinkId="4"/>
+<owl:someValuesFrom rdf:resource="#nightevents" myLinkId="4">
+<Synonyms sel=0>
+<тематика>
+<язык>
+
+</язык>
+
+</тематика>
+
+</Synonyms>
+
+
+</owl:someValuesFrom></owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#eventwhos.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#eventwhos.idwho" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#eventwhos.idevent" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#eventwhos.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#eventwhos.whos" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="eventwhos.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>1217</AttributeAvg>
+<AttributeMin>1127</AttributeMin>
+<AttributeMax>1307</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="eventwhos.idwho" mypropid="0">
+<Synonyms sel=0>
+<idwho>
+<field type="System.Boolean">
+True
+</field>
+
+</idwho>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>438</AttributeAvg>
+<AttributeMin>357</AttributeMin>
+<AttributeMax>519</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="eventwhos.idevent" mypropid="0">
+<Synonyms sel=0>
+<idevent>
+<field type="System.Boolean">
+True
+</field>
+
+</idevent>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>1439</AttributeAvg>
+<AttributeMin>1322</AttributeMin>
+<AttributeMax>1538</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="eventwhos.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>EventWhos</AttributeVal>
+</owl:Class>
+<owl:Class rdf:ID="eventwhos.whos" mypropid="0">
+<Synonyms sel=0>
+<whos>
+
+</whos>
+
+</Synonyms>
+
+<Domain myref="Whos"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+
+<owl:Class rdf:ID="htmlquests" myid="8">
+<Synonyms sel=0>
+<htmlquests>
+
+</htmlquests>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#htmlquests.name" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#htmlquests.description" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#htmlquests.htmlurl" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#htmlquests.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#htmlquests.resourceurl" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#htmlquests.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="htmlquests.name" mypropid="0">
+<Synonyms sel=0>
+<name>
+<field type="System.Boolean">
+True
+</field>
+
+</name>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="htmlquests.description" mypropid="0">
+<Synonyms sel=0>
+<description>
+<field type="System.Boolean">
+True
+</field>
+
+</description>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="htmlquests.htmlurl" mypropid="0">
+<Synonyms sel=0>
+<htmlurl>
+<field type="System.Boolean">
+True
+</field>
+
+</htmlurl>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="htmlquests.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>2</AttributeAvg>
+<AttributeMin>2</AttributeMin>
+<AttributeMax>2</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="htmlquests.resourceurl" mypropid="0">
+<Synonyms sel=0>
+<resourceurl>
+<field type="System.Boolean">
+True
+</field>
+
+</resourceurl>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="htmlquests.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>HTMLQuests</AttributeVal>
+</owl:Class>
+
+<owl:Class rdf:ID="heroattributes" myid="9">
+<Synonyms sel=0>
+<heroattributes>
+
+</heroattributes>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly" myLinkId="5"/>
+<owl:someValuesFrom rdf:resource="#attributes" myLinkId="5">
+<Synonyms sel=0>
+</Synonyms>
+
+
+</owl:someValuesFrom></owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#heroattributes.idattribute" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#heroattributes.attributevalue" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#heroattributes.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#heroattributes.idhero" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#heroattributes.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#heroattributes.attributes" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="heroattributes.idattribute" mypropid="0">
+<Synonyms sel=0>
+<idattribute>
+<field type="System.Boolean">
+True
+</field>
+
+</idattribute>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>2</AttributeAvg>
+<AttributeMin>1</AttributeMin>
+<AttributeMax>3</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="heroattributes.attributevalue" mypropid="0">
+<Synonyms sel=0>
+<attributevalue>
+<field type="System.Boolean">
+True
+</field>
+
+</attributevalue>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>14</AttributeAvg>
+<AttributeMin>10</AttributeMin>
+<AttributeMax>17</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="heroattributes.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>3</AttributeAvg>
+<AttributeMin>1</AttributeMin>
+<AttributeMax>6</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="heroattributes.idhero" mypropid="0">
+<Synonyms sel=0>
+<idhero>
+<field type="System.Boolean">
+True
+</field>
+
+</idhero>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="heroattributes.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>HeroAttributes</AttributeVal>
+</owl:Class>
+<owl:Class rdf:ID="heroattributes.attributes" mypropid="0">
+<Synonyms sel=0>
+<attributes>
+
+</attributes>
+
+</Synonyms>
+
+<Domain myref="Attributes"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+
+<owl:Class rdf:ID="heroqueststatuses" myid="10">
+<Synonyms sel=0>
+<heroqueststatuses>
+
+</heroqueststatuses>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#heroqueststatuses.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#heroqueststatuses.idhero" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#heroqueststatuses.idquest" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#heroqueststatuses.status" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#heroqueststatuses.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="heroqueststatuses.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Guid"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="heroqueststatuses.idhero" mypropid="0">
+<Synonyms sel=0>
+<idhero>
+<field type="System.Boolean">
+True
+</field>
+
+</idhero>
+
+</Synonyms>
+
+<Domain myref="System.Guid"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="heroqueststatuses.idquest" mypropid="0">
+<Synonyms sel=0>
+<idquest>
+<field type="System.Boolean">
+True
+</field>
+
+</idquest>
+
+</Synonyms>
+
+<Domain myref="System.Guid"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="heroqueststatuses.status" mypropid="0">
+<Synonyms sel=0>
+<status>
+<field type="System.Boolean">
+True
+</field>
+
+</status>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="heroqueststatuses.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>HeroQuestStatuses</AttributeVal>
+</owl:Class>
+
+<owl:Class rdf:ID="heroes" myid="11">
+<Synonyms sel=0>
+<heroes>
+
+</heroes>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#heroes.name" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#heroes.location" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#heroes.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#heroes.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="heroes.name" mypropid="0">
+<Synonyms sel=0>
+<name>
+<field type="System.Boolean">
+True
+</field>
+
+</name>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="heroes.location" mypropid="0">
+<Synonyms sel=0>
+<location>
+<field type="System.Boolean">
+True
+</field>
+
+</location>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="heroes.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>4</AttributeAvg>
+<AttributeMin>1</AttributeMin>
+<AttributeMax>7</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="heroes.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>Heroes</AttributeVal>
+</owl:Class>
+
+<owl:Class rdf:ID="places" myid="12">
+<Synonyms sel=0>
+<places>
+
+</places>
+
+<расположения>
+<язык>
+
+</язык>
+
+</расположения>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#places.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#places.placename" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#places.location" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#places.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="places.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>190</AttributeAvg>
+<AttributeMin>131</AttributeMin>
+<AttributeMax>249</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="places.placename" mypropid="0">
+<Synonyms sel=0>
+<placename>
+<field type="System.Boolean">
+True
+</field>
+
+</placename>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>$вывод</AttributeVal>
+</owl:Class>
+<owl:Class rdf:ID="places.location" mypropid="0">
+<Synonyms sel=0>
+<location>
+<field type="System.Boolean">
+True
+</field>
+
+</location>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="places.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>Places</AttributeVal>
+</owl:Class>
+
+<owl:Class rdf:ID="questattibuteprizes" myid="13">
+<Synonyms sel=0>
+<questattibuteprizes>
+
+</questattibuteprizes>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly" myLinkId="6"/>
+<owl:someValuesFrom rdf:resource="#attributes" myLinkId="6">
+<Synonyms sel=0>
+</Synonyms>
+
+
+</owl:someValuesFrom></owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#questattibuteprizes.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#questattibuteprizes.idattribute" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#questattibuteprizes.prizesize" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#questattibuteprizes.idallquest" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#questattibuteprizes.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#questattibuteprizes.attributes" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="questattibuteprizes.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="questattibuteprizes.idattribute" mypropid="0">
+<Synonyms sel=0>
+<idattribute>
+<field type="System.Boolean">
+True
+</field>
+
+</idattribute>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="questattibuteprizes.prizesize" mypropid="0">
+<Synonyms sel=0>
+<prizesize>
+<field type="System.Boolean">
+True
+</field>
+
+</prizesize>
+
+</Synonyms>
+
+<Domain myref="System.Single"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="questattibuteprizes.idallquest" mypropid="0">
+<Synonyms sel=0>
+<idallquest>
+<field type="System.Boolean">
+True
+</field>
+
+</idallquest>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="questattibuteprizes.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>QuestAttibutePrizes</AttributeVal>
+</owl:Class>
+<owl:Class rdf:ID="questattibuteprizes.attributes" mypropid="0">
+<Synonyms sel=0>
+<attributes>
+
+</attributes>
+
+</Synonyms>
+
+<Domain myref="Attributes"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+
+<owl:Class rdf:ID="socquests" myid="14">
+<Synonyms sel=0>
+<socquests>
+
+</socquests>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#socquests.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#socquests.name" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#socquests.description" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#socquests.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="socquests.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Guid"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="socquests.name" mypropid="0">
+<Synonyms sel=0>
+<name>
+<field type="System.Boolean">
+True
+</field>
+
+</name>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="socquests.description" mypropid="0">
+<Synonyms sel=0>
+<description>
+<field type="System.Boolean">
+True
+</field>
+
+</description>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="socquests.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>SocQuests</AttributeVal>
+</owl:Class>
+
+<owl:Class rdf:ID="whos" myid="15">
+<Synonyms sel=0>
+<whos>
+
+</whos>
+
+<Темы>
+<язык>
+
+</язык>
+
+</Темы>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#whos.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#whos.whoname" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#whos.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="whos.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>438</AttributeAvg>
+<AttributeMin>357</AttributeMin>
+<AttributeMax>519</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="whos.whoname" mypropid="0">
+<Synonyms sel=0>
+<whoname>
+<field type="System.Boolean">
+True
+</field>
+
+</whoname>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>$вывод</AttributeVal>
+</owl:Class>
+<owl:Class rdf:ID="whos.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>Whos</AttributeVal>
+</owl:Class>
+
+<owl:Class rdf:ID="eventtags" myid="16">
+<Synonyms sel=0>
+<eventtags>
+
+</eventtags>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly" myLinkId="7"/>
+<owl:someValuesFrom rdf:resource="#nightevents" myLinkId="7">
+<Synonyms sel=0>
+</Synonyms>
+
+
+</owl:someValuesFrom></owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly" myLinkId="8"/>
+<owl:someValuesFrom rdf:resource="#tags" myLinkId="8">
+<Synonyms sel=0>
+<ключевые>
+<язык>
+
+</язык>
+
+</ключевые>
+
+</Synonyms>
+
+
+</owl:someValuesFrom></owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#eventtags.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#eventtags.idevent" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#eventtags.idtag" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#eventtags.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#eventtags.tags" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="eventtags.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>1575</AttributeAvg>
+<AttributeMin>1466</AttributeMin>
+<AttributeMax>1684</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="eventtags.idevent" mypropid="0">
+<Synonyms sel=0>
+<idevent>
+<field type="System.Boolean">
+True
+</field>
+
+</idevent>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>1401</AttributeAvg>
+<AttributeMin>9</AttributeMin>
+<AttributeMax>1534</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="eventtags.idtag" mypropid="0">
+<Synonyms sel=0>
+<idtag>
+<field type="System.Boolean">
+True
+</field>
+
+</idtag>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>34</AttributeAvg>
+<AttributeMin>30</AttributeMin>
+<AttributeMax>47</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="eventtags.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>eventtags</AttributeVal>
+</owl:Class>
+<owl:Class rdf:ID="eventtags.tags" mypropid="0">
+<Synonyms sel=0>
+<tags>
+
+</tags>
+
+</Synonyms>
+
+<Domain myref="tags"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+
+<owl:Class rdf:ID="nightevents" myid="17">
+<Synonyms sel=0>
+<nightevents>
+
+</nightevents>
+
+<события>
+<язык>
+
+</язык>
+
+</события>
+
+<мероприятия>
+<язык>
+
+</язык>
+
+</мероприятия>
+
+<событий>
+<язык>
+
+</язык>
+
+</событий>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly" myLinkId="9"/>
+<owl:someValuesFrom rdf:resource="#категории" myLinkId="9">
+<Synonyms sel=0>
+<иметь>
+<язык>
+
+</язык>
+
+</иметь>
+
+<категоризовать>
+<язык>
+
+</язык>
+
+</категоризовать>
+
+<категоризация>
+<язык>
+
+</язык>
+
+</категоризация>
+
+</Synonyms>
+
+
+</owl:someValuesFrom></owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#nightevents.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#nightevents.description" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#nightevents.imageurl" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#nightevents.pageurl" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#nightevents.name" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#nightevents.eventdatetime" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#nightevents.location" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#nightevents.categoryid" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#nightevents.starttime" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#nightevents.finishtime" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#nightevents.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#nightevents.categories" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="nightevents.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>1417</AttributeAvg>
+<AttributeMin>8</AttributeMin>
+<AttributeMax>1538</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="nightevents.description" mypropid="0">
+<Synonyms sel=0>
+<description>
+<field type="System.Boolean">
+True
+</field>
+
+</description>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="nightevents.imageurl" mypropid="0">
+<Synonyms sel=0>
+<imageurl>
+<field type="System.Boolean">
+True
+</field>
+
+</imageurl>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="nightevents.pageurl" mypropid="0">
+<Synonyms sel=0>
+<pageurl>
+<field type="System.Boolean">
+True
+</field>
+
+</pageurl>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="nightevents.name" mypropid="0">
+<Synonyms sel=0>
+<name>
+<field type="System.Boolean">
+True
+</field>
+
+</name>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>$вывод</AttributeVal>
+</owl:Class>
+<owl:Class rdf:ID="nightevents.eventdatetime" mypropid="0">
+<Synonyms sel=0>
+<eventdatetime>
+<field type="System.Boolean">
+True
+</field>
+
+</eventdatetime>
+
+</Synonyms>
+
+<Domain myref="System.DateTime"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="nightevents.location" mypropid="0">
+<Synonyms sel=0>
+<location>
+<field type="System.Boolean">
+True
+</field>
+
+</location>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="nightevents.categoryid" mypropid="0">
+<Synonyms sel=0>
+<categoryid>
+<field type="System.Boolean">
+True
+</field>
+
+</categoryid>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>201</AttributeAvg>
+<AttributeMin>172</AttributeMin>
+<AttributeMax>233</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="nightevents.starttime" mypropid="0">
+<Synonyms sel=0>
+<starttime>
+<field type="System.Boolean">
+True
+</field>
+
+</starttime>
+
+</Synonyms>
+
+<Domain myref="System.DateTime"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="nightevents.finishtime" mypropid="0">
+<Synonyms sel=0>
+<finishtime>
+<field type="System.Boolean">
+True
+</field>
+
+</finishtime>
+
+</Synonyms>
+
+<Domain myref="System.DateTime"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="nightevents.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>nightevents</AttributeVal>
+</owl:Class>
+<owl:Class rdf:ID="nightevents.categories" mypropid="0">
+<Synonyms sel=0>
+<categories>
+
+</categories>
+
+</Synonyms>
+
+<Domain myref="Строка"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+
+<owl:Class rdf:ID="sysdiagrams" myid="18">
+<Synonyms sel=0>
+<sysdiagrams>
+
+</sysdiagrams>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#sysdiagrams.name" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#sysdiagrams.principal_id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#sysdiagrams.diagram_id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#sysdiagrams.version" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#sysdiagrams.definition" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#sysdiagrams.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="sysdiagrams.name" mypropid="0">
+<Synonyms sel=0>
+<name>
+<field type="System.Boolean">
+True
+</field>
+
+</name>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="sysdiagrams.principal_id" mypropid="0">
+<Synonyms sel=0>
+<principal_id>
+<field type="System.Boolean">
+True
+</field>
+
+</principal_id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>1</AttributeAvg>
+<AttributeMin>1</AttributeMin>
+<AttributeMax>1</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="sysdiagrams.diagram_id" mypropid="0">
+<Synonyms sel=0>
+<diagram_id>
+<field type="System.Boolean">
+True
+</field>
+
+</diagram_id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>1</AttributeAvg>
+<AttributeMin>1</AttributeMin>
+<AttributeMax>2</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="sysdiagrams.version" mypropid="0">
+<Synonyms sel=0>
+<version>
+<field type="System.Boolean">
+True
+</field>
+
+</version>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>1</AttributeAvg>
+<AttributeMin>1</AttributeMin>
+<AttributeMax>1</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="sysdiagrams.definition" mypropid="0">
+<Synonyms sel=0>
+<definition>
+<field type="System.Boolean">
+True
+</field>
+
+</definition>
+
+</Synonyms>
+
+<Domain myref="Строка"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+</owl:Class>
+<owl:Class rdf:ID="sysdiagrams.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>sysdiagrams</AttributeVal>
+</owl:Class>
+
+<owl:Class rdf:ID="tags" myid="19">
+<Synonyms sel=0>
+<tags>
+
+</tags>
+
+<тэги>
+<язык>
+
+</язык>
+
+</тэги>
+
+<теги>
+<язык>
+
+</язык>
+
+</теги>
+
+</Synonyms>
+
+<rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#tags.id" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#tags.tagname" />
+
+</owl:Restriction></rdfs:subClassOf><rdfs:subClassOf>
+<owl:Restriction>
+<owl:onProperty rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute" />
+<owl:hasValue rdf:resource="#tags.$таблица" />
+
+</owl:Restriction></rdfs:subClassOf></owl:Class>
+<owl:Class rdf:ID="tags.id" mypropid="0">
+<Synonyms sel=0>
+<id>
+<field type="System.Boolean">
+True
+</field>
+
+</id>
+
+</Synonyms>
+
+<Domain myref="System.Int32"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt"/>
+<AttributeAvg>38</AttributeAvg>
+<AttributeMin>30</AttributeMin>
+<AttributeMax>47</AttributeMax>
+</owl:Class>
+<owl:Class rdf:ID="tags.tagname" mypropid="0">
+<Synonyms sel=0>
+<tagname>
+<field type="System.Boolean">
+True
+</field>
+
+</tagname>
+
+</Synonyms>
+
+<Domain myref="System.String"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>$вывод</AttributeVal>
+</owl:Class>
+<owl:Class rdf:ID="tags.$таблица" mypropid="0">
+<Synonyms sel=0>
+<$таблица>
+
+</$таблица>
+
+</Synonyms>
+
+<Domain myref="Таблицы"/><rdfs:subClassOf rdf:resource="file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt"/>
+<AttributeVal>tags</AttributeVal>
+</owl:Class>
+</rdf:RDF>

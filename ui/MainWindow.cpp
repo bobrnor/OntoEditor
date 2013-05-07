@@ -132,14 +132,18 @@ void MainWindow::setupMenu() {
 
 void MainWindow::importSourceFileSlot() {
 
-//  QString filePath = QFileDialog::getOpenFileName(this, tr("Open dialog"), QString(), "*");
-//  bool result = m_currentProject.importSourceFile(filePath);
+  QString filePath = QFileDialog::getOpenFileName(this, tr("Open dialog"), QString(), "*");
+  FILE* pipe = popen("python /Users/bobrnor/Documents/PSU/Projects/OntoEditor/scripts/owl_converter.py", "w");
 
-//  if (result) {
-//    m_sourceOntologyWidget->updateData();
-//    updateOntologyTreeData();
-//    m_projectTreeViewController->updateData();
-//  }
+  char buffer[128];
+  QString result = "";
+  while(!feof(pipe)) {
+    if(fgets(buffer, 128, pipe) != NULL)
+      result += buffer;
+  }
+  pclose(pipe);
+
+  qDebug() << result;
 }
 
 void MainWindow::openOntologyFileSlot() {
@@ -150,10 +154,10 @@ void MainWindow::openOntologyFileSlot() {
   if (file != NULL) {
     OntologyWidget *widget = createNewOntologyWidget(file);
     widget->dataChangedSlot();
-  }
 
-  updateOntologyTreeData();
-  m_projectTreeViewController->updateData();
+    updateOntologyTreeData();
+    m_projectTreeViewController->updateData();
+  }
 }
 
 void MainWindow::saveOntologyFileSlot() {
