@@ -39,7 +39,7 @@ bool Project::saveFile(const ProjectFile *file, const QString &path) {
   if (file != NULL) {
     QFile dstFile(path);
     if (dstFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-      Json::Value jsonState = file->serialize();
+      Json::Value jsonState = file->ontologyController()->serialize();
 
       QTextStream stream(&dstFile);
       stream.setCodec("UTF-8");
