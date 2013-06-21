@@ -345,6 +345,22 @@ void OntologyDataController::relationNameChanged(long relationId, const QString 
   m_changedRelationIds.insert(relation->id);
 }
 
+void OntologyDataController::nodeAttributesChanged(long nodeId, const QMap<QString, QString> &attributes) {
+
+  NodeData *node = m_nodesMap.value(nodeId);
+  node->attributes = attributes;
+
+  m_changedNodeIds.insert(node->id);
+}
+
+void OntologyDataController::relationAttributesChanged(long relationId, const QMap<QString, QString> &attributes) {
+
+  RelationData *relation = m_relationsMap.value(relationId);
+  relation->attributes = attributes;
+
+  m_changedRelationIds.insert(relation->id);
+}
+
 void OntologyDataController::nodeRemoved(long nodeId) {
 
   NodeData *node = m_nodesMap.value(nodeId);

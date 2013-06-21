@@ -39,11 +39,6 @@ void NodeItem::appendRelation(RelationItem *relation) {
   }
 }
 
-void NodeItem::setRelatedDataControlelr(OntologyDataController *dataController) {
-
-  m_dataController = dataController;
-}
-
 void NodeItem::removeRelation(RelationItem *relation) {
 
   m_relations.removeAll(relation);
@@ -71,18 +66,21 @@ QVariant NodeItem::itemChange(GraphicsItemChange change, const QVariant &value) 
 
 void NodeItem::attributesChanged() {
 
-  if (m_attributes.keys().contains("text_color")) {
-    QString textColorHex = m_attributes.value("text_color");
+  NodeData *data = relatedDataController()->getNodeById(m_id);
+  relatedDataController()->nodeAttributesChanged(m_id, data->attributes);
+
+  if (data->attributes.keys().contains("text_color")) {
+    QString textColorHex = data->attributes.value("text_color");
     m_textColor = QColor(textColorHex);
   }
 
-  if (m_attributes.keys().contains("bg_color")) {
-    QString bgColorHex = m_attributes.value("bg_color");
+  if (data->attributes.keys().contains("bg_color")) {
+    QString bgColorHex = data->attributes.value("bg_color");
     m_backgroundColor = QColor(bgColorHex);
   }
 
-  if (m_attributes.keys().contains("shape_name")) {
-    m_shapeName = m_attributes.value("shape_name");
+  if (data->attributes.keys().contains("shape_name")) {
+    m_shapeName = data->attributes.value("shape_name");
   }
 
   if (this->scene() != NULL) {
@@ -142,10 +140,47 @@ void NodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
   painter->drawText(boundingRect(), m_name, textOption);
 }
 
-Json::Value NodeItem::jsonRepresentation() const {
+QString NodeItem::attributesAsText() const {
 
-  Json::Value value = OntologyGraphElement::jsonRepresentation();
-  value["pos_x"] = Json::Value(pos().x());
-  value["pos_y"] = Json::Value(pos().y());
-  return value;
+  NodeData *data = relatedDataController()->getNodeById(m_id);
+  if (data->attributes.size() > 0) {
+    Json::Value jsonValue;
+    foreach (QString key, data->attributes.keys()) {
+      QString value = data->attributes.value(key);
+      jsonValue[key.toStdString()] = Json::Value(value.toStdString());
+    }
+
+    return QString::fromStdString(jsonValue.toStyledString());
+  }
+  else {
+    return QString();
+  }
+}
+
+QMap<QString, QString> NodeItem::attributest() const {
+
+  NodeData *data = relatedDataController()->getNodeById(m_id);
+  return data->attributes;
+}
+
+void NodeItem::setAttributes(const QString &text) {
+
+  qDebug() << text;
+
+  Json::Reader reader;
+  Json::Value jsonValue;
+  bool ok = reader.parse(text.toStdString(), jsonValue);
+
+  if (ok) {
+    NodeData *data = relatedDataController()->getNodeById(m_id);
+    data->attributes.clear();
+
+    for (int i = 0; i < jsonValue.size(); ++i) {
+      QString key = QString::fromStdString(jsonValue.getMemberNames().at(i));
+      QString value = QString::fromStdString(jsonValue[jsonValue.getMemberNames().at(i)].asString());
+      data->attributes.insert(key, value);
+    }
+
+    attributesChanged();
+  }
 }

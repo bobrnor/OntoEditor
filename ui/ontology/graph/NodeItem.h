@@ -6,7 +6,6 @@
 #include "ItemDataKey.h"
 #include "ItemType.h"
 #include "OntologyGraphElement.h"
-#include "core/OntologyDataController.h"
 
 class RelationItem;
 
@@ -18,8 +17,6 @@ class NodeItem : public QObject, public QGraphicsRectItem, public OntologyGraphE
     QColor m_backgroundColor;
     QColor m_textColor;
     QString m_shapeName;
-
-    OntologyDataController *m_dataController;
 
   protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -36,9 +33,9 @@ class NodeItem : public QObject, public QGraphicsRectItem, public OntologyGraphE
 
     void removeAllRelations();
 
-    void setRelatedDataControlelr(OntologyDataController *dataController);
-
-    Json::Value jsonRepresentation() const;
+    QString attributesAsText() const;
+    QMap<QString, QString> attributest() const;
+    void setAttributes(const QString &text);
 
   signals:
     void nodeItemPositionChangedSignal(long id, const QPointF &newPosition);

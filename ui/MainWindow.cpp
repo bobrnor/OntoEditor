@@ -135,8 +135,10 @@ void MainWindow::importSourceFileSlot() {
   QString filePath = QFileDialog::getOpenFileName(this, tr("Open dialog"), QString(), "*");
 
   QString cmd;
-  cmd.append("python ");
-  cmd.append("/Users/bobrnor/Documents/PSU/Projects/OntoEditor/scripts/owl_converter.py ");
+  cmd.append("python");
+  cmd.append(" /Users/bobrnor/Dropbox/PSU/Projects/OntoEditor/scripts/owl_converter.py");
+  cmd.append(" --method=import");
+  cmd.append(" --source-path=");
   cmd.append(filePath);
 
   FILE* pipe = popen(cmd.toStdString().c_str(), "w");

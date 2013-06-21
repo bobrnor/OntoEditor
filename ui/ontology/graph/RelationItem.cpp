@@ -89,11 +89,6 @@ NodeItem *RelationItem::destinationNode() const {
   return m_destinationNode;
 }
 
-void RelationItem::setRelatedDataController(OntologyDataController *dataController) {
-
-  m_dataController = dataController;
-}
-
 void RelationItem::removeFromNodes() {
 
   if (m_sourceNode != NULL) {
@@ -120,8 +115,10 @@ void RelationItem::adjust() {
 
 void RelationItem::attributesChanged() {
 
-  if (m_attributes.keys().contains("line_width")) {
-    QString lineWidth = m_attributes.value("line_width");
+  RelationData *data = relatedDataController()->getRelationById(m_id);
+  relatedDataController()->relationAttributesChanged(m_id, data->attributes);
+  if (data->attributes.keys().contains("line_width")) {
+    QString lineWidth = data->attributes.value("line_width");
     m_width = lineWidth.toDouble();
   }
 }
@@ -170,4 +167,49 @@ void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
   painter->setPen(pen);
   painter->drawPath(path);
   painter->drawText(middlePos, m_name);
+}
+
+QString RelationItem::attributesAsText() const {
+
+  RelationData *data = relatedDataController()->getRelationById(m_id);
+  if (data->attributes.size() > 0) {
+    Json::Value jsonValue;
+    foreach (QString key, data->attributes.keys()) {
+      QString value = data->attributes.value(key);
+      jsonValue[key.toStdString()] = Json::Value(value.toStdString());
+    }
+
+    return QString::fromStdString(jsonValue.toStyledString());
+  }
+  else {
+    return QString();
+  }
+}
+
+QMap<QString, QString> RelationItem::attributest() const {
+
+  RelationData *data = relatedDataController()->getRelationById(m_id);
+  return data->attributes;
+}
+
+void RelationItem::setAttributes(const QString &text) {
+
+  qDebug() << text;
+
+  Json::Reader reader;
+  Json::Value jsonValue;
+  bool ok = reader.parse(text.toStdString(), jsonValue);
+
+  if (ok) {
+    RelationData *data = relatedDataController()->getRelationById(m_id);
+    data->attributes.clear();
+
+    for (int i = 0; i < jsonValue.size(); ++i) {
+      QString key = QString::fromStdString(jsonValue.getMemberNames().at(i));
+      QString value = QString::fromStdString(jsonValue[jsonValue.getMemberNames().at(i)].asString());
+      data->attributes.insert(key, value);
+    }
+
+    attributesChanged();
+  }
 }

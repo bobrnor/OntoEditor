@@ -151,7 +151,7 @@ void OntologyWidget::addNodeSlot() {
   }
 
   NodeItem *newNode = new NodeItem(NULL);
-  newNode->setRelatedDataControlelr(m_dataController);
+  newNode->setRelatedDataController(m_dataController);
   newNode->setId(newNodeId);
   newNode->setPos(scenePos);
   connect(newNode, SIGNAL(nodeItemPositionChangedSignal(long, QPointF)), SLOT(nodeItemPositionChangedSlot(long, QPointF)));
@@ -203,7 +203,7 @@ void OntologyWidget::updateData() {
       NodeData *nodeData = m_dataController->getNodeByIndex(i);
       if (invalidatedNodesMap.contains(nodeData->id)) {
         NodeItem *nodeItem = invalidatedNodesMap.value(nodeData->id);
-        nodeItem->setRelatedDataControlelr(m_dataController);
+        nodeItem->setRelatedDataController(m_dataController);
         nodeItem->setName(nodeData->name);
         invalidatedNodesMap.remove(nodeItem->id());
         existedNodes.insert(nodeItem->id(), nodeItem);
@@ -212,7 +212,7 @@ void OntologyWidget::updateData() {
         QPointF pos = m_dataController->nodePosition(nodeData->id);
 
         NodeItem *nodeItem = new NodeItem();
-        nodeItem->setRelatedDataControlelr(m_dataController);
+        nodeItem->setRelatedDataController(m_dataController);
         nodeItem->setId(nodeData->id);
         nodeItem->setName(nodeData->name);
         nodeItem->setPos(pos);
