@@ -143,21 +143,16 @@ void NodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 QString NodeItem::attributesAsText() const {
 
   NodeData *data = relatedDataController()->getNodeById(m_id);
-  if (data->attributes.size() > 0) {
-    Json::Value jsonValue;
-    foreach (QString key, data->attributes.keys()) {
-      QString value = data->attributes.value(key);
-      jsonValue[key.toStdString()] = Json::Value(value.toStdString());
-    }
-
-    return QString::fromStdString(jsonValue.toStyledString());
-  }
-  else {
-    return QString();
-  }
+  return data->attributesAsText();
 }
 
-QMap<QString, QString> NodeItem::attributest() const {
+Json::Value NodeItem::attributesAsJson() const {
+
+  NodeData *data = relatedDataController()->getNodeById(m_id);
+  return data->attributesAsJson();
+}
+
+QMap<QString, QString> NodeItem::attributes() const {
 
   NodeData *data = relatedDataController()->getNodeById(m_id);
   return data->attributes;
@@ -165,22 +160,7 @@ QMap<QString, QString> NodeItem::attributest() const {
 
 void NodeItem::setAttributes(const QString &text) {
 
-  qDebug() << text;
-
-  Json::Reader reader;
-  Json::Value jsonValue;
-  bool ok = reader.parse(text.toStdString(), jsonValue);
-
-  if (ok) {
-    NodeData *data = relatedDataController()->getNodeById(m_id);
-    data->attributes.clear();
-
-    for (int i = 0; i < jsonValue.size(); ++i) {
-      QString key = QString::fromStdString(jsonValue.getMemberNames().at(i));
-      QString value = QString::fromStdString(jsonValue[jsonValue.getMemberNames().at(i)].asString());
-      data->attributes.insert(key, value);
-    }
-
-    attributesChanged();
-  }
+  NodeData *data = relatedDataController()->getNodeById(m_id);
+  data->setAttributesFromText(text);
+  attributesChanged();
 }

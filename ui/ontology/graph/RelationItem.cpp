@@ -172,21 +172,16 @@ void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 QString RelationItem::attributesAsText() const {
 
   RelationData *data = relatedDataController()->getRelationById(m_id);
-  if (data->attributes.size() > 0) {
-    Json::Value jsonValue;
-    foreach (QString key, data->attributes.keys()) {
-      QString value = data->attributes.value(key);
-      jsonValue[key.toStdString()] = Json::Value(value.toStdString());
-    }
-
-    return QString::fromStdString(jsonValue.toStyledString());
-  }
-  else {
-    return QString();
-  }
+  return data->attributesAsText();
 }
 
-QMap<QString, QString> RelationItem::attributest() const {
+Json::Value RelationItem::attributesAsJson() const {
+
+  RelationData *data = relatedDataController()->getRelationById(m_id);
+  data->attributesAsJson();
+}
+
+QMap<QString, QString> RelationItem::attributes() const {
 
   RelationData *data = relatedDataController()->getRelationById(m_id);
   return data->attributes;
@@ -194,22 +189,7 @@ QMap<QString, QString> RelationItem::attributest() const {
 
 void RelationItem::setAttributes(const QString &text) {
 
-  qDebug() << text;
-
-  Json::Reader reader;
-  Json::Value jsonValue;
-  bool ok = reader.parse(text.toStdString(), jsonValue);
-
-  if (ok) {
-    RelationData *data = relatedDataController()->getRelationById(m_id);
-    data->attributes.clear();
-
-    for (int i = 0; i < jsonValue.size(); ++i) {
-      QString key = QString::fromStdString(jsonValue.getMemberNames().at(i));
-      QString value = QString::fromStdString(jsonValue[jsonValue.getMemberNames().at(i)].asString());
-      data->attributes.insert(key, value);
-    }
-
-    attributesChanged();
-  }
+  RelationData *data = relatedDataController()->getRelationById(m_id);
+  data->setAttributesFromText(text);
+  attributesChanged();
 }

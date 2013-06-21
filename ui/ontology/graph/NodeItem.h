@@ -34,7 +34,8 @@ class NodeItem : public QObject, public QGraphicsRectItem, public OntologyGraphE
     void removeAllRelations();
 
     QString attributesAsText() const;
-    QMap<QString, QString> attributest() const;
+    Json::Value attributesAsJson() const;
+    QMap<QString, QString> attributes() const;
     void setAttributes(const QString &text);
 
   signals:

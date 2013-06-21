@@ -23,7 +23,7 @@ class OntologyGraphElement {
     long id() const;
 
     virtual QString attributesAsText() const = 0;
-    virtual QMap<QString, QString> attributest() const = 0;
+    virtual QMap<QString, QString> attributes() const = 0;
     virtual void setAttributes(const QString &text) = 0;
 
     void setName(const QString &name);

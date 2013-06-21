@@ -29,6 +29,8 @@ class OntologyDataController {
     void removeRelatedRelations(NodeData *nodeData);
     NodeData *otherNode(RelationData *relation, NodeData *node) const;
 
+    Json::Value attributesAsJson(const QMap<QString, QString> &attributes) const;
+
     OntologyDataController(QList<NodeData *> nodeList,
                            QList<RelationData *> relationList,
                            QMap<long, QPointF> nodePositions,
