@@ -1,0 +1,2956 @@
+{
+    "last_id": 308,
+    "nodes": [
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<rdfs:comment rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">\u0421\u0438\u043d\u043e\u043d\u0438\u043c\u044b. \u0412\u0432\u0435\u0434\u0435\u043d\u044b \u043f\u043e \u0438\u0434\u0435\u0435 \u043d\u0435 \u0441\u043e\u0432\u0441\u0435\u043c \u0441\u0440\u0435\u0434\u0441\u0442\u0432\u0430\u043c\u0438 owl. sel - \u043e\u0431\u0442\u0432\u0435\u043d\u043d\u043e\u0435 \u043f\u043e\u043b\u0435</rdfs:comment>",
+                    "<Synonyms sel=\"0\">\n               <arquests/>\n          </Synonyms>"
+                ]
+            },
+            "id": 0,
+            "name": "arquests",
+            "position_x": 820.95230525366401,
+            "position_y": 1482.2462997127725
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <rdfs:comment rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">\u0441\u0438\u043d\u043e\u043d\u0438\u043c\u044b \u043c\u043e\u0433\u0443\u0442 \u0441\u043e\u0434\u0435\u0436\u0430\u0442\u044c \u043f\u043e\u043b\u044f, \u043f\u043e\u043b\u0443\u0447\u0435\u043d\u043d\u044b\u0435 \u0438\u0437 \u043c\u043e\u0434\u0435\u043b\u0438 \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044f</rdfs:comment>\n               <name>\n                    <field type=\"System.Boolean\">True</field>\n               </name>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 1,
+            "name": "arquests.name",
+            "position_x": 1882.4104169382497,
+            "position_y": 339.00328010891377
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <description>\n                    <field type=\"System.Boolean\">True</field>\n               </description>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 3,
+            "name": "arquests.description",
+            "position_x": 1296.5554675235601,
+            "position_y": 934.35946695156531
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <resourceurl>\n                    <field type=\"System.Boolean\">True</field>\n               </resourceurl>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 5,
+            "name": "arquests.resourceurl",
+            "position_x": 1375.0617040388674,
+            "position_y": 68.142424809050752
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>1</AttributeAvg>",
+                    "<AttributeMin>1</AttributeMin>",
+                    "<AttributeMax>1</AttributeMax>"
+                ]
+            },
+            "id": 7,
+            "name": "arquests.id",
+            "position_x": 517.56309632623879,
+            "position_y": 893.09485956932974
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <resourcename>\n                    <field type=\"System.Boolean\">True</field>\n               </resourcename>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 9,
+            "name": "arquests.resourcename",
+            "position_x": 1584.4417692930365,
+            "position_y": 871.20171938602266
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_table/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>ARQuests</AttributeVal>"
+                ]
+            },
+            "id": 11,
+            "name": "arquests._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 25.718041563759677,
+            "position_y": 122.35229530922776
+        },
+        {
+            "id": 13,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#AttributeExt",
+            "position_x": 1312.1716729259228,
+            "position_y": 1988.976520162606
+        },
+        {
+            "id": 17,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#DoubleAttributeExt",
+            "position_x": 212.48074951802099,
+            "position_y": 1391.7713566302098
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <allquesttypes/>\n          </Synonyms>"
+                ]
+            },
+            "id": 21,
+            "name": "allquesttypes",
+            "position_x": 1220.4601681137081,
+            "position_y": 104.55201539195258
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<rdfs:comment rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">\u0414\u043e\u043c\u0435\u043d \u0430\u0442\u0440\u0438\u0431\u0443\u0442\u0430</rdfs:comment>",
+                    "<Domain myref=\"System.Int32\"/>"
+                ]
+            },
+            "id": 22,
+            "name": "allquesttypes.id",
+            "position_x": 1586.931776535497,
+            "position_y": 249.47444962539402
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <questtype>\n                    <field type=\"System.Boolean\">True</field>\n               </questtype>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>",
+                    "<rdfs:comment rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">\u0417\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0430\u0442\u0440\u0438\u0431\u0443\u0442\u0430</rdfs:comment>",
+                    "<AttributeVal>_\u0432\u044b\u0432\u043e\u0434</AttributeVal>"
+                ]
+            },
+            "id": 24,
+            "name": "allquesttypes.questtype",
+            "position_x": 502.33404735384403,
+            "position_y": 633.78544018970251
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>AllQuestTypes</AttributeVal>"
+                ]
+            },
+            "id": 26,
+            "name": "allquesttypes._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 744.62647415728259,
+            "position_y": 1141.9147943338428
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <attributes/>\n          </Synonyms>"
+                ]
+            },
+            "id": 31,
+            "name": "attributes",
+            "position_x": 1765.0279888088778,
+            "position_y": 557.39731706743112
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>2</AttributeAvg>",
+                    "<AttributeMin>1</AttributeMin>",
+                    "<AttributeMax>3</AttributeMax>"
+                ]
+            },
+            "id": 32,
+            "name": "attributes.id",
+            "position_x": 313.03004465792708,
+            "position_y": 1818.7190894214923
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <attributename>\n                    <field type=\"System.Boolean\">True</field>\n               </attributename>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>",
+                    "<AttributeVal>_\u0432\u044b\u0432\u043e\u0434</AttributeVal>"
+                ]
+            },
+            "id": 34,
+            "name": "attributes.attributename",
+            "position_x": 829.82346692323472,
+            "position_y": 206.83146650063699
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>Attributes</AttributeVal>"
+                ]
+            },
+            "id": 36,
+            "name": "attributes._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 1910.2005391667208,
+            "position_y": 306.5248395423763
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"1\">\n               <categories/>\n               <\u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438>\n                    <\u044f\u0437\u044b\u043a/>\n               </\u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438>\n          </Synonyms>"
+                ]
+            },
+            "id": 41,
+            "name": "\u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438",
+            "position_x": 729.48562523836483,
+            "position_y": 524.11919610537905
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>202</AttributeAvg>",
+                    "<AttributeMin>172</AttributeMin>",
+                    "<AttributeMax>233</AttributeMax>"
+                ]
+            },
+            "id": 42,
+            "name": "\u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438.id",
+            "position_x": 1857.5197714586284,
+            "position_y": 1131.765565163699
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <categoryname>\n                    <field type=\"System.Boolean\">True</field>\n               </categoryname>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>",
+                    "<AttributeVal>_\u0432\u044b\u0432\u043e\u0434</AttributeVal>"
+                ]
+            },
+            "id": 44,
+            "name": "\u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438.categoryname",
+            "position_x": 796.88083688258257,
+            "position_y": 12.774227362551516
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<rdfs:comment rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">\u0414\u043e\u043c\u0435\u043d \u0430\u0442\u0440\u0438\u0431\u0443\u0442\u0430</rdfs:comment>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>Categories</AttributeVal>"
+                ]
+            },
+            "id": 46,
+            "name": "\u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 1299.5623418949656,
+            "position_y": 922.49301826875183
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <checkinquests/>\n          </Synonyms>"
+                ]
+            },
+            "id": 51,
+            "name": "checkinquests",
+            "position_x": 1812.550737793038,
+            "position_y": 1875.7781091280904
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Guid\"/>"
+                ]
+            },
+            "id": 52,
+            "name": "checkinquests.id",
+            "position_x": 852.91651518989966,
+            "position_y": 490.32113840347756
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <name>\n                    <field type=\"System.Boolean\">True</field>\n               </name>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 54,
+            "name": "checkinquests.name",
+            "position_x": 163.31898256102841,
+            "position_y": 68.23353604951788
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <description>\n                    <field type=\"System.Boolean\">True</field>\n               </description>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 56,
+            "name": "checkinquests.description",
+            "position_x": 1843.5952284189723,
+            "position_y": 1718.9561352433666
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <place>\n                    <field type=\"System.Boolean\">True</field>\n               </place>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 58,
+            "name": "checkinquests.place",
+            "position_x": 601.20346799055244,
+            "position_y": 1797.5038331144765
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<rdfs:comment rdf:datatype=\"http://www.w3.org/2001/XMLSchema#string\">\u0414\u043e\u043c\u0435\u043d \u0430\u0442\u0440\u0438\u0431\u0443\u0442\u0430</rdfs:comment>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>CheckinQuests</AttributeVal>"
+                ]
+            },
+            "id": 60,
+            "name": "checkinquests._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 681.64473265347999,
+            "position_y": 1484.9105038950429
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <eventplaces/>\n          </Synonyms>"
+                ]
+            },
+            "id": 67,
+            "name": "eventplaces",
+            "position_x": 1406.4605683170316,
+            "position_y": 881.23907159446026
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <places/>\n               <\u0440\u0430\u0441\u043f\u043e\u043b\u043e\u0436\u0435\u043d\u0438\u044f>\n                    <\u044f\u0437\u044b\u043a/>\n               </\u0440\u0430\u0441\u043f\u043e\u043b\u043e\u0436\u0435\u043d\u0438\u044f>\n          </Synonyms>"
+                ]
+            },
+            "id": 68,
+            "name": "places",
+            "position_x": 462.32579758717395,
+            "position_y": 1862.159058219981
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <nightevents/>\n               <\u0441\u043e\u0431\u044b\u0442\u0438\u044f>\n                    <\u044f\u0437\u044b\u043a/>\n               </\u0441\u043e\u0431\u044b\u0442\u0438\u044f>\n               <\u043c\u0435\u0440\u043e\u043f\u0440\u0438\u044f\u0442\u0438\u044f>\n                    <\u044f\u0437\u044b\u043a/>\n               </\u043c\u0435\u0440\u043e\u043f\u0440\u0438\u044f\u0442\u0438\u044f>\n               <\u0441\u043e\u0431\u044b\u0442\u0438\u0439>\n                    <\u044f\u0437\u044b\u043a/>\n               </\u0441\u043e\u0431\u044b\u0442\u0438\u0439>\n          </Synonyms>"
+                ]
+            },
+            "id": 70,
+            "name": "nightevents",
+            "position_x": 761.68752114746496,
+            "position_y": 115.31394537246875
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>1800</AttributeAvg>",
+                    "<AttributeMin>1663</AttributeMin>",
+                    "<AttributeMax>1938</AttributeMax>"
+                ]
+            },
+            "id": 72,
+            "name": "eventplaces.id",
+            "position_x": 1665.8657712352276,
+            "position_y": 296.84389207456195
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <idplace>\n                    <field type=\"System.Boolean\">True</field>\n               </idplace>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>180</AttributeAvg>",
+                    "<AttributeMin>131</AttributeMin>",
+                    "<AttributeMax>249</AttributeMax>"
+                ]
+            },
+            "id": 74,
+            "name": "eventplaces.idplace",
+            "position_x": 1958.7431706874938,
+            "position_y": 724.16695662254699
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <idevent>\n                    <field type=\"System.Boolean\">True</field>\n               </idevent>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>1426</AttributeAvg>",
+                    "<AttributeMin>1322</AttributeMin>",
+                    "<AttributeMax>1538</AttributeMax>"
+                ]
+            },
+            "id": 76,
+            "name": "eventplaces.idevent",
+            "position_x": 48.109748630949412,
+            "position_y": 1681.5209181773841
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>EventPlaces</AttributeVal>"
+                ]
+            },
+            "id": 78,
+            "name": "eventplaces._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 1889.0824179741815,
+            "position_y": 1432.8494041453846
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <eventwhos/>\n          </Synonyms>"
+                ]
+            },
+            "id": 84,
+            "name": "eventwhos",
+            "position_x": 1909.338398326779,
+            "position_y": 1819.3624386457875
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <whos/>\n               <\u0422\u0435\u043c\u044b>\n                    <\u044f\u0437\u044b\u043a/>\n               </\u0422\u0435\u043c\u044b>\n          </Synonyms>"
+                ]
+            },
+            "id": 85,
+            "name": "whos",
+            "position_x": 301.13189016637551,
+            "position_y": 404.520476833244
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>1217</AttributeAvg>",
+                    "<AttributeMin>1127</AttributeMin>",
+                    "<AttributeMax>1307</AttributeMax>"
+                ]
+            },
+            "id": 88,
+            "name": "eventwhos.id",
+            "position_x": 1262.8220819140865,
+            "position_y": 1606.2016224118354
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <idwho>\n                    <field type=\"System.Boolean\">True</field>\n               </idwho>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>438</AttributeAvg>",
+                    "<AttributeMin>357</AttributeMin>",
+                    "<AttributeMax>519</AttributeMax>"
+                ]
+            },
+            "id": 90,
+            "name": "eventwhos.idwho",
+            "position_x": 1120.1177189949242,
+            "position_y": 49.385146663313286
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <idevent>\n                    <field type=\"System.Boolean\">True</field>\n               </idevent>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>1439</AttributeAvg>",
+                    "<AttributeMin>1322</AttributeMin>",
+                    "<AttributeMax>1538</AttributeMax>"
+                ]
+            },
+            "id": 92,
+            "name": "eventwhos.idevent",
+            "position_x": 375.49342359156856,
+            "position_y": 1345.9351807319206
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>EventWhos</AttributeVal>"
+                ]
+            },
+            "id": 94,
+            "name": "eventwhos._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 1035.2716788088976,
+            "position_y": 472.50701094566125
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <whos/>\n          </Synonyms>",
+                    "<Domain myref=\"Whos\"/>"
+                ]
+            },
+            "id": 96,
+            "name": "eventwhos.whos",
+            "position_x": 1380.993650582669,
+            "position_y": 1808.6910619642895
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <htmlquests/>\n          </Synonyms>"
+                ]
+            },
+            "id": 103,
+            "name": "htmlquests",
+            "position_x": 1942.3197574746187,
+            "position_y": 274.86463264361151
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <name>\n                    <field type=\"System.Boolean\">True</field>\n               </name>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 104,
+            "name": "htmlquests.name",
+            "position_x": 1202.9283832042581,
+            "position_y": 309.57883387672115
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <description>\n                    <field type=\"System.Boolean\">True</field>\n               </description>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 106,
+            "name": "htmlquests.description",
+            "position_x": 446.61297975896821,
+            "position_y": 482.83281166196713
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <htmlurl>\n                    <field type=\"System.Boolean\">True</field>\n               </htmlurl>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 108,
+            "name": "htmlquests.htmlurl",
+            "position_x": 1639.0344545615358,
+            "position_y": 741.13759395723071
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>2</AttributeAvg>",
+                    "<AttributeMin>2</AttributeMin>",
+                    "<AttributeMax>2</AttributeMax>"
+                ]
+            },
+            "id": 110,
+            "name": "htmlquests.id",
+            "position_x": 851.79871747877905,
+            "position_y": 1776.6408124198804
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <resourceurl>\n                    <field type=\"System.Boolean\">True</field>\n               </resourceurl>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 112,
+            "name": "htmlquests.resourceurl",
+            "position_x": 678.61240606395381,
+            "position_y": 1272.475716819529
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>HTMLQuests</AttributeVal>"
+                ]
+            },
+            "id": 114,
+            "name": "htmlquests._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 1031.8108453650052,
+            "position_y": 610.39907318736425
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <heroattributes/>\n          </Synonyms>"
+                ]
+            },
+            "id": 122,
+            "name": "heroattributes",
+            "position_x": 1872.0221901917218,
+            "position_y": 214.44602431536009
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <idattribute>\n                    <field type=\"System.Boolean\">True</field>\n               </idattribute>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>2</AttributeAvg>",
+                    "<AttributeMin>1</AttributeMin>",
+                    "<AttributeMax>3</AttributeMax>"
+                ]
+            },
+            "id": 124,
+            "name": "heroattributes.idattribute",
+            "position_x": 1688.2890041665764,
+            "position_y": 1229.1189393657864
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <attributevalue>\n                    <field type=\"System.Boolean\">True</field>\n               </attributevalue>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>14</AttributeAvg>",
+                    "<AttributeMin>10</AttributeMin>",
+                    "<AttributeMax>17</AttributeMax>"
+                ]
+            },
+            "id": 126,
+            "name": "heroattributes.attributevalue",
+            "position_x": 161.30942920645276,
+            "position_y": 231.27849919870758
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>3</AttributeAvg>",
+                    "<AttributeMin>1</AttributeMin>",
+                    "<AttributeMax>6</AttributeMax>"
+                ]
+            },
+            "id": 128,
+            "name": "heroattributes.id",
+            "position_x": 1095.9409880634607,
+            "position_y": 218.49991026198401
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <idhero>\n                    <field type=\"System.Boolean\">True</field>\n               </idhero>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>"
+                ]
+            },
+            "id": 130,
+            "name": "heroattributes.idhero",
+            "position_x": 1875.8126477307326,
+            "position_y": 964.28166046254103
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>HeroAttributes</AttributeVal>"
+                ]
+            },
+            "id": 132,
+            "name": "heroattributes._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 78.580766175776688,
+            "position_y": 1706.4605842133178
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <attributes/>\n          </Synonyms>",
+                    "<Domain myref=\"Attributes\"/>"
+                ]
+            },
+            "id": 134,
+            "name": "heroattributes.attributes",
+            "position_x": 1771.0218356421801,
+            "position_y": 118.37889734097917
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <heroqueststatuses/>\n          </Synonyms>"
+                ]
+            },
+            "id": 142,
+            "name": "heroqueststatuses",
+            "position_x": 160.65019935648485,
+            "position_y": 407.11462190260272
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Guid\"/>"
+                ]
+            },
+            "id": 143,
+            "name": "heroqueststatuses.id",
+            "position_x": 700.44177401570698,
+            "position_y": 822.16958564505103
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <idhero>\n                    <field type=\"System.Boolean\">True</field>\n               </idhero>\n          </Synonyms>",
+                    "<Domain myref=\"System.Guid\"/>"
+                ]
+            },
+            "id": 145,
+            "name": "heroqueststatuses.idhero",
+            "position_x": 1886.8688888448635,
+            "position_y": 665.02074966422015
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <idquest>\n                    <field type=\"System.Boolean\">True</field>\n               </idquest>\n          </Synonyms>",
+                    "<Domain myref=\"System.Guid\"/>"
+                ]
+            },
+            "id": 147,
+            "name": "heroqueststatuses.idquest",
+            "position_x": 1895.2066007968529,
+            "position_y": 1580.6807664986538
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <status>\n                    <field type=\"System.Boolean\">True</field>\n               </status>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 149,
+            "name": "heroqueststatuses.status",
+            "position_x": 137.19804187741568,
+            "position_y": 617.84686916899932
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>HeroQuestStatuses</AttributeVal>"
+                ]
+            },
+            "id": 151,
+            "name": "heroqueststatuses._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 411.41671574008518,
+            "position_y": 1072.7749572045946
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <heroes/>\n          </Synonyms>"
+                ]
+            },
+            "id": 158,
+            "name": "heroes",
+            "position_x": 83.588350386568649,
+            "position_y": 155.68995243789584
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <name>\n                    <field type=\"System.Boolean\">True</field>\n               </name>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 159,
+            "name": "heroes.name",
+            "position_x": 1373.8845096871989,
+            "position_y": 812.84349545625798
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <location>\n                    <field type=\"System.Boolean\">True</field>\n               </location>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 161,
+            "name": "heroes.location",
+            "position_x": 607.56149763561473,
+            "position_y": 1190.1550785622339
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>4</AttributeAvg>",
+                    "<AttributeMin>1</AttributeMin>",
+                    "<AttributeMax>7</AttributeMax>"
+                ]
+            },
+            "id": 163,
+            "name": "heroes.id",
+            "position_x": 1491.1711820646542,
+            "position_y": 373.51386764762816
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>Heroes</AttributeVal>"
+                ]
+            },
+            "id": 165,
+            "name": "heroes._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 205.85362320945188,
+            "position_y": 1274.137301818804
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>190</AttributeAvg>",
+                    "<AttributeMin>131</AttributeMin>",
+                    "<AttributeMax>249</AttributeMax>"
+                ]
+            },
+            "id": 171,
+            "name": "places.id",
+            "position_x": 1185.8602373431781,
+            "position_y": 1688.5444408951639
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <placename>\n                    <field type=\"System.Boolean\">True</field>\n               </placename>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>",
+                    "<AttributeVal>_\u0432\u044b\u0432\u043e\u0434</AttributeVal>"
+                ]
+            },
+            "id": 173,
+            "name": "places.placename",
+            "position_x": 269.34776944511918,
+            "position_y": 1439.7523926592826
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <location>\n                    <field type=\"System.Boolean\">True</field>\n               </location>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 175,
+            "name": "places.location",
+            "position_x": 1583.3347712852542,
+            "position_y": 139.94094269469537
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>Places</AttributeVal>"
+                ]
+            },
+            "id": 177,
+            "name": "places._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 1525.0009710909355,
+            "position_y": 358.87907703688194
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <questattibuteprizes/>\n          </Synonyms>"
+                ]
+            },
+            "id": 183,
+            "name": "questattibuteprizes",
+            "position_x": 688.45362775444062,
+            "position_y": 1768.5250761356117
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>"
+                ]
+            },
+            "id": 185,
+            "name": "questattibuteprizes.id",
+            "position_x": 1633.8525977672025,
+            "position_y": 764.13774347892786
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <idattribute>\n                    <field type=\"System.Boolean\">True</field>\n               </idattribute>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>"
+                ]
+            },
+            "id": 187,
+            "name": "questattibuteprizes.idattribute",
+            "position_x": 1179.5906016008835,
+            "position_y": 1215.8236754356788
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <prizesize>\n                    <field type=\"System.Boolean\">True</field>\n               </prizesize>\n          </Synonyms>",
+                    "<Domain myref=\"System.Single\"/>"
+                ]
+            },
+            "id": 189,
+            "name": "questattibuteprizes.prizesize",
+            "position_x": 661.20859690020711,
+            "position_y": 539.88944618728124
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <idallquest>\n                    <field type=\"System.Boolean\">True</field>\n               </idallquest>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>"
+                ]
+            },
+            "id": 191,
+            "name": "questattibuteprizes.idallquest",
+            "position_x": 513.04715962705291,
+            "position_y": 1741.2947587156029
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>QuestAttibutePrizes</AttributeVal>"
+                ]
+            },
+            "id": 193,
+            "name": "questattibuteprizes._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 656.18816637489829,
+            "position_y": 1706.8621232360576
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <attributes/>\n          </Synonyms>",
+                    "<Domain myref=\"Attributes\"/>"
+                ]
+            },
+            "id": 195,
+            "name": "questattibuteprizes.attributes",
+            "position_x": 758.56918717747646,
+            "position_y": 169.05779138465226
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <socquests/>\n          </Synonyms>"
+                ]
+            },
+            "id": 203,
+            "name": "socquests",
+            "position_x": 1196.975505399447,
+            "position_y": 1986.7031893019289
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Guid\"/>"
+                ]
+            },
+            "id": 204,
+            "name": "socquests.id",
+            "position_x": 914.02518752029698,
+            "position_y": 625.67499695478057
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <name>\n                    <field type=\"System.Boolean\">True</field>\n               </name>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 206,
+            "name": "socquests.name",
+            "position_x": 1327.0657993791274,
+            "position_y": 691.69148097584389
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <description>\n                    <field type=\"System.Boolean\">True</field>\n               </description>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 208,
+            "name": "socquests.description",
+            "position_x": 1436.7575928932145,
+            "position_y": 664.66780685755043
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>SocQuests</AttributeVal>"
+                ]
+            },
+            "id": 210,
+            "name": "socquests._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 107.40503323692695,
+            "position_y": 1864.1120959957648
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>438</AttributeAvg>",
+                    "<AttributeMin>357</AttributeMin>",
+                    "<AttributeMax>519</AttributeMax>"
+                ]
+            },
+            "id": 216,
+            "name": "whos.id",
+            "position_x": 1614.531024854997,
+            "position_y": 1828.2062335530666
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <whoname>\n                    <field type=\"System.Boolean\">True</field>\n               </whoname>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>",
+                    "<AttributeVal>_\u0432\u044b\u0432\u043e\u0434</AttributeVal>"
+                ]
+            },
+            "id": 218,
+            "name": "whos.whoname",
+            "position_x": 1552.4799179827462,
+            "position_y": 50.567031320536415
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>Whos</AttributeVal>"
+                ]
+            },
+            "id": 220,
+            "name": "whos._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 1200.4617935022106,
+            "position_y": 481.36371849068183
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <eventtags/>\n          </Synonyms>"
+                ]
+            },
+            "id": 225,
+            "name": "eventtags",
+            "position_x": 1315.6903777770863,
+            "position_y": 1846.8031340335147
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <tags/>\n               <\u0442\u044d\u0433\u0438>\n                    <\u044f\u0437\u044b\u043a/>\n               </\u0442\u044d\u0433\u0438>\n               <\u0442\u0435\u0433\u0438>\n                    <\u044f\u0437\u044b\u043a/>\n               </\u0442\u0435\u0433\u0438>\n          </Synonyms>"
+                ]
+            },
+            "id": 227,
+            "name": "tags",
+            "position_x": 34.654602021212398,
+            "position_y": 337.14282157051969
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>1575</AttributeAvg>",
+                    "<AttributeMin>1466</AttributeMin>",
+                    "<AttributeMax>1684</AttributeMax>"
+                ]
+            },
+            "id": 229,
+            "name": "eventtags.id",
+            "position_x": 517.19087321105815,
+            "position_y": 1229.8584583599579
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <idevent>\n                    <field type=\"System.Boolean\">True</field>\n               </idevent>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>1401</AttributeAvg>",
+                    "<AttributeMin>9</AttributeMin>",
+                    "<AttributeMax>1534</AttributeMax>"
+                ]
+            },
+            "id": 231,
+            "name": "eventtags.idevent",
+            "position_x": 458.60065050827313,
+            "position_y": 1096.1562091336802
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <idtag>\n                    <field type=\"System.Boolean\">True</field>\n               </idtag>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>34</AttributeAvg>",
+                    "<AttributeMin>30</AttributeMin>",
+                    "<AttributeMax>47</AttributeMax>"
+                ]
+            },
+            "id": 233,
+            "name": "eventtags.idtag",
+            "position_x": 954.96106584656877,
+            "position_y": 1145.6048731959875
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>eventtags</AttributeVal>"
+                ]
+            },
+            "id": 235,
+            "name": "eventtags._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 1127.9127375375383,
+            "position_y": 500.24988411078431
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <tags/>\n          </Synonyms>",
+                    "<Domain myref=\"tags\"/>"
+                ]
+            },
+            "id": 237,
+            "name": "eventtags.tags",
+            "position_x": 917.73006859736836,
+            "position_y": 15.650810330133158
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>1417</AttributeAvg>",
+                    "<AttributeMin>8</AttributeMin>",
+                    "<AttributeMax>1538</AttributeMax>"
+                ]
+            },
+            "id": 245,
+            "name": "nightevents.id",
+            "position_x": 1622.7322873225517,
+            "position_y": 1867.6985906424302
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <description>\n                    <field type=\"System.Boolean\">True</field>\n               </description>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 247,
+            "name": "nightevents.description",
+            "position_x": 1397.0086702896906,
+            "position_y": 492.64083120884817
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <imageurl>\n                    <field type=\"System.Boolean\">True</field>\n               </imageurl>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 249,
+            "name": "nightevents.imageurl",
+            "position_x": 1746.125130806277,
+            "position_y": 1219.1652188789708
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <pageurl>\n                    <field type=\"System.Boolean\">True</field>\n               </pageurl>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 251,
+            "name": "nightevents.pageurl",
+            "position_x": 1582.6181124647565,
+            "position_y": 1821.6216663872949
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <name>\n                    <field type=\"System.Boolean\">True</field>\n               </name>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>",
+                    "<AttributeVal>_\u0432\u044b\u0432\u043e\u0434</AttributeVal>"
+                ]
+            },
+            "id": 253,
+            "name": "nightevents.name",
+            "position_x": 1037.1258610329478,
+            "position_y": 1551.8380491503985
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <eventdatetime>\n                    <field type=\"System.Boolean\">True</field>\n               </eventdatetime>\n          </Synonyms>",
+                    "<Domain myref=\"System.DateTime\"/>"
+                ]
+            },
+            "id": 255,
+            "name": "nightevents.eventdatetime",
+            "position_x": 1786.4664709996996,
+            "position_y": 1210.7684959023563
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <location>\n                    <field type=\"System.Boolean\">True</field>\n               </location>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 257,
+            "name": "nightevents.location",
+            "position_x": 353.7838796816992,
+            "position_y": 715.18626018146961
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <categoryid>\n                    <field type=\"System.Boolean\">True</field>\n               </categoryid>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>201</AttributeAvg>",
+                    "<AttributeMin>172</AttributeMin>",
+                    "<AttributeMax>233</AttributeMax>"
+                ]
+            },
+            "id": 259,
+            "name": "nightevents.categoryid",
+            "position_x": 1123.9474436197411,
+            "position_y": 891.29975124960879
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <starttime>\n                    <field type=\"System.Boolean\">True</field>\n               </starttime>\n          </Synonyms>",
+                    "<Domain myref=\"System.DateTime\"/>"
+                ]
+            },
+            "id": 261,
+            "name": "nightevents.starttime",
+            "position_x": 872.41172085477615,
+            "position_y": 1846.664031908522
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <finishtime>\n                    <field type=\"System.Boolean\">True</field>\n               </finishtime>\n          </Synonyms>",
+                    "<Domain myref=\"System.DateTime\"/>"
+                ]
+            },
+            "id": 263,
+            "name": "nightevents.finishtime",
+            "position_x": 269.47220981334465,
+            "position_y": 1880.9444613335572
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>nightevents</AttributeVal>"
+                ]
+            },
+            "id": 265,
+            "name": "nightevents._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 1031.5603946773422,
+            "position_y": 1032.6118541291935
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <categories/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0421\u0442\u0440\u043e\u043a\u0430\"/>"
+                ]
+            },
+            "id": 267,
+            "name": "nightevents.categories",
+            "position_x": 1431.6720373321732,
+            "position_y": 1548.996175139587
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": ""
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <sysdiagrams/>\n          </Synonyms>"
+                ]
+            },
+            "id": 281,
+            "name": "sysdiagrams",
+            "position_x": 1465.0618906465156,
+            "position_y": 1593.2789823938051
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <name>\n                    <field type=\"System.Boolean\">True</field>\n               </name>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>"
+                ]
+            },
+            "id": 282,
+            "name": "sysdiagrams.name",
+            "position_x": 1.6952714886115938,
+            "position_y": 1277.7381798634447
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <principal_id>\n                    <field type=\"System.Boolean\">True</field>\n               </principal_id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>1</AttributeAvg>",
+                    "<AttributeMin>1</AttributeMin>",
+                    "<AttributeMax>1</AttributeMax>"
+                ]
+            },
+            "id": 284,
+            "name": "sysdiagrams.principal_id",
+            "position_x": 1764.2002891413845,
+            "position_y": 221.07393624491033
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <diagram_id>\n                    <field type=\"System.Boolean\">True</field>\n               </diagram_id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>1</AttributeAvg>",
+                    "<AttributeMin>1</AttributeMin>",
+                    "<AttributeMax>2</AttributeMax>"
+                ]
+            },
+            "id": 286,
+            "name": "sysdiagrams.diagram_id",
+            "position_x": 1786.0354553312011,
+            "position_y": 1050.7232131815508
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <version>\n                    <field type=\"System.Boolean\">True</field>\n               </version>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>1</AttributeAvg>",
+                    "<AttributeMin>1</AttributeMin>",
+                    "<AttributeMax>1</AttributeMax>"
+                ]
+            },
+            "id": 288,
+            "name": "sysdiagrams.version",
+            "position_x": 159.35461858163791,
+            "position_y": 745.93996105334566
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <definition>\n                    <field type=\"System.Boolean\">True</field>\n               </definition>\n          </Synonyms>",
+                    "<Domain myref=\"\u0421\u0442\u0440\u043e\u043a\u0430\"/>"
+                ]
+            },
+            "id": 290,
+            "name": "sysdiagrams.definition",
+            "position_x": 1837.3171092465238,
+            "position_y": 1781.4190816851042
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>sysdiagrams</AttributeVal>"
+                ]
+            },
+            "id": 292,
+            "name": "sysdiagrams._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 1377.7906941200526,
+            "position_y": 931.66877017217507
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <id>\n                    <field type=\"System.Boolean\">True</field>\n               </id>\n          </Synonyms>",
+                    "<Domain myref=\"System.Int32\"/>",
+                    "<AttributeAvg>38</AttributeAvg>",
+                    "<AttributeMin>30</AttributeMin>",
+                    "<AttributeMax>47</AttributeMax>"
+                ]
+            },
+            "id": 300,
+            "name": "tags.id",
+            "position_x": 1410.9829108401809,
+            "position_y": 1421.1600262133477
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <tagname>\n                    <field type=\"System.Boolean\">True</field>\n               </tagname>\n          </Synonyms>",
+                    "<Domain myref=\"System.String\"/>",
+                    "<AttributeVal>_\u0432\u044b\u0432\u043e\u0434</AttributeVal>"
+                ]
+            },
+            "id": 302,
+            "name": "tags.tagname",
+            "position_x": 1021.7041976901229,
+            "position_y": 132.81331664326547
+        },
+        {
+            "attributes": {
+                "class-attribytes": {
+                    "mypropid": "0"
+                },
+                "unknown-attributes": [
+                    "<Synonyms sel=\"0\">\n               <_\u0442\u0430\u0431\u043b\u0438\u0446\u0430/>\n          </Synonyms>",
+                    "<Domain myref=\"\u0422\u0430\u0431\u043b\u0438\u0446\u044b\"/>",
+                    "<AttributeVal>tags</AttributeVal>"
+                ]
+            },
+            "id": 304,
+            "name": "tags._\u0442\u0430\u0431\u043b\u0438\u0446\u0430",
+            "position_x": 269.62198294837168,
+            "position_y": 1560.1413643041249
+        }
+    ],
+    "relations": [
+        {
+            "destination_node_id": 1,
+            "id": 2,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 0
+        },
+        {
+            "destination_node_id": 3,
+            "id": 4,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 0
+        },
+        {
+            "destination_node_id": 5,
+            "id": 6,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 0
+        },
+        {
+            "destination_node_id": 7,
+            "id": 8,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 0
+        },
+        {
+            "destination_node_id": 9,
+            "id": 10,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 0
+        },
+        {
+            "destination_node_id": 11,
+            "id": 12,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 0
+        },
+        {
+            "destination_node_id": 13,
+            "id": 14,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 1
+        },
+        {
+            "destination_node_id": 13,
+            "id": 15,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 3
+        },
+        {
+            "destination_node_id": 13,
+            "id": 16,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 5
+        },
+        {
+            "destination_node_id": 17,
+            "id": 18,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 7
+        },
+        {
+            "destination_node_id": 13,
+            "id": 19,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 9
+        },
+        {
+            "destination_node_id": 13,
+            "id": 20,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 11
+        },
+        {
+            "destination_node_id": 22,
+            "id": 23,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 21
+        },
+        {
+            "destination_node_id": 24,
+            "id": 25,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 21
+        },
+        {
+            "destination_node_id": 26,
+            "id": 27,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 21
+        },
+        {
+            "destination_node_id": 13,
+            "id": 28,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 22
+        },
+        {
+            "destination_node_id": 13,
+            "id": 29,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 24
+        },
+        {
+            "destination_node_id": 13,
+            "id": 30,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 26
+        },
+        {
+            "destination_node_id": 32,
+            "id": 33,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 31
+        },
+        {
+            "destination_node_id": 34,
+            "id": 35,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 31
+        },
+        {
+            "destination_node_id": 36,
+            "id": 37,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 31
+        },
+        {
+            "destination_node_id": 17,
+            "id": 38,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 32
+        },
+        {
+            "destination_node_id": 13,
+            "id": 39,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 34
+        },
+        {
+            "destination_node_id": 13,
+            "id": 40,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 36
+        },
+        {
+            "destination_node_id": 42,
+            "id": 43,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 41
+        },
+        {
+            "destination_node_id": 44,
+            "id": 45,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 41
+        },
+        {
+            "destination_node_id": 46,
+            "id": 47,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 41
+        },
+        {
+            "destination_node_id": 17,
+            "id": 48,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 42
+        },
+        {
+            "destination_node_id": 13,
+            "id": 49,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 44
+        },
+        {
+            "destination_node_id": 13,
+            "id": 50,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 46
+        },
+        {
+            "destination_node_id": 52,
+            "id": 53,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 51
+        },
+        {
+            "destination_node_id": 54,
+            "id": 55,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 51
+        },
+        {
+            "destination_node_id": 56,
+            "id": 57,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 51
+        },
+        {
+            "destination_node_id": 58,
+            "id": 59,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 51
+        },
+        {
+            "destination_node_id": 60,
+            "id": 61,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 51
+        },
+        {
+            "destination_node_id": 13,
+            "id": 62,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 52
+        },
+        {
+            "destination_node_id": 13,
+            "id": 63,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 54
+        },
+        {
+            "destination_node_id": 13,
+            "id": 64,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 56
+        },
+        {
+            "destination_node_id": 13,
+            "id": 65,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 58
+        },
+        {
+            "destination_node_id": 13,
+            "id": 66,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 60
+        },
+        {
+            "destination_node_id": 68,
+            "id": 69,
+            "name": "http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly",
+            "source_node_id": 67
+        },
+        {
+            "destination_node_id": 70,
+            "id": 71,
+            "name": "http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly",
+            "source_node_id": 67
+        },
+        {
+            "destination_node_id": 72,
+            "id": 73,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 67
+        },
+        {
+            "destination_node_id": 74,
+            "id": 75,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 67
+        },
+        {
+            "destination_node_id": 76,
+            "id": 77,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 67
+        },
+        {
+            "destination_node_id": 78,
+            "id": 79,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 67
+        },
+        {
+            "destination_node_id": 17,
+            "id": 80,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 72
+        },
+        {
+            "destination_node_id": 17,
+            "id": 81,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 74
+        },
+        {
+            "destination_node_id": 17,
+            "id": 82,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 76
+        },
+        {
+            "destination_node_id": 13,
+            "id": 83,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 78
+        },
+        {
+            "destination_node_id": 85,
+            "id": 86,
+            "name": "http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly",
+            "source_node_id": 84
+        },
+        {
+            "destination_node_id": 70,
+            "id": 87,
+            "name": "http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly",
+            "source_node_id": 84
+        },
+        {
+            "destination_node_id": 88,
+            "id": 89,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 84
+        },
+        {
+            "destination_node_id": 90,
+            "id": 91,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 84
+        },
+        {
+            "destination_node_id": 92,
+            "id": 93,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 84
+        },
+        {
+            "destination_node_id": 94,
+            "id": 95,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 84
+        },
+        {
+            "destination_node_id": 96,
+            "id": 97,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 84
+        },
+        {
+            "destination_node_id": 17,
+            "id": 98,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 88
+        },
+        {
+            "destination_node_id": 17,
+            "id": 99,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 90
+        },
+        {
+            "destination_node_id": 17,
+            "id": 100,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 92
+        },
+        {
+            "destination_node_id": 13,
+            "id": 101,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 94
+        },
+        {
+            "destination_node_id": 13,
+            "id": 102,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 96
+        },
+        {
+            "destination_node_id": 104,
+            "id": 105,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 103
+        },
+        {
+            "destination_node_id": 106,
+            "id": 107,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 103
+        },
+        {
+            "destination_node_id": 108,
+            "id": 109,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 103
+        },
+        {
+            "destination_node_id": 110,
+            "id": 111,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 103
+        },
+        {
+            "destination_node_id": 112,
+            "id": 113,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 103
+        },
+        {
+            "destination_node_id": 114,
+            "id": 115,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 103
+        },
+        {
+            "destination_node_id": 13,
+            "id": 116,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 104
+        },
+        {
+            "destination_node_id": 13,
+            "id": 117,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 106
+        },
+        {
+            "destination_node_id": 13,
+            "id": 118,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 108
+        },
+        {
+            "destination_node_id": 17,
+            "id": 119,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 110
+        },
+        {
+            "destination_node_id": 13,
+            "id": 120,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 112
+        },
+        {
+            "destination_node_id": 13,
+            "id": 121,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 114
+        },
+        {
+            "destination_node_id": 31,
+            "id": 123,
+            "name": "http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly",
+            "source_node_id": 122
+        },
+        {
+            "destination_node_id": 124,
+            "id": 125,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 122
+        },
+        {
+            "destination_node_id": 126,
+            "id": 127,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 122
+        },
+        {
+            "destination_node_id": 128,
+            "id": 129,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 122
+        },
+        {
+            "destination_node_id": 130,
+            "id": 131,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 122
+        },
+        {
+            "destination_node_id": 132,
+            "id": 133,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 122
+        },
+        {
+            "destination_node_id": 134,
+            "id": 135,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 122
+        },
+        {
+            "destination_node_id": 17,
+            "id": 136,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 124
+        },
+        {
+            "destination_node_id": 17,
+            "id": 137,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 126
+        },
+        {
+            "destination_node_id": 17,
+            "id": 138,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 128
+        },
+        {
+            "destination_node_id": 13,
+            "id": 139,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 130
+        },
+        {
+            "destination_node_id": 13,
+            "id": 140,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 132
+        },
+        {
+            "destination_node_id": 13,
+            "id": 141,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 134
+        },
+        {
+            "destination_node_id": 143,
+            "id": 144,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 142
+        },
+        {
+            "destination_node_id": 145,
+            "id": 146,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 142
+        },
+        {
+            "destination_node_id": 147,
+            "id": 148,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 142
+        },
+        {
+            "destination_node_id": 149,
+            "id": 150,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 142
+        },
+        {
+            "destination_node_id": 151,
+            "id": 152,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 142
+        },
+        {
+            "destination_node_id": 13,
+            "id": 153,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 143
+        },
+        {
+            "destination_node_id": 13,
+            "id": 154,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 145
+        },
+        {
+            "destination_node_id": 13,
+            "id": 155,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 147
+        },
+        {
+            "destination_node_id": 13,
+            "id": 156,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 149
+        },
+        {
+            "destination_node_id": 13,
+            "id": 157,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 151
+        },
+        {
+            "destination_node_id": 159,
+            "id": 160,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 158
+        },
+        {
+            "destination_node_id": 161,
+            "id": 162,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 158
+        },
+        {
+            "destination_node_id": 163,
+            "id": 164,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 158
+        },
+        {
+            "destination_node_id": 165,
+            "id": 166,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 158
+        },
+        {
+            "destination_node_id": 13,
+            "id": 167,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 159
+        },
+        {
+            "destination_node_id": 13,
+            "id": 168,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 161
+        },
+        {
+            "destination_node_id": 17,
+            "id": 169,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 163
+        },
+        {
+            "destination_node_id": 13,
+            "id": 170,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 165
+        },
+        {
+            "destination_node_id": 171,
+            "id": 172,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 68
+        },
+        {
+            "destination_node_id": 173,
+            "id": 174,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 68
+        },
+        {
+            "destination_node_id": 175,
+            "id": 176,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 68
+        },
+        {
+            "destination_node_id": 177,
+            "id": 178,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 68
+        },
+        {
+            "destination_node_id": 17,
+            "id": 179,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 171
+        },
+        {
+            "destination_node_id": 13,
+            "id": 180,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 173
+        },
+        {
+            "destination_node_id": 13,
+            "id": 181,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 175
+        },
+        {
+            "destination_node_id": 13,
+            "id": 182,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 177
+        },
+        {
+            "destination_node_id": 31,
+            "id": 184,
+            "name": "http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly",
+            "source_node_id": 183
+        },
+        {
+            "destination_node_id": 185,
+            "id": 186,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 183
+        },
+        {
+            "destination_node_id": 187,
+            "id": 188,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 183
+        },
+        {
+            "destination_node_id": 189,
+            "id": 190,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 183
+        },
+        {
+            "destination_node_id": 191,
+            "id": 192,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 183
+        },
+        {
+            "destination_node_id": 193,
+            "id": 194,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 183
+        },
+        {
+            "destination_node_id": 195,
+            "id": 196,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 183
+        },
+        {
+            "destination_node_id": 13,
+            "id": 197,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 185
+        },
+        {
+            "destination_node_id": 13,
+            "id": 198,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 187
+        },
+        {
+            "destination_node_id": 13,
+            "id": 199,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 189
+        },
+        {
+            "destination_node_id": 13,
+            "id": 200,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 191
+        },
+        {
+            "destination_node_id": 13,
+            "id": 201,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 193
+        },
+        {
+            "destination_node_id": 13,
+            "id": 202,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 195
+        },
+        {
+            "destination_node_id": 204,
+            "id": 205,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 203
+        },
+        {
+            "destination_node_id": 206,
+            "id": 207,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 203
+        },
+        {
+            "destination_node_id": 208,
+            "id": 209,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 203
+        },
+        {
+            "destination_node_id": 210,
+            "id": 211,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 203
+        },
+        {
+            "destination_node_id": 13,
+            "id": 212,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 204
+        },
+        {
+            "destination_node_id": 13,
+            "id": 213,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 206
+        },
+        {
+            "destination_node_id": 13,
+            "id": 214,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 208
+        },
+        {
+            "destination_node_id": 13,
+            "id": 215,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 210
+        },
+        {
+            "destination_node_id": 216,
+            "id": 217,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 85
+        },
+        {
+            "destination_node_id": 218,
+            "id": 219,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 85
+        },
+        {
+            "destination_node_id": 220,
+            "id": 221,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 85
+        },
+        {
+            "destination_node_id": 17,
+            "id": 222,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 216
+        },
+        {
+            "destination_node_id": 13,
+            "id": 223,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 218
+        },
+        {
+            "destination_node_id": 13,
+            "id": 224,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 220
+        },
+        {
+            "destination_node_id": 70,
+            "id": 226,
+            "name": "http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly",
+            "source_node_id": 225
+        },
+        {
+            "destination_node_id": 227,
+            "id": 228,
+            "name": "http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly",
+            "source_node_id": 225
+        },
+        {
+            "destination_node_id": 229,
+            "id": 230,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 225
+        },
+        {
+            "destination_node_id": 231,
+            "id": 232,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 225
+        },
+        {
+            "destination_node_id": 233,
+            "id": 234,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 225
+        },
+        {
+            "destination_node_id": 235,
+            "id": 236,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 225
+        },
+        {
+            "destination_node_id": 237,
+            "id": 238,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 225
+        },
+        {
+            "destination_node_id": 17,
+            "id": 239,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 229
+        },
+        {
+            "destination_node_id": 17,
+            "id": 240,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 231
+        },
+        {
+            "destination_node_id": 17,
+            "id": 241,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 233
+        },
+        {
+            "destination_node_id": 13,
+            "id": 242,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 235
+        },
+        {
+            "destination_node_id": 13,
+            "id": 243,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 237
+        },
+        {
+            "destination_node_id": 41,
+            "id": 244,
+            "name": "http://www.w3.org/2001/sw/BestPractices/OEP/SimplePartWhole/part.owl#partOf_directly",
+            "source_node_id": 70
+        },
+        {
+            "destination_node_id": 245,
+            "id": 246,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 70
+        },
+        {
+            "destination_node_id": 247,
+            "id": 248,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 70
+        },
+        {
+            "destination_node_id": 249,
+            "id": 250,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 70
+        },
+        {
+            "destination_node_id": 251,
+            "id": 252,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 70
+        },
+        {
+            "destination_node_id": 253,
+            "id": 254,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 70
+        },
+        {
+            "destination_node_id": 255,
+            "id": 256,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 70
+        },
+        {
+            "destination_node_id": 257,
+            "id": 258,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 70
+        },
+        {
+            "destination_node_id": 259,
+            "id": 260,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 70
+        },
+        {
+            "destination_node_id": 261,
+            "id": 262,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 70
+        },
+        {
+            "destination_node_id": 263,
+            "id": 264,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 70
+        },
+        {
+            "destination_node_id": 265,
+            "id": 266,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 70
+        },
+        {
+            "destination_node_id": 267,
+            "id": 268,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 70
+        },
+        {
+            "destination_node_id": 17,
+            "id": 269,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 245
+        },
+        {
+            "destination_node_id": 13,
+            "id": 270,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 247
+        },
+        {
+            "destination_node_id": 13,
+            "id": 271,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 249
+        },
+        {
+            "destination_node_id": 13,
+            "id": 272,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 251
+        },
+        {
+            "destination_node_id": 13,
+            "id": 273,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 253
+        },
+        {
+            "destination_node_id": 13,
+            "id": 274,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 255
+        },
+        {
+            "destination_node_id": 13,
+            "id": 275,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 257
+        },
+        {
+            "destination_node_id": 17,
+            "id": 276,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 259
+        },
+        {
+            "destination_node_id": 13,
+            "id": 277,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 261
+        },
+        {
+            "destination_node_id": 13,
+            "id": 278,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 263
+        },
+        {
+            "destination_node_id": 13,
+            "id": 279,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 265
+        },
+        {
+            "destination_node_id": 13,
+            "id": 280,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 267
+        },
+        {
+            "destination_node_id": 282,
+            "id": 283,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 281
+        },
+        {
+            "destination_node_id": 284,
+            "id": 285,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 281
+        },
+        {
+            "destination_node_id": 286,
+            "id": 287,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 281
+        },
+        {
+            "destination_node_id": 288,
+            "id": 289,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 281
+        },
+        {
+            "destination_node_id": 290,
+            "id": 291,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 281
+        },
+        {
+            "destination_node_id": 292,
+            "id": 293,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 281
+        },
+        {
+            "destination_node_id": 13,
+            "id": 294,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 282
+        },
+        {
+            "destination_node_id": 17,
+            "id": 295,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 284
+        },
+        {
+            "destination_node_id": 17,
+            "id": 296,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 286
+        },
+        {
+            "destination_node_id": 17,
+            "id": 297,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 288
+        },
+        {
+            "destination_node_id": 13,
+            "id": 298,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 290
+        },
+        {
+            "destination_node_id": 13,
+            "id": 299,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 292
+        },
+        {
+            "destination_node_id": 300,
+            "id": 301,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 227
+        },
+        {
+            "destination_node_id": 302,
+            "id": 303,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 227
+        },
+        {
+            "destination_node_id": 304,
+            "id": 305,
+            "name": "file:/C:/Amalgama/amalgama/Amalgama/bin/Debug/attrib.owl#hasattribute",
+            "source_node_id": 227
+        },
+        {
+            "destination_node_id": 17,
+            "id": 306,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 300
+        },
+        {
+            "destination_node_id": 13,
+            "id": 307,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 302
+        },
+        {
+            "destination_node_id": 13,
+            "id": 308,
+            "name": "rdfs:subClassOf",
+            "source_node_id": 304
+        }
+    ]
+}

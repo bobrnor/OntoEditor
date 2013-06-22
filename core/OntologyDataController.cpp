@@ -113,9 +113,9 @@ void OntologyDataController::deserialize(const Json::Value &json) {
     NodeData *nodeData = new NodeData();
     nodeData->id = itemJson["id"].asInt64();
     nodeData->name = QString::fromStdString(itemJson["name"].asString());
-    nodeData->setAttributesFromText(QString::fromStdString(itemJson["attributes"].asString()));
+//    nodeData->setAttributesFromText(QString::fromStdString(itemJson["attributes"].asString()));
 
-    if (itemJson.getMemberNames().size() == 4) {
+    if (itemJson.getMemberNames().size() > 3) {
       double x = itemJson["position_x"].asDouble();
       double y = itemJson["position_y"].asDouble();
       setNodePosition(nodeData->id, QPointF(x, y));
@@ -132,7 +132,7 @@ void OntologyDataController::deserialize(const Json::Value &json) {
     relationData->name = QString::fromStdString(itemJson["name"].asString());
     relationData->sourceNodeId = itemJson["source_node_id"].asInt64();
     relationData->destinationNodeId = itemJson["destination_node_id"].asInt64();
-    relationData->setAttributesFromText(QString::fromStdString(itemJson["attributes"].asString()));
+//    relationData->setAttributesFromText(QString::fromStdString(itemJson["attributes"].asString()));
     m_relationsMap.insert(relationData->id, relationData);
     m_relationsList.append(relationData);
 
