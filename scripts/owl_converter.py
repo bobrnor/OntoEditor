@@ -115,6 +115,10 @@ def processClass(owlClass):
 defaultRdfRoot = '<rdf:RDF xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#"></rdf:RDF>'
 defaultOwlHeader = '<owl:Ontology rdf:about="Data Source=.;MultipleActiveResultSetrees=true;Initial Catalog=NightBase;Integrated Security=true"></owl:Ontology>'
 
+def getNodeById(id):
+	global nodes
+	return next((node for node in nodes if node['id'] == id), None)
+
 def fillClassAttributes(node, classElement):
 	if 'attributes' in node:
 		attributes = node['attributes']
@@ -131,19 +135,43 @@ def fillOwlClassContent(node, classElement):
 				parsedTag = etree.fromstring(owlTag)
 				classElement.append(parsedTag)
 
-# def fillSubClassOfContent(classElement, relation):
+def fillSubClassOfContent(classElement, relation):
+	node = getNodeById(relation['destination_node_id'])
+	element = etree.Element(relation['name'], {NSMAP['rdf'] + 'resource': node['name']})
+	classElement.append(element)
 
+def fillHasValueContent(classElement, relation):
+	node = getNodeById(relation['destination_node_id'])
+	restrictionElement = etree.Element(NSMAP['owl'] + 'Restriction')
+	onPropertyElement = etree.Element(NSMAP['owl'] + 'onProperty', {NSMAP['rdf'] + 'resource': relation['name']})
+	hasValueElement = etree.Element(NSMAP['owl'] + 'hasValue', {NSMAP['rdf'] + 'resource': '#' + node['name']})
+	restrictionElement.append(onPropertyElement)
+	restrictionElement.append(hasValueElement)
+	classElement.append(restrictionElement)
 
-# def fillClassContent(node, classElement):
-# 	for relation in relations:
-# 		if relation['source_node_id'] == node['id']:
-# 			if relation['name'] == NSMAP['rdfs'] + 'subClassOf':
+def fillSomeValuesFromContent(classElement, relation):
+	node = getNodeById(relation['destination_node_id'])
+	restrictionElement = etree.Element(NSMAP['owl'] + 'Restriction')
+	onPropertyElement = etree.Element(NSMAP['owl'] + 'onProperty', {NSMAP['rdf'] + 'resource': relation['name']})
+	someValuesFromElement = etree.Element(NSMAP['owl'] + 'someValuesFrom', {NSMAP['rdf'] + 'resource': '#' + node['name']})
+	restrictionElement.append(onPropertyElement)
+	restrictionElement.append(someValuesFromElement)
+	classElement.append(restrictionElement)
 
+def fillClassContent(node, classElement):
+	for relation in relations:
+		if relation['source_node_id'] == node['id']:
+			if relation['name'] == NSMAP['rdfs'] + 'subClassOf':
+				fillSubClassOfContent(classElement, relation)
+			elif 'attributes' in relation and 'owl' in relation['attributes'] and relation['attributes']['owl']['owlRelationType'] == NSMAP['owl'] + 'hasValue':
+				fillHasValueContent(classElement, relation)
+			elif 'attributes' in relation and 'owl' in relation['attributes'] and relation['attributes']['owl']['owlRelationType'] == NSMAP['owl'] + 'someValuesFrom':
+				fillSomeValuesFromContent(classElement, relation)
 
 def processNode(node):
 	classElement = etree.Element(NSMAP['owl'] + 'Class')
 	fillClassAttributes(node, classElement)
-	# fillClassContent(node, classElement)
+	fillClassContent(node, classElement)
 	fillOwlClassContent(node, classElement)
 
 	return classElement
@@ -205,23 +233,16 @@ def convertToExternalFormat(path):
 	print etree.tostring(rdfRoot, encoding='UTF-8')
 
 if __name__ == '__main__':
-	owlPath = '/Users/bobrnor/Dropbox/PSU/Projects/OntoEditor/examples/model.owl'
-	jsonPath = '/Users/bobrnor/Dropbox/PSU/Projects/OntoEditor/examples/converted.ont.json'
-	# convertToInternalFormat(owlPath)
-	convertToExternalFormat(jsonPath)
+	opts, extraparams = getreeopt.getreeopt(sys.argv[1:], '', ['metreehod=', 'source-path='])
 
-	# opts, extraparams = getreeopt.getreeopt(sys.argv[1:], '', ['metreehod=', 'source-path='])
-	
-	# print opts
-
-	# metreehodName = (item[1] for item in opts if item[0] == '--metreehod').next()
-	# if metreehodName == 'supported_extensions':
-	# 	printSupportedExtensions()
-	# elif metreehodName == 'import':
-	# 	path = (item[1] for item in opts if item[0] == '--source-path').next()
-	# 	convertToInnerFormat(path)
-	# elif  metreehodName == 'export':
-	# 	path = (item[1] for item in opts if item[0] == '--source-path').next()
-	# 	convertToOuterFormat(path)
-	# else:
-	# 	print "Unknown metreehod name " + metreehodName
+	metreehodName = (item[1] for item in opts if item[0] == '--metreehod').next()
+	if metreehodName == 'supported_extensions':
+		printSupportedExtensions()
+	elif metreehodName == 'import':
+		path = (item[1] for item in opts if item[0] == '--source-path').next()
+		convertToInternalFormat(path)
+	elif  metreehodName == 'export':
+		path = (item[1] for item in opts if item[0] == '--source-path').next()
+		convertToExternalFormat(path)
+	else:
+		print "Unknown metreehod name " + metreehodName
