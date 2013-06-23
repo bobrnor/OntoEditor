@@ -1,5 +1,7 @@
 #include "OntologyDataController.h"
 
+#include <QVariantMap>
+
 OntologyDataController::OntologyDataController() {
 
   m_lastId = 0;
@@ -8,7 +10,7 @@ OntologyDataController::OntologyDataController() {
   m_changedRelationIds = QSet<long>();
 }
 
-OntologyDataController::OntologyDataController(const QByteArray &json) {
+OntologyDataController::OntologyDataController(const QVariant &json) {
 
   deserialize(json);
 
@@ -69,10 +71,9 @@ void OntologyDataController::normalize() {
   }
 }
 
-QVariant OntologyDataController::serialize() const {
+QVariant OntologyDataController::serialize() {
 
-  QVariantMap jsonMap;
-  jsonMap["last_id"] = QVariant::fromValue(m_lastId);
+  m_jsonMap["last_id"] = QVariant::fromValue(m_lastId);
 
   QVariantList nodes;
   foreach (NodeData *nodeData, m_nodesList) {
@@ -84,7 +85,7 @@ QVariant OntologyDataController::serialize() const {
     node["attributes"] = nodeData->attributes;
     nodes.append(node);
   }
-  jsonMap["nodes"] = nodes;
+  m_jsonMap["nodes"] = nodes;
 
   QVariantList relations;
   foreach (RelationData *relationData, m_relationsList) {
@@ -96,17 +97,17 @@ QVariant OntologyDataController::serialize() const {
     relation["attributes"] = relationData->attributes;
     relations.append(relation);
   }
-  jsonMap["relations"] = relations;
+  m_jsonMap["relations"] = relations;
 
-  return jsonMap;
+  return m_jsonMap;
 }
 
 void OntologyDataController::deserialize(const QVariant &json) {
 
-  QVariantMap jsonMap = json.toMap();
-  m_lastId = jsonMap["last_id"].toLongLong();
+  m_jsonMap = json.toMap();
+  m_lastId = m_jsonMap["last_id"].toLongLong();
 
-  QVariantList nodes = jsonMap["nodes"].toList();
+  QVariantList nodes = m_jsonMap["nodes"].toList();
   foreach (QVariant node, nodes) {
     QVariantMap nodeMap = node.toMap();
     NodeData *nodeData = new NodeData();
@@ -125,7 +126,7 @@ void OntologyDataController::deserialize(const QVariant &json) {
     m_nodesList.append(nodeData);
   }
 
-  QVariantList relations = jsonMap["relations"].toList();
+  QVariantList relations = m_jsonMap["relations"].toList();
   foreach (QVariant relation, relations) {
     QVariantMap relationMap = relation.toMap();
     RelationData *relationData = new RelationData();

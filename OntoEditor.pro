@@ -9,7 +9,7 @@ QT       += core gui
 TARGET = OntoEditor
 TEMPLATE = app
 
-LIBS += -llibqjson.0.8.1
+LIBS += /usr/lib/libqjson.0.8.1.dylib
 
 SOURCES += main.cpp \
     core/OntologyDataController.cpp \

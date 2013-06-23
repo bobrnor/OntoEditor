@@ -8,8 +8,6 @@
 #include <QTextStream>
 #include <QTableWidget>
 
-#include "lib_json/json/json.h"
-
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow) {
@@ -60,6 +58,8 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(m_projectTreeViewController, SIGNAL(categorySelectedSignal(QString,QString)), SLOT(categorySelectedSlot(QString,QString)));
 
   setupMenu();
+  setupConverters();
+  setupTransformators();
 }
 
 MainWindow::~MainWindow() {
@@ -91,6 +91,42 @@ void MainWindow::updateOntologyTreeData() {
   OntologyWidget *widget = m_openOntologyWidgets[index];
   m_ontologyTreeViewController->setDataController(widget->dataController());
   m_ontologyTreeViewController->updateData();
+}
+
+void MainWindow::setupConverters() {
+
+  QDir dir("/Users/bobrnor/Dropbox/PSU/Projects/OntoEditor/scripts");
+
+  foreach (QString fileName, dir.entryList(QDir::Files)) {
+    if (fileName.contains("converter")) {
+      QString cmd;
+      cmd.append("/Library/Frameworks/Python.framework/Versions/2.7/bin/python");
+      cmd.append(" " + dir.absoluteFilePath(fileName));
+      cmd.append(" --method=supported_extensions");
+
+      FILE* pipe = popen(cmd.toStdString().c_str(), "r");
+
+      char buffer[128];
+      QString result = "";
+      while(!feof(pipe)) {
+        if(fgets(buffer, 128, pipe) != NULL)
+          result += buffer;
+      }
+      pclose(pipe);
+
+      qDebug() << result;
+
+      QStringList extensions = result.split(":");
+      foreach (QString extension, extensions) {
+        m_convertersMapping.insert(extension.trimmed(), dir.absoluteFilePath(fileName));
+      }
+    }
+  }
+}
+
+void MainWindow::setupTransformators() {
+
+  // do nothing now
 }
 
 void MainWindow::setupMenu() {
@@ -140,32 +176,35 @@ void MainWindow::importSourceFileSlot() {
 
   QString filePath = QFileDialog::getOpenFileName(this, tr("Open dialog"), QString(), "*");
 
-  QString cmd;
-  cmd.append("/Library/Frameworks/Python.framework/Versions/2.7/bin/python");
-  cmd.append(" /Users/bobrnor/Dropbox/PSU/Projects/OntoEditor/scripts/owl_converter.py");
-  cmd.append(" --method=import");
-  cmd.append(" --source-path=");
-  cmd.append(filePath);
+  QFileInfo info(filePath);
+  QString converterPath = m_convertersMapping["." + info.completeSuffix()];
 
-  FILE* pipe = popen(cmd.toStdString().c_str(), "r");
+  if (converterPath.length() > 0) {
+    QString cmd;
+    cmd.append("/Library/Frameworks/Python.framework/Versions/2.7/bin/python");
+    cmd.append(" " + converterPath);
+    cmd.append(" --method=import");
+    cmd.append(" --source-path=");
+    cmd.append(filePath);
 
-  char buffer[128];
-  QString result = "";
-  while(!feof(pipe)) {
-    if(fgets(buffer, 128, pipe) != NULL)
-      result += buffer;
-  }
-  pclose(pipe);
+    FILE* pipe = popen(cmd.toStdString().c_str(), "r");
 
-  qDebug() << result;
+    char buffer[128];
+    QString result = "";
+    while(!feof(pipe)) {
+      if(fgets(buffer, 128, pipe) != NULL)
+        result += buffer;
+    }
+    pclose(pipe);
 
-  ProjectFile *file = m_currentProject.createFile(result);
-  if (file != NULL) {
-    OntologyWidget *widget = createNewOntologyWidget(file);
-    widget->dataChangedSlot();
+    ProjectFile *file = m_currentProject.createFile(result);
+    if (file != NULL) {
+      OntologyWidget *widget = createNewOntologyWidget(file);
+      widget->dataChangedSlot();
 
-    updateOntologyTreeData();
-    m_projectTreeViewController->updateData();
+      updateOntologyTreeData();
+      m_projectTreeViewController->updateData();
+    }
   }
 }
 
@@ -218,6 +257,49 @@ void MainWindow::saveProjectSlot() {
 
   QString filePath = QFileDialog::getSaveFileName(this, tr("Save dialog"), QString(), "*.pjs");
   m_currentProject.saveProject(filePath);
+}
+
+void MainWindow::exportFileSlot() {
+
+  QString filePath = QFileDialog::getSaveFileName(this, tr("Open dialog"), QString(), "*");
+
+  QFileInfo info(filePath);
+  QString converterPath = m_convertersMapping["." + info.completeSuffix()];
+
+  if (converterPath.length() > 0) {
+    int index = ui->tabWidget->currentIndex();
+    ProjectFile *file = m_currentProject.getProjectFileByIndex(index);
+
+    QTemporaryFile tmpFile;
+    tmpFile.setAutoRemove(true);
+    tmpFile.open();
+    QVariant json = file->ontologyController()->serialize();
+    QJson::Serializer serializer;
+    QByteArray data = serializer.serialize(json);
+    tmpFile.write(data);
+    tmpFile.flush();
+
+    QString cmd;
+    cmd.append("/Library/Frameworks/Python.framework/Versions/2.7/bin/python");
+    cmd.append(" " + converterPath);
+    cmd.append(" --method=export");
+    cmd.append(" --source-path=");
+    cmd.append(tmpFile.fileName());
+
+    FILE* pipe = popen(cmd.toStdString().c_str(), "r");
+
+    char buffer[128];
+    QString result = "";
+    while(!feof(pipe)) {
+      if(fgets(buffer, 128, pipe) != NULL)
+        result += buffer;
+    }
+    pclose(pipe);
+
+    QFile dstFile(filePath);
+    dstFile.open(QIODevice::WriteOnly | QIODevice::Text);
+    dstFile.write(result.toLocal8Bit());
+  }
 }
 
 void MainWindow::screenshotSlot() {

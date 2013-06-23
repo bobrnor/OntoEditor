@@ -129,8 +129,8 @@ def fillClassAttributes(node, classElement):
 def fillOwlClassContent(node, classElement):
 	if 'attributes' in node:
 		attributes = node['attributes']
-		if 'owl' in attributes:
-			owlContent = attributes['owl']
+		if 'owl' in attributes and 'unknown-content' in attributes['owl']:
+			owlContent = attributes['owl']['unknown-content']
 			for owlTag in owlContent:
 				parsedTag = etree.fromstring(owlTag)
 				classElement.append(parsedTag)

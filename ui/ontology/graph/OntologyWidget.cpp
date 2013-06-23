@@ -6,8 +6,6 @@
 #include <QDebug>
 #include <QInputDialog>
 
-#include "lib_json/json/json.h"
-
 #include "NodeItem.h"
 #include "RelationItem.h"
 #include "RelationVisualizedLine.h"

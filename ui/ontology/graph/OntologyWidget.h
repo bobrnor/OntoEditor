@@ -3,8 +3,6 @@
 
 #include <QTextEdit>
 
-#include "lib_json/json/json.h"
-
 #include "OntologyGraphicsView.h"
 #include "../../../core/OntologyDataController.h"
 

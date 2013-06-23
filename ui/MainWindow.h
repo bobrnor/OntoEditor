@@ -38,7 +38,12 @@ class MainWindow : public QMainWindow {
     QShortcut *m_zoomOutShortcut;
     QShortcut *m_removeShortcut;
 
+    QMap<QString, QString> m_convertersMapping;
+    QMap<QString, QString> m_transformatorsMapping;
+
     void setupMenu();
+    void setupConverters();
+    void setupTransformators();
 
     OntologyWidget *createNewOntologyWidget(ProjectFile *file);
 
@@ -54,6 +59,7 @@ class MainWindow : public QMainWindow {
     void openProjectSlot();
     void saveProjectSlot();
 
+    void exportFileSlot();
     void screenshotSlot();
 
     void transformSlot();

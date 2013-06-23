@@ -16,6 +16,7 @@ class OntologyDataController {
     // listing
     QList<NodeData *> m_nodesList;
     QList<RelationData *> m_relationsList;
+    QVariantMap m_jsonMap;
 
     QMap<long, QPointF> m_nodePositions;
 
@@ -35,7 +36,7 @@ class OntologyDataController {
 
   public:
     OntologyDataController();
-    OntologyDataController(const QByteArray &json);
+    OntologyDataController(const QVariant &json);
 
     void setSourceCode(const QString &sourceCode);
 
@@ -83,7 +84,7 @@ class OntologyDataController {
     QPointF nodePosition(long nodeId) const;
     void setNodePosition(long nodeId, const QPointF &position);
 
-    QVariant serialize() const;
+    QVariant serialize();
     void deserialize(const QVariant &json);
 };
 
