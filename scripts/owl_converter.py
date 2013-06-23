@@ -4,15 +4,20 @@ import sys
 import random
 import getopt
 import json
-from xml.dom.minidom import *
+from lxml import etree
+from copy import deepcopy
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 random.seed()
 
+NSMAP = {'owl' : '{http://www.w3.org/2002/07/owl#}', 'rdf' : '{http://www.w3.org/1999/02/22-rdf-syntax-ns#}', 'rdfs' : '{http://www.w3.org/2000/01/rdf-schema#}'}
+
 nextObjectId = 0
 nodes = []
 relations = []
+
+#================from .owl==============================
 
 def creatRelation(name, firstClassName, secondClassName, attributes = {}):
 	global nextObjectId
@@ -50,97 +55,173 @@ def findNodeByName(nodeName):
 	return next((node for node in nodes if node['name'] == nodeName), None)
 
 def processSubClassOf(owlClass, subClassOfNode):
-	if subClassOfNode.hasAttribute('rdf:resource'):
-		subClassNodeName = subClassOfNode.getAttribute('rdf:resource')
+	if NSMAP['rdf'] + 'resource' in subClassOfNode.attrib:
+		subClassNodeName = subClassOfNode.attrib[NSMAP['rdf'] + 'resource']
 		if findNodeByName(subClassNodeName) == None:
 			createNodeIfNeeded(subClassNodeName)
-		creatRelation('rdfs:subClassOf', owlClass.getAttribute('rdf:ID'), subClassNodeName)
+		creatRelation(NSMAP['rdfs'] + 'subClassOf', owlClass.attrib[NSMAP['rdf'] + 'ID'], subClassNodeName)
 	else:
-		restrictionNode = subClassOfNode.getElementsByTagName('owl:Restriction')[0]
-		onPropertyNode = restrictionNode.getElementsByTagName('owl:onProperty')[0]
-		hasValueNodes = restrictionNode.getElementsByTagName('owl:hasValue')
-		someValuesFromNodes = restrictionNode.getElementsByTagName('owl:someValuesFrom')
+		restrictionNode = subClassOfNode.find(NSMAP['owl'] + 'Restriction')
+		onPropertyNode = restrictionNode.find(NSMAP['owl'] + 'onProperty')
+		hasValueNode = restrictionNode.find(NSMAP['owl'] + 'hasValue')
+		someValuesFromNode = restrictionNode.find(NSMAP['owl'] + 'someValuesFrom')
 
-		if hasValueNodes != []:
-			hasValueNode = hasValueNodes[0]
-			subClassNodeName = hasValueNode.getAttribute('rdf:resource').strip('_#')
+		if hasValueNode != None:
+			subClassNodeName = hasValueNode.attrib[NSMAP['rdf'] + 'resource'].strip('_#')
 			if findNodeByName(subClassNodeName) == None:
 				createNodeIfNeeded(subClassNodeName)
-			creatRelation(onPropertyNode.getAttribute('rdf:resource'), owlClass.getAttribute('rdf:ID'), subClassNodeName)
-		elif someValuesFromNodes != []:
-			someValuesFromNode = someValuesFromNodes[0]
-			subClassNodeName = someValuesFromNode.getAttribute('rdf:resource').strip('_#')
+			creatRelation(onPropertyNode.attrib[NSMAP['rdf'] + 'resource'], owlClass.attrib[NSMAP['rdf'] + 'ID'], subClassNodeName, {'owl': {'owlRelationType': NSMAP['owl'] + 'hasValue'}})
+		elif someValuesFromNode != None:
+			subClassNodeName = someValuesFromNode.attrib[NSMAP['rdf'] + 'resource'].strip('_#')
 			if findNodeByName(subClassNodeName) == None:
 				createNodeIfNeeded(subClassNodeName)
-			creatRelation(onPropertyNode.getAttribute('rdf:resource'), owlClass.getAttribute('rdf:ID'), subClassNodeName)
+			creatRelation(onPropertyNode.attrib[NSMAP['rdf'] + 'resource'], owlClass.attrib[NSMAP['rdf'] + 'ID'], subClassNodeName, {'owl': {'owlRelationType': NSMAP['owl'] + 'someValuesFrom'}})
 
 def processClassAttributes(owlClass):
-	attrs = {'mypropid': owlClass.getAttribute('mypropid')}
+	attrs = {}
+	for attrName in owlClass.attrib.keys():
+		if attrName != NSMAP['rdf'] + 'ID':
+			attrs[attrName] = owlClass.attrib[attrName]
 	return attrs
 
 def processClassContent(owlClass):
 	unknownContent = []
-	for childNode in owlClass.childNodes:
-		if childNode.nodeType != Node.TEXT_NODE:
-			if childNode.nodeName == 'rdfs:subClassOf':
-				processSubClassOf(owlClass, childNode)
-			else:
-				unknownContent.append(childNode.toxml())
+	for childNode in owlClass.getchildren():
+		if childNode.tag == NSMAP['rdfs'] + 'subClassOf':
+			processSubClassOf(owlClass, childNode)
+		else:
+			unknownContent.append(etree.tostring(childNode, encoding='UTF-8'))
 
 	return unknownContent
 
 def processClass(owlClass):
-	name = owlClass.getAttribute('rdf:ID')	
+	name = owlClass.attrib[NSMAP['rdf'] + 'ID']
 	node = createNodeIfNeeded(name)
 	classAttributes = processClassAttributes(owlClass)
-	unknownAttributes = processClassContent(owlClass)
+	owlAttributes = processClassContent(owlClass)
 
 	attributes = {}
 	if classAttributes != {}:
 		attributes['class-attribytes'] = classAttributes
 
-	if unknownAttributes != {}:
-		attributes['unknown-attributes'] = unknownAttributes
+	if owlAttributes != {}:
+		attributes['owl'] = owlAttributes
 
 	if attributes != {}:
 		node['attributes'] = attributes
 
+#==================to .owl==============================
+
+defaultRdfRoot = '<rdf:RDF xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#"></rdf:RDF>'
+defaultOwlHeader = '<owl:Ontology rdf:about="Data Source=.;MultipleActiveResultSetrees=true;Initial Catalog=NightBase;Integrated Security=true"></owl:Ontology>'
+
+def fillClassAttributes(node, classElement):
+	if 'attributes' in node:
+		attributes = node['attributes']
+		if attributes != None and 'class-attribytes' in attributes:
+			classAttributes = attributes['class-attribytes']
+		classElement.attrib[NSMAP['rdf'] + 'ID'] = node['name']
+
+def fillOwlClassContent(node, classElement):
+	if 'attributes' in node:
+		attributes = node['attributes']
+		if 'owl' in attributes:
+			owlContent = attributes['owl']
+			for owlTag in owlContent:
+				parsedTag = etree.fromstring(owlTag)
+				classElement.append(parsedTag)
+
+# def fillSubClassOfContent(classElement, relation):
+
+
+# def fillClassContent(node, classElement):
+# 	for relation in relations:
+# 		if relation['source_node_id'] == node['id']:
+# 			if relation['name'] == NSMAP['rdfs'] + 'subClassOf':
+
+
+def processNode(node):
+	classElement = etree.Element(NSMAP['owl'] + 'Class')
+	fillClassAttributes(node, classElement)
+	# fillClassContent(node, classElement)
+	fillOwlClassContent(node, classElement)
+
+	return classElement
+
+#=======================================================
+
 def printSupportedExtensions():
 	print ".owl"
 
-def convertToInnerFormat(path):
+def convertToInternalFormat(path):
 	global nextObjectId
 	global nodes
 	global relations
 
-	xml = parse(path)
-	owlClasses = xml.getElementsByTagName('owl:Class')
+	xml = etree.parse(path)
+	rdfRoot = xml.getroot()
+	owlHeader = rdfRoot.find(NSMAP['owl'] + 'Ontology')
 
+	emptyRdfRoot = deepcopy(rdfRoot)
+	for child in emptyRdfRoot.getchildren():
+		emptyRdfRoot.remove(child)
+
+	owlClasses = rdfRoot.findall(NSMAP['owl'] + 'Class')
 	for owlClass in owlClasses:
 		processClass(owlClass)
 
-	print json.dumps({'last_id': nextObjectId - 1, 'nodes': nodes, 'relations': relations})
+	print json.dumps({'last_id': nextObjectId - 1, 'nodes': nodes, 'relations': relations, 'rdf': etree.tostring(emptyRdfRoot, encoding='UTF-8'), 'owl': etree.tostring(owlHeader, encoding='UTF-8')})
 
-def convertToOuterFormat(path):
-	print "Not implemented yet"
+def convertToExternalFormat(path):
+	global nextObjectId
+	global nodes
+	global relations
 
+	jsonData = open(path)
+	jsonObject = json.load(jsonData)
+	nextObjectId = jsonObject['last_id']
+	nodes = jsonObject['nodes']
+	relations = jsonObject['relations']
+
+	rdfRoot = None
+	owlHeader = None
+
+	if jsonObject['rdf'] != None:
+		rdfRoot = etree.fromstring(jsonObject['rdf'])
+	else:
+		rdfRoot = etree.fromstring(defaultRdfRoot)
+
+	if jsonObject['owl'] != None:
+		owlHeader = etree.fromstring(jsonObject['owl'])
+	else:
+		owlHeader = etree.fromstring(defaultOwlHeader)
+
+	rdfRoot.append(owlHeader)
+
+	for node in nodes:
+		classElement = processNode(node)
+		rdfRoot.append(classElement)
+
+	print etree.tostring(rdfRoot, encoding='UTF-8')
 
 if __name__ == '__main__':
-	path = '/Users/bobrnor/Dropbox/PSU/Projects/OntoEditor/examples/model.owl'
-	convertToInnerFormat(path)
+	owlPath = '/Users/bobrnor/Dropbox/PSU/Projects/OntoEditor/examples/model.owl'
+	jsonPath = '/Users/bobrnor/Dropbox/PSU/Projects/OntoEditor/examples/converted.ont.json'
+	# convertToInternalFormat(owlPath)
+	convertToExternalFormat(jsonPath)
 
-	# opts, extraparams = getopt.getopt(sys.argv[1:], '', ['method=', 'source-path='])
+	# opts, extraparams = getreeopt.getreeopt(sys.argv[1:], '', ['metreehod=', 'source-path='])
 	
 	# print opts
 
-	# methodName = (item[1] for item in opts if item[0] == '--method').next()
-	# if methodName == 'supported_extensions':
+	# metreehodName = (item[1] for item in opts if item[0] == '--metreehod').next()
+	# if metreehodName == 'supported_extensions':
 	# 	printSupportedExtensions()
-	# elif methodName == 'import':
+	# elif metreehodName == 'import':
 	# 	path = (item[1] for item in opts if item[0] == '--source-path').next()
 	# 	convertToInnerFormat(path)
-	# elif  methodName == 'export':
+	# elif  metreehodName == 'export':
 	# 	path = (item[1] for item in opts if item[0] == '--source-path').next()
 	# 	convertToOuterFormat(path)
 	# else:
-	# 	print "Unknown method name " + methodName
+	# 	print "Unknown metreehod name " + metreehodName
