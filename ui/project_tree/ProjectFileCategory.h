@@ -4,8 +4,6 @@
 #include <QSet>
 #include <QString>
 
-#include "lib_json/json/json.h"
-
 class ProjectFile;
 
 class ProjectFileCategory {
@@ -25,8 +23,8 @@ class ProjectFileCategory {
     void setRelatedNodeIds(QSet<long> ids);
     QSet<long> relatedNodeIds() const;
 
-    Json::Value serialize() const;
-    void deserialize(const Json::Value &json, ProjectFile *parentFile);
+    QVariant serialize() const;
+    void deserialize(const QVariant &json, ProjectFile *parentFile);
 
     bool operator ==(const ProjectFileCategory &category);
 };

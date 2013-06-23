@@ -3,8 +3,6 @@
 
 #include <QString>
 
-#include "lib_json/json/json.h"
-
 #include "../../core/OntologyDataController.h"
 #include "ProjectFile.h"
 
@@ -13,8 +11,8 @@ class Project {
   private:
     QList<ProjectFile *> m_files;
 
-    Json::Value serialize() const;
-    void deserialize(const Json::Value &json);
+    QVariant serialize() const;
+    void deserialize(const QVariant &json);
 
   public:
     Project();
@@ -26,8 +24,6 @@ class Project {
     bool saveFile(ProjectFile *file);
     ProjectFile *getProjectFileByIndex(int index) const;
     ProjectFile *getProjectFileByName(const QString &name) const;
-//    ProjectFile *getProjectFileByName(const QString &name) const;
-//    QList<QString> availableFileNames() const;
     int filesCount() const;
 
     bool openProject(const QString &path);

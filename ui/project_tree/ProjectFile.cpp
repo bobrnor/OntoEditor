@@ -71,36 +71,35 @@ QList<ProjectFileCategory*> ProjectFile::categories() const {
   return m_categories;
 }
 
-Json::Value ProjectFile::serialize() const {
+QVariant ProjectFile::serialize() const {
 
-  Json::Value json;
-  json["name"] = Json::Value(m_name.toStdString());
-  json["path"] = Json::Value(m_path.toStdString());
-  json["ontology"] = m_ontologyController->serialize();
+  QVariantMap jsonMap;
+  jsonMap["name"] = m_name;
+  jsonMap["path"] = m_path;
+  jsonMap["ontology"] = m_ontologyController->serialize();
 
-  Json::Value categoriesJson = Json::Value(Json::arrayValue);
+  QVariantList categoriesJson;
   foreach (ProjectFileCategory *category, m_categories) {
     categoriesJson.append(category->serialize());
   }
-
-  json["categories"] = categoriesJson;
-
-  return json;
+  jsonMap["categories"] = categoriesJson;
+  return jsonMap;
 }
 
-void ProjectFile::deserialize(const Json::Value &json) {
+void ProjectFile::deserialize(const QVariant &json) {
 
-  m_name = QString::fromStdString(json["name"].asString());
-  m_path = QString::fromStdString(json["path"].asString());
-  m_ontologyController->deserialize(json["ontology"]);
+  QVariantMap jsonMap = json.toMap();
+
+  m_name = jsonMap["name"].toString();
+  m_path = jsonMap["path"].toString();
+  m_ontologyController->deserialize(jsonMap["ontology"]);
 
   m_categories.clear();
 
-  Json::Value categoriesJson = json["categories"];
-  int categoriesCount = categoriesJson.size();
-  for (int i = 0; i < categoriesCount; ++i) {
+  QVariantList categoriesJson = jsonMap["categories"].toList();
+  foreach (QVariant categoryJson, categoriesJson) {
     ProjectFileCategory *category = new ProjectFileCategory("", this);
-    category->deserialize(categoriesJson[i], this);
+    category->deserialize(categoryJson, this);
     m_categories.append(category);
   }
 }

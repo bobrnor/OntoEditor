@@ -16,13 +16,12 @@ Project::~Project() {
 ProjectFile *Project::createFile(const QString &jsonString) {
 
   if (jsonString.length() > 0) {
-    Json::Reader reader;
-
-    Json::Value jsonState;
-    bool ok = reader.parse(jsonString.toStdString(), jsonState);
+    QJson::Parser parser;
+    bool ok = false;
+    QVariant json = parser.parse(jsonString.toLocal8Bit(), &ok);
     if (ok) {
       ProjectFile *newFile = new ProjectFile();
-      newFile->ontologyController()->deserialize(jsonState);
+      newFile->ontologyController()->deserialize(json);
       m_files.append(newFile);
       return newFile;
     }
@@ -34,16 +33,15 @@ ProjectFile *Project::createFile(const QString &jsonString) {
 ProjectFile *Project::openFile(const QString &path) {
 
   if (QFile::exists(path)) {
-    Json::Reader reader;
-    std::ifstream fileStream;
-    fileStream.open(path.toStdString().c_str());
+    QFile file(path);
+    QJson::Parser parser;
+    bool ok = false;
+    QVariant json = parser.parse(&file, &ok);
 
-    Json::Value jsonState;
-    bool ok = reader.parse(fileStream, jsonState);
     if (ok) {
       QFileInfo fileInfo(path);
       ProjectFile *newFile = new ProjectFile(path, fileInfo.fileName());
-      newFile->ontologyController()->deserialize(jsonState);
+      newFile->ontologyController()->deserialize(json);
       m_files.append(newFile);
       return newFile;
     }
@@ -57,12 +55,12 @@ bool Project::saveFile(ProjectFile *file, const QString &path) {
   if (file != NULL) {
     QFile dstFile(path);
     if (dstFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-      Json::Value jsonState = file->ontologyController()->serialize();
+      QVariant json = file->ontologyController()->serialize();
 
-      QTextStream stream(&dstFile);
-      stream.setCodec("UTF-8");
-      stream.setAutoDetectUnicode(true);
-      stream << QString::fromStdString(jsonState.toStyledString());
+      QJson::Serializer serializer;
+      QByteArray data = serializer.serialize(json);
+
+      dstFile.write(data);
 
       QFileInfo fileInfo(path);
       file->setName(fileInfo.fileName());
@@ -101,27 +99,26 @@ int Project::filesCount() const {
   return m_files.count();
 }
 
-Json::Value Project::serialize() const {
+QVariant Project::serialize() const {
 
-  Json::Value json;
-  Json::Value filesJson = Json::Value(Json::arrayValue);
+  QVariantList filesJson;
   foreach (ProjectFile *file, m_files) {
     filesJson.append(file->serialize());
   }
-  json["files"] = filesJson;
 
+  QVariantMap json;
+  json["files"] = filesJson;
   return json;
 }
 
-void Project::deserialize(const Json::Value &json) {
+void Project::deserialize(const QVariant &json) {
 
   m_files.clear();
 
-  Json::Value filesJson = json["files"];
-  int filesCount = filesJson.size();
-  for (int i = 0; i < filesCount; ++i) {
+  QVariantList filesJson = json.toMap()["files"].toList();
+  foreach (QVariant fileJson, filesJson) {
     ProjectFile *file = new ProjectFile("", "");
-    file->deserialize(filesJson[i]);
+    file->deserialize(fileJson);
     m_files.append(file);
   }
 }
@@ -129,14 +126,13 @@ void Project::deserialize(const Json::Value &json) {
 bool Project::openProject(const QString &path) {
 
   if (QFile::exists(path)) {
-    Json::Reader reader;
-    std::ifstream fileStream;
-    fileStream.open(path.toStdString().c_str());
+    QFile file(path);
+    QJson::Parser parser;
+    bool ok = false;
+    QVariant json = parser.parse(&file, &ok);
 
-    Json::Value jsonState;
-    bool ok = reader.parse(fileStream, jsonState);
     if (ok) {
-      deserialize(jsonState);
+      deserialize(json);
       return true;
     }
   }
@@ -148,12 +144,11 @@ bool Project::saveProject(const QString &path) {
 
   QFile file(path);
   if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-    Json::Value jsonState = serialize();
+    QVariant jsonState = serialize();
 
-    QTextStream stream(&file);
-    stream.setCodec("UTF-8");
-    stream.setAutoDetectUnicode(true);
-    stream << QString::fromStdString(jsonState.toStyledString());
+    QJson::Serializer serializer;
+    QByteArray data = serializer.serialize(jsonState);
+    file.write(data);
     return true;
   }
   return false;

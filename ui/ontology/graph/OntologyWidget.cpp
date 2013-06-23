@@ -397,7 +397,7 @@ void OntologyWidget::editAttrsSlot() {
   editor.textEdit->appendPlainText(element->attributesAsText());
 
   if (dialog->exec() == QDialog::Accepted) {
-    element->setAttributes(editor.textEdit->toPlainText());
+    element->setAttributesFromData(editor.textEdit->toPlainText().toLocal8Bit());
   }
 }
 

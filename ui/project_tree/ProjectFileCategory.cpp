@@ -1,5 +1,7 @@
 #include "ProjectFileCategory.h"
 
+#include <QVariantMap>
+
 ProjectFileCategory::ProjectFileCategory(QString name, ProjectFile *parentFile)
   : m_name(name), m_parentFile(parentFile) {
 
@@ -34,33 +36,30 @@ QSet<long> ProjectFileCategory::relatedNodeIds() const {
   return m_relatedNodeIds;
 }
 
-Json::Value ProjectFileCategory::serialize() const {
+QVariant ProjectFileCategory::serialize() const {
 
-  Json::Value json;
-  json["name"] = Json::Value(m_name.toStdString());
+  QVariantMap jsonMap;
+  jsonMap["name"] = m_name;
 
-  Json::Value ids = Json::Value(Json::arrayValue);
+  QVariantList ids;
   foreach (long id, m_relatedNodeIds) {
-    ids.append(Json::Value((int64_t)id));
+    ids.append(QVariant::fromValue(id));
   }
-
-  json["ids"] = ids;
-
-  return json;
+  jsonMap["ids"] = ids;
+  return jsonMap;
 }
 
-void ProjectFileCategory::deserialize(const Json::Value &json, ProjectFile *parentFile) {
+void ProjectFileCategory::deserialize(const QVariant &json, ProjectFile *parentFile) {
 
+  QVariantMap jsonMap = json.toMap();
   m_parentFile = parentFile;
-  m_name = QString::fromStdString(json["name"].asString());
+  m_name = jsonMap["name"].toString();
 
   m_relatedNodeIds.clear();
 
-  Json::Value idsJson = json["ids"];
-  int idsCount =idsJson.size();
-  for (int i = 0; i < idsCount; ++i) {
-    long id = idsJson[i].asLargestInt();
-    m_relatedNodeIds.insert(id);
+  QVariantList idsJson = jsonMap["ids"].toList();
+  foreach (QVariant idJson, idsJson) {
+    m_relatedNodeIds.insert(idJson.toLongLong());
   }
 }
 

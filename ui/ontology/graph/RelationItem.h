@@ -40,9 +40,8 @@ class RelationItem : public QGraphicsLineItem, public OntologyGraphElement {
     virtual NodeItem *destinationNode() const;
 
     QString attributesAsText() const;
-    Json::Value attributesAsJson() const;
-    QMap<QString, QMap<QString, QVariant> > attributes() const;
-    void setAttributes(const QString &text);
+    QVariantMap attributes() const;
+    void setAttributesFromData(const QByteArray &data);
 };
 
 #endif // RELATIONITEM_H

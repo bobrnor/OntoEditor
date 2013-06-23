@@ -70,20 +70,20 @@ void NodeItem::attributesChanged() {
   relatedDataController()->nodeAttributesChanged(m_id, data->attributes);
 
   if (data->attributes.keys().contains("gui-attributes")) {
-    QMap<QString, QVariant> guiAttributes = data->attributes.value("gui-attributes");
+    QVariantMap guiAttributes = data->attributes.value("gui-attributes").toMap();
 
-    if (guiAttributes.keys().contains("text_color")) {
-      QString textColorHex = guiAttributes.value("text_color").toString();
+    if (guiAttributes.contains("text_color")) {
+      QString textColorHex = guiAttributes["text_color"].toString();
       m_textColor = QColor(textColorHex);
     }
 
-    if (guiAttributes.keys().contains("bg_color")) {
-      QString bgColorHex = guiAttributes.value("bg_color").toString();
+    if (guiAttributes.contains("bg_color")) {
+      QString bgColorHex = guiAttributes["bg_color"].toString();
       m_backgroundColor = QColor(bgColorHex);
     }
 
-    if (guiAttributes.keys().contains("shape_name")) {
-      m_shapeName = guiAttributes.value("shape_name").toString();
+    if (guiAttributes.contains("shape_name")) {
+      m_shapeName = guiAttributes["shape_name"].toString();
     }
   }
 
@@ -146,25 +146,19 @@ void NodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 QString NodeItem::attributesAsText() const {
 
-  NodeData *data = relatedDataController()->getNodeById(m_id);
-  return data->attributesAsText();
+  NodeData *nodeData = relatedDataController()->getNodeById(m_id);
+  return nodeData->attributesAsText();
 }
 
-Json::Value NodeItem::attributesAsJson() const {
+QVariantMap NodeItem::attributes() const {
 
-  NodeData *data = relatedDataController()->getNodeById(m_id);
-  return data->attributesAsJson();
+  NodeData *nodeData = relatedDataController()->getNodeById(m_id);
+  return nodeData->attributes;
 }
 
-QMap<QString, QMap<QString, QVariant> > NodeItem::attributes() const {
+void NodeItem::setAttributesFromData(const QByteArray &data) {
 
-  NodeData *data = relatedDataController()->getNodeById(m_id);
-  return data->attributes;
-}
-
-void NodeItem::setAttributes(const QString &text) {
-
-  NodeData *data = relatedDataController()->getNodeById(m_id);
-  data->setAttributesFromText(text);
+  NodeData *nodeData = relatedDataController()->getNodeById(m_id);
+  nodeData->setAttributesFromData(data);
   attributesChanged();
 }

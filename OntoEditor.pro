@@ -9,13 +9,9 @@ QT       += core gui
 TARGET = OntoEditor
 TEMPLATE = app
 
+LIBS += -llibqjson.0.8.1
+
 SOURCES += main.cpp \
-    lib_json/json_valueiterator.inl \
-    lib_json/json_internalmap.inl \
-    lib_json/json_internalarray.inl \
-    lib_json/json_writer.cpp \
-    lib_json/json_value.cpp \
-    lib_json/json_reader.cpp \
     core/OntologyDataController.cpp \
     ui/MainWindow.cpp \
     ui/ontology/graph/RelationVisualizedLine.cpp \
@@ -33,16 +29,6 @@ SOURCES += main.cpp \
     core/Snapshot.cpp
 
 HEADERS  += \
-    lib_json/json_tool.h \
-    lib_json/json_batchallocator.h \
-    lib_json/json/writer.h \
-    lib_json/json/value.h \
-    lib_json/json/reader.h \
-    lib_json/json/json.h \
-    lib_json/json/forwards.h \
-    lib_json/json/features.h \
-    lib_json/json/config.h \
-    lib_json/json/autolink.h \
     core/RelationData.h \
     core/OntologyDataController.h \
     core/NodeData.h \

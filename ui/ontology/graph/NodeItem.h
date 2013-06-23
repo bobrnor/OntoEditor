@@ -34,9 +34,8 @@ class NodeItem : public QObject, public QGraphicsRectItem, public OntologyGraphE
     void removeAllRelations();
 
     QString attributesAsText() const;
-    Json::Value attributesAsJson() const;
-    QMap<QString, QMap<QString, QVariant> > attributes() const;
-    void setAttributes(const QString &text);
+    QVariantMap attributes() const;
+    void setAttributesFromData(const QByteArray &data);
 
   signals:
     void nodeItemPositionChangedSignal(long id, const QPointF &newPosition);

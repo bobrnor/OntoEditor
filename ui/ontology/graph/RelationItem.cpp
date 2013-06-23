@@ -119,10 +119,10 @@ void RelationItem::attributesChanged() {
   relatedDataController()->relationAttributesChanged(m_id, data->attributes);
 
   if (data->attributes.keys().contains("gui-attributes")) {
-    QMap<QString, QVariant> guiAttributes = data->attributes.value("gui-attributes");
+    QVariantMap guiAttributes = data->attributes.value("gui-attributes").toMap();
 
-    if (guiAttributes.keys().contains("line_width")) {
-      QString lineWidth = guiAttributes.value("line_width").toString();
+    if (guiAttributes.contains("line_width")) {
+      QString lineWidth = guiAttributes["line_width"].toString();
       m_width = lineWidth.toDouble();
     }
   }
@@ -176,25 +176,19 @@ void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
 QString RelationItem::attributesAsText() const {
 
-  RelationData *data = relatedDataController()->getRelationById(m_id);
-  return data->attributesAsText();
+  RelationData *relationData = relatedDataController()->getRelationById(m_id);
+  return relationData->attributesAsText();
 }
 
-Json::Value RelationItem::attributesAsJson() const {
+QVariantMap RelationItem::attributes() const {
 
-  RelationData *data = relatedDataController()->getRelationById(m_id);
-  data->attributesAsJson();
+  RelationData *relationData = relatedDataController()->getRelationById(m_id);
+  return relationData->attributes;
 }
 
-QMap<QString, QMap<QString, QVariant> > RelationItem::attributes() const {
+void RelationItem::setAttributesFromData(const QByteArray &data) {
 
-  RelationData *data = relatedDataController()->getRelationById(m_id);
-  return data->attributes;
-}
-
-void RelationItem::setAttributes(const QString &text) {
-
-  RelationData *data = relatedDataController()->getRelationById(m_id);
-  data->setAttributesFromText(text);
+  RelationData *relationData = relatedDataController()->getRelationById(m_id);
+  relationData->setAttributesFromData(data);
   attributesChanged();
 }

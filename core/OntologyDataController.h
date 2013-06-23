@@ -3,8 +3,6 @@
 
 #include <QtGui>
 
-#include "lib_json/json/json.h"
-
 #include "NodeData.h"
 #include "RelationData.h"
 
@@ -29,8 +27,6 @@ class OntologyDataController {
     void removeRelatedRelations(NodeData *nodeData);
     NodeData *otherNode(RelationData *relation, NodeData *node) const;
 
-    Json::Value attributesAsJson(const QMap<QString, QString> &attributes) const;
-
     OntologyDataController(QList<NodeData *> nodeList,
                            QList<RelationData *> relationList,
                            QMap<long, QPointF> nodePositions,
@@ -39,7 +35,7 @@ class OntologyDataController {
 
   public:
     OntologyDataController();
-    OntologyDataController(const Json::Value &json);
+    OntologyDataController(const QByteArray &json);
 
     void setSourceCode(const QString &sourceCode);
 
@@ -79,16 +75,16 @@ class OntologyDataController {
     long relationCreated(long sourceNodeId, long destinationNodeId);
     void nodeNameChanged(long nodeId, const QString &name);
     void relationNameChanged(long relationId, const QString &name);
-    void nodeAttributesChanged(long nodeId, const QMap<QString, QMap<QString, QVariant> > &attributes);
-    void relationAttributesChanged(long relationId, const QMap<QString, QMap<QString, QVariant> > &attributes);
+    void nodeAttributesChanged(long nodeId, const QVariantMap &attributes);
+    void relationAttributesChanged(long relationId, const QVariantMap &attributes);
     void nodeRemoved(long nodeId);
     void relationRemoved(long relationId);
 
     QPointF nodePosition(long nodeId) const;
     void setNodePosition(long nodeId, const QPointF &position);
 
-    Json::Value serialize() const;
-    void deserialize(const Json::Value &json);
+    QVariant serialize() const;
+    void deserialize(const QVariant &json);
 };
 
 #endif // ONTOLOGYDATACONTROLLER_H

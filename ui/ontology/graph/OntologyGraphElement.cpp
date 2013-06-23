@@ -9,13 +9,6 @@ OntologyGraphElement::OntologyGraphElement() {
   m_name = "";
 }
 
-Json::Value OntologyGraphElement::jsonRepresentation() const {
-
-  Json::Value value;
-  value["id"] = Json::Value((Json::Int64)m_id);
-  return value;
-}
-
 void OntologyGraphElement::setId(long id) {
 
   m_id = id;
