@@ -103,17 +103,19 @@ Json::Value OntologyDataController::serialize() const {
 
 void OntologyDataController::deserialize(const Json::Value &json) {
 
-  qDebug() << QString::fromStdString(json.toStyledString());
-
   m_lastId = json["last_id"].asInt64();
 
   Json::Value nodesJson = json["nodes"];
-  for (int i = 0; i < nodesJson.size(); ++i) {
+  for (int i = 0; i < nodesJson.size(); ++i) {    
     Json::Value itemJson = nodesJson[i];
+    qDebug() << QString::fromStdString(itemJson.toStyledString());
+
     NodeData *nodeData = new NodeData();
     nodeData->id = itemJson["id"].asInt64();
     nodeData->name = QString::fromStdString(itemJson["name"].asString());
-//    nodeData->setAttributesFromText(QString::fromStdString(itemJson["attributes"].asString()));
+    if (itemJson.isMember("attributes")) {
+      nodeData->setAttributesFromText(QString::fromStdString(itemJson["attributes"].toStyledString()));
+    }
 
     if (itemJson.getMemberNames().size() > 3) {
       double x = itemJson["position_x"].asDouble();
@@ -132,7 +134,9 @@ void OntologyDataController::deserialize(const Json::Value &json) {
     relationData->name = QString::fromStdString(itemJson["name"].asString());
     relationData->sourceNodeId = itemJson["source_node_id"].asInt64();
     relationData->destinationNodeId = itemJson["destination_node_id"].asInt64();
-//    relationData->setAttributesFromText(QString::fromStdString(itemJson["attributes"].asString()));
+    if (itemJson.isMember("attributes")) {
+      relationData->setAttributesFromText(QString::fromStdString(itemJson["attributes"].asString()));
+    }
     m_relationsMap.insert(relationData->id, relationData);
     m_relationsList.append(relationData);
 
@@ -350,7 +354,7 @@ void OntologyDataController::relationNameChanged(long relationId, const QString 
   m_changedRelationIds.insert(relation->id);
 }
 
-void OntologyDataController::nodeAttributesChanged(long nodeId, const QMap<QString, QString> &attributes) {
+void OntologyDataController::nodeAttributesChanged(long nodeId, const QMap<QString, QMap<QString, QVariant> > &attributes) {
 
   NodeData *node = m_nodesMap.value(nodeId);
   node->attributes = attributes;
@@ -358,7 +362,7 @@ void OntologyDataController::nodeAttributesChanged(long nodeId, const QMap<QStri
   m_changedNodeIds.insert(node->id);
 }
 
-void OntologyDataController::relationAttributesChanged(long relationId, const QMap<QString, QString> &attributes) {
+void OntologyDataController::relationAttributesChanged(long relationId, const QMap<QString, QMap<QString, QVariant> > &attributes) {
 
   RelationData *relation = m_relationsMap.value(relationId);
   relation->attributes = attributes;

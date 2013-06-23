@@ -105,7 +105,7 @@ def processClass(owlClass):
 		attributes['class-attribytes'] = classAttributes
 
 	if owlAttributes != {}:
-		attributes['owl'] = owlAttributes
+		attributes['owl'] = {'unknown-content': owlAttributes}
 
 	if attributes != {}:
 		node['attributes'] = attributes
@@ -233,9 +233,9 @@ def convertToExternalFormat(path):
 	print etree.tostring(rdfRoot, encoding='UTF-8')
 
 if __name__ == '__main__':
-	opts, extraparams = getreeopt.getreeopt(sys.argv[1:], '', ['metreehod=', 'source-path='])
+	opts, extraparams = getopt.getopt(sys.argv[1:], '', ['method=', 'source-path='])
 
-	metreehodName = (item[1] for item in opts if item[0] == '--metreehod').next()
+	metreehodName = (item[1] for item in opts if item[0] == '--method').next()
 	if metreehodName == 'supported_extensions':
 		printSupportedExtensions()
 	elif metreehodName == 'import':
@@ -245,4 +245,4 @@ if __name__ == '__main__':
 		path = (item[1] for item in opts if item[0] == '--source-path').next()
 		convertToExternalFormat(path)
 	else:
-		print "Unknown metreehod name " + metreehodName
+		print "Unknown method name " + metreehodName

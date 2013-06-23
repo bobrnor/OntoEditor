@@ -79,8 +79,8 @@ class OntologyDataController {
     long relationCreated(long sourceNodeId, long destinationNodeId);
     void nodeNameChanged(long nodeId, const QString &name);
     void relationNameChanged(long relationId, const QString &name);
-    void nodeAttributesChanged(long nodeId, const QMap<QString, QString> &attributes);
-    void relationAttributesChanged(long relationId, const QMap<QString, QString> &attributes);
+    void nodeAttributesChanged(long nodeId, const QMap<QString, QMap<QString, QVariant> > &attributes);
+    void relationAttributesChanged(long relationId, const QMap<QString, QMap<QString, QVariant> > &attributes);
     void nodeRemoved(long nodeId);
     void relationRemoved(long relationId);
 

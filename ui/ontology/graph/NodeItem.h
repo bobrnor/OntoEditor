@@ -35,7 +35,7 @@ class NodeItem : public QObject, public QGraphicsRectItem, public OntologyGraphE
 
     QString attributesAsText() const;
     Json::Value attributesAsJson() const;
-    QMap<QString, QString> attributes() const;
+    QMap<QString, QMap<QString, QVariant> > attributes() const;
     void setAttributes(const QString &text);
 
   signals:

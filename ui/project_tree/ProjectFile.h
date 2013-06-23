@@ -8,6 +8,8 @@
 
 class ProjectFile {
 
+    friend class Project;
+
   private:
     QString m_name;
     QString m_path;
@@ -15,7 +17,11 @@ class ProjectFile {
     OntologyDataController *m_ontologyController;
     QList<ProjectFileCategory *> m_categories;
 
+    void setName(const QString &name);
+    void setPath(const QString &path);
+
   public:
+    ProjectFile();
     ProjectFile(const QString &path, const QString &name);
     ~ProjectFile();
 

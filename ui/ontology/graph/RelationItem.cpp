@@ -117,9 +117,14 @@ void RelationItem::attributesChanged() {
 
   RelationData *data = relatedDataController()->getRelationById(m_id);
   relatedDataController()->relationAttributesChanged(m_id, data->attributes);
-  if (data->attributes.keys().contains("line_width")) {
-    QString lineWidth = data->attributes.value("line_width");
-    m_width = lineWidth.toDouble();
+
+  if (data->attributes.keys().contains("gui-attributes")) {
+    QMap<QString, QVariant> guiAttributes = data->attributes.value("gui-attributes");
+
+    if (guiAttributes.keys().contains("line_width")) {
+      QString lineWidth = guiAttributes.value("line_width").toString();
+      m_width = lineWidth.toDouble();
+    }
   }
 }
 
@@ -181,7 +186,7 @@ Json::Value RelationItem::attributesAsJson() const {
   data->attributesAsJson();
 }
 
-QMap<QString, QString> RelationItem::attributes() const {
+QMap<QString, QMap<QString, QVariant> > RelationItem::attributes() const {
 
   RelationData *data = relatedDataController()->getRelationById(m_id);
   return data->attributes;

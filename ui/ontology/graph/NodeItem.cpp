@@ -69,18 +69,22 @@ void NodeItem::attributesChanged() {
   NodeData *data = relatedDataController()->getNodeById(m_id);
   relatedDataController()->nodeAttributesChanged(m_id, data->attributes);
 
-  if (data->attributes.keys().contains("text_color")) {
-    QString textColorHex = data->attributes.value("text_color");
-    m_textColor = QColor(textColorHex);
-  }
+  if (data->attributes.keys().contains("gui-attributes")) {
+    QMap<QString, QVariant> guiAttributes = data->attributes.value("gui-attributes");
 
-  if (data->attributes.keys().contains("bg_color")) {
-    QString bgColorHex = data->attributes.value("bg_color");
-    m_backgroundColor = QColor(bgColorHex);
-  }
+    if (guiAttributes.keys().contains("text_color")) {
+      QString textColorHex = guiAttributes.value("text_color").toString();
+      m_textColor = QColor(textColorHex);
+    }
 
-  if (data->attributes.keys().contains("shape_name")) {
-    m_shapeName = data->attributes.value("shape_name");
+    if (guiAttributes.keys().contains("bg_color")) {
+      QString bgColorHex = guiAttributes.value("bg_color").toString();
+      m_backgroundColor = QColor(bgColorHex);
+    }
+
+    if (guiAttributes.keys().contains("shape_name")) {
+      m_shapeName = guiAttributes.value("shape_name").toString();
+    }
   }
 
   if (this->scene() != NULL) {
@@ -152,7 +156,7 @@ Json::Value NodeItem::attributesAsJson() const {
   return data->attributesAsJson();
 }
 
-QMap<QString, QString> NodeItem::attributes() const {
+QMap<QString, QMap<QString, QVariant> > NodeItem::attributes() const {
 
   NodeData *data = relatedDataController()->getNodeById(m_id);
   return data->attributes;

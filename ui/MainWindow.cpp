@@ -111,6 +111,10 @@ void MainWindow::setupMenu() {
 
   fileMenu->addSeparator();
 
+  QAction *exportFileAction = fileMenu->addAction(tr("Export file..."));
+
+  fileMenu->addSeparator();
+
   QAction *screenshotAction = fileMenu->addAction(tr("Screenshot..."));
 
   QMenu *transformationMenu = ui->menubar->addMenu(tr("Transformation"));
@@ -125,6 +129,8 @@ void MainWindow::setupMenu() {
   connect(openProjectAction, SIGNAL(triggered()), SLOT(openProjectSlot()));
   connect(saveProjectAction, SIGNAL(triggered()), SLOT(saveProjectSlot()));
 
+  connect(exportFileAction, SIGNAL(triggered()), SLOT(exportFileSlot()));
+
   connect(screenshotAction, SIGNAL(triggered()), SLOT(screenshotSlot()));
 
   connect(transformAction, SIGNAL(triggered()), SLOT(transformSlot()));
@@ -135,13 +141,13 @@ void MainWindow::importSourceFileSlot() {
   QString filePath = QFileDialog::getOpenFileName(this, tr("Open dialog"), QString(), "*");
 
   QString cmd;
-  cmd.append("python");
+  cmd.append("/Library/Frameworks/Python.framework/Versions/2.7/bin/python");
   cmd.append(" /Users/bobrnor/Dropbox/PSU/Projects/OntoEditor/scripts/owl_converter.py");
   cmd.append(" --method=import");
   cmd.append(" --source-path=");
   cmd.append(filePath);
 
-  FILE* pipe = popen(cmd.toStdString().c_str(), "w");
+  FILE* pipe = popen(cmd.toStdString().c_str(), "r");
 
   char buffer[128];
   QString result = "";
@@ -152,6 +158,15 @@ void MainWindow::importSourceFileSlot() {
   pclose(pipe);
 
   qDebug() << result;
+
+  ProjectFile *file = m_currentProject.createFile(result);
+  if (file != NULL) {
+    OntologyWidget *widget = createNewOntologyWidget(file);
+    widget->dataChangedSlot();
+
+    updateOntologyTreeData();
+    m_projectTreeViewController->updateData();
+  }
 }
 
 void MainWindow::openOntologyFileSlot() {
@@ -172,7 +187,13 @@ void MainWindow::saveOntologyFileSlot() {
 
   int index = ui->tabWidget->currentIndex();
   ProjectFile *file = m_currentProject.getProjectFileByIndex(index);
-  m_currentProject.saveFile(file);
+  if (file->path().length() > 0) {
+    m_currentProject.saveFile(file);
+  }
+  else {
+    QString filePath = QFileDialog::getSaveFileName(this, tr("Open dialog"), QString(), "*");
+    m_currentProject.saveFile(file, filePath);
+  }
 }
 
 void MainWindow::openProjectSlot() {

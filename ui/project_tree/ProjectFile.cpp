@@ -1,5 +1,10 @@
 #include "ProjectFile.h"
 
+ProjectFile::ProjectFile() : m_path(""), m_name("Untitled") {
+
+  m_ontologyController = new OntologyDataController();
+}
+
 ProjectFile::ProjectFile(const QString &path, const QString &name) : m_path(path), m_name(name) {
 
   m_ontologyController = new OntologyDataController();
@@ -18,6 +23,16 @@ const QString &ProjectFile::name() const {
 const QString &ProjectFile::path() const {
 
   return m_path;
+}
+
+void ProjectFile::setName(const QString &name) {
+
+  m_name = name;
+}
+
+void ProjectFile::setPath(const QString &path) {
+
+  m_path = path;
 }
 
 OntologyDataController *ProjectFile::ontologyController() const {

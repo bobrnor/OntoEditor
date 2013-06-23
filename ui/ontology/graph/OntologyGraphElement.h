@@ -3,7 +3,6 @@
 
 #include <QString>
 #include <QMap>
-#include "lib_json/json/json.h"
 
 #include "core/OntologyDataController.h"
 
@@ -23,7 +22,7 @@ class OntologyGraphElement {
     long id() const;
 
     virtual QString attributesAsText() const = 0;
-    virtual QMap<QString, QString> attributes() const = 0;
+    virtual QMap<QString, QMap<QString, QVariant> > attributes() const = 0;
     virtual void setAttributes(const QString &text) = 0;
 
     void setName(const QString &name);
@@ -31,8 +30,6 @@ class OntologyGraphElement {
 
     void setRelatedDataController(OntologyDataController *dataController);
     OntologyDataController *relatedDataController() const;
-
-    Json::Value jsonRepresentation() const;
 };
 
 #endif // ONTOLOGYGRAPHELEMENT_H

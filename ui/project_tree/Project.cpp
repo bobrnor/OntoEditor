@@ -13,6 +13,24 @@ Project::~Project() {
   }
 }
 
+ProjectFile *Project::createFile(const QString &jsonString) {
+
+  if (jsonString.length() > 0) {
+    Json::Reader reader;
+
+    Json::Value jsonState;
+    bool ok = reader.parse(jsonString.toStdString(), jsonState);
+    if (ok) {
+      ProjectFile *newFile = new ProjectFile();
+      newFile->ontologyController()->deserialize(jsonState);
+      m_files.append(newFile);
+      return newFile;
+    }
+  }
+
+  return NULL;
+}
+
 ProjectFile *Project::openFile(const QString &path) {
 
   if (QFile::exists(path)) {
@@ -34,7 +52,7 @@ ProjectFile *Project::openFile(const QString &path) {
   return NULL;
 }
 
-bool Project::saveFile(const ProjectFile *file, const QString &path) {
+bool Project::saveFile(ProjectFile *file, const QString &path) {
 
   if (file != NULL) {
     QFile dstFile(path);
@@ -45,6 +63,11 @@ bool Project::saveFile(const ProjectFile *file, const QString &path) {
       stream.setCodec("UTF-8");
       stream.setAutoDetectUnicode(true);
       stream << QString::fromStdString(jsonState.toStyledString());
+
+      QFileInfo fileInfo(path);
+      file->setName(fileInfo.fileName());
+      file->setPath(path);
+
       return true;
     }
   }
@@ -52,7 +75,7 @@ bool Project::saveFile(const ProjectFile *file, const QString &path) {
   return false;
 }
 
-bool Project::saveFile(const ProjectFile *file) {
+bool Project::saveFile(ProjectFile *file) {
 
   return saveFile(file, file->path());
 }

@@ -20,9 +20,10 @@ class Project {
     Project();
     ~Project();
 
+    ProjectFile *createFile(const QString &jsonString);
     ProjectFile *openFile(const QString &path);
-    bool saveFile(const ProjectFile *file, const QString &path);
-    bool saveFile(const ProjectFile *file);
+    bool saveFile(ProjectFile *file, const QString &path);
+    bool saveFile(ProjectFile *file);
     ProjectFile *getProjectFileByIndex(int index) const;
     ProjectFile *getProjectFileByName(const QString &name) const;
 //    ProjectFile *getProjectFileByName(const QString &name) const;
