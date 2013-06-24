@@ -235,14 +235,14 @@ def convertToExternalFormat(path):
 if __name__ == '__main__':
 	opts, extraparams = getopt.getopt(sys.argv[1:], '', ['method=', 'source-path='])
 
-	metreehodName = (item[1] for item in opts if item[0] == '--method').next()
-	if metreehodName == 'supported_extensions':
+	methodName = (item[1] for item in opts if item[0] == '--method').next()
+	if methodName == 'supported_extensions':
 		printSupportedExtensions()
-	elif metreehodName == 'import':
+	elif methodName == 'import':
 		path = (item[1] for item in opts if item[0] == '--source-path').next()
 		convertToInternalFormat(path)
 	elif  metreehodName == 'export':
 		path = (item[1] for item in opts if item[0] == '--source-path').next()
 		convertToExternalFormat(path)
 	else:
-		print "Unknown method name " + metreehodName
+		print "Unknown method name " + methodName
