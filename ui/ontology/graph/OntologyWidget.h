@@ -26,6 +26,10 @@ class OntologyWidget : public QWidget {
     QImage makeScreenshot() const;
 
     void updateData();
+
+  protected:
+    void dropEvent(QDropEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event);
     
   private:
     Ui::OntologyWidget *ui;
@@ -41,6 +45,7 @@ class OntologyWidget : public QWidget {
 
     void setEditRelationMode(bool on);
     void setRelation(NodeItem *sourceNode, NodeItem *destinationNode);
+    NodeItem *addNode(QPointF scenePos);
 
   signals:
     void dataChangedSignal();

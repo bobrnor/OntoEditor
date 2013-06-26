@@ -17,3 +17,7 @@ void OntologyGraphicsView::mouseMoveEvent(QMouseEvent *event) {
   }
   QGraphicsView::mouseMoveEvent(event);
 }
+
+void OntologyGraphicsView::dragEnterEvent(QDragEnterEvent *event) {
+
+}

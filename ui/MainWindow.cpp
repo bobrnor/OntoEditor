@@ -27,6 +27,9 @@ MainWindow::MainWindow(QWidget *parent) :
 //  m_logTreeView->setModel(m_transformationHelper->logModel());
   m_logTreeView->hide();
 
+  m_palleteWidget = new PalleteWidget();
+  ui->palleteLayout->addWidget(m_palleteWidget);
+
   m_zoomInShortcut = new QShortcut(this);
   m_zoomInShortcut->setKey(QKeySequence("Ctrl+="));
   m_zoomInShortcut->setEnabled(true);

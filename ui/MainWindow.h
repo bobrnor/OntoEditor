@@ -8,6 +8,7 @@
 #include "ui/ontology/treeview/OntologyTreeViewController.h"
 #include "ui/project_tree/ProjectTreeViewController.h"
 #include "ui/project_tree/Project.h"
+#include "ui/ontology/pallete/PalleteWidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -28,6 +29,8 @@ class MainWindow : public QMainWindow {
     QList<OntologyWidget *> m_openOntologyWidgets;
 
     QTreeView *m_logTreeView;
+
+    PalleteWidget *m_palleteWidget;
 
     ProjectTreeViewController *m_projectTreeViewController;
     OntologyTreeViewController *m_ontologyTreeViewController;

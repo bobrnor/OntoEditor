@@ -16,6 +16,8 @@ OntologyWidget::OntologyWidget(QWidget *parent) :
 
   ui->setupUi(this);
 
+  setAcceptDrops(true);
+
   m_ontologyView = new OntologyGraphicsView(this);
   m_ontologyView->setDragMode(QGraphicsView::RubberBandDrag);
   m_ontologyView->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -138,9 +140,7 @@ void OntologyWidget::setEditRelationMode(bool on) {
   }
 }
 
-void OntologyWidget::addNodeSlot() {
-
-  QPointF scenePos = m_lastRightClickScenePosition;
+NodeItem *OntologyWidget::addNode(QPointF scenePos) {
 
   long newNodeId = -1;
   if (m_dataController != NULL) {
@@ -154,6 +154,13 @@ void OntologyWidget::addNodeSlot() {
   newNode->setPos(scenePos);
   connect(newNode, SIGNAL(nodeItemPositionChangedSignal(long, QPointF)), SLOT(nodeItemPositionChangedSlot(long, QPointF)));
   m_ontologyView->scene()->addItem(newNode);
+  return newNode;
+}
+
+void OntologyWidget::addNodeSlot() {
+
+  QPointF scenePos = m_lastRightClickScenePosition;
+  addNode(scenePos);
 }
 
 void OntologyWidget::setRelation(NodeItem *sourceNode, NodeItem *destinationNode) {
@@ -524,5 +531,23 @@ void OntologyWidget::showSourceCodeSlot() {
     ui->verticalLayout->removeWidget(m_ontologyView);
     ui->verticalLayout->addWidget(m_sourceCodeViewer);
     m_sourceCodeViewer->setVisible(true);
+  }
+}
+
+void OntologyWidget::dropEvent(QDropEvent *event) {
+
+  QByteArray jsonData = event->mimeData()->data("application/node-attrs");
+  QPointF globalPos = m_ontologyView->mapToScene(event->pos());
+  NodeItem *newNode = addNode(globalPos);
+  newNode->setAttributesFromData(jsonData);
+}
+
+void OntologyWidget::dragEnterEvent(QDragEnterEvent *event) {
+
+  if (event->mimeData()->hasFormat("application/node-attrs")) {
+    event->acceptProposedAction();
+  }
+  else {
+    event->ignore();
   }
 }

@@ -26,7 +26,8 @@ SOURCES += main.cpp \
     ui/project_tree/ProjectFileCategory.cpp \
     ui/project_tree/ProjectFile.cpp \
     ui/project_tree/Project.cpp \
-    core/Snapshot.cpp
+    core/Snapshot.cpp \
+    ui/ontology/pallete/PalleteWidget.cpp
 
 HEADERS  += \
     core/RelationData.h \
@@ -48,9 +49,14 @@ HEADERS  += \
     ui/project_tree/ProjectFileCategory.h \
     ui/project_tree/ProjectFile.h \
     ui/project_tree/Project.h \
-    core/Snapshot.h
+    core/Snapshot.h \
+    ui/ontology/pallete/PalleteWidget.h
 
 FORMS += \
     MainWindow.ui \
     OntologyWidget.ui \
     AttributeEditor.ui
+
+OTHER_FILES += \
+    pics/rounded-rect.png \
+    pics/rect.png

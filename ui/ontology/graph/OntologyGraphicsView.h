@@ -10,6 +10,9 @@ class OntologyGraphicsView : public QGraphicsView {
   protected:
     void mouseMoveEvent(QMouseEvent *event);
 
+//    void dropEvent(QDropEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event);
+
   public:
     explicit OntologyGraphicsView(QWidget *parent = 0);
     explicit OntologyGraphicsView(QGraphicsScene *scene, QWidget *parent = 0);
