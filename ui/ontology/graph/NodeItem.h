@@ -38,6 +38,7 @@ class NodeItem : public QObject, public QGraphicsRectItem, public OntologyGraphE
     QString attributesAsText() const;
     QVariantMap attributes() const;
     void setAttributesFromData(const QByteArray &data);
+    void setAttributes(const QVariantMap &attributes);
 
   signals:
     void nodeItemPositionChangedSignal(long id, const QPointF &newPosition);

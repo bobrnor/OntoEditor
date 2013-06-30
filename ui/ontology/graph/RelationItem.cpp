@@ -118,12 +118,29 @@ void RelationItem::attributesChanged() {
   RelationData *data = relatedDataController()->getRelationById(m_id);
   relatedDataController()->relationAttributesChanged(m_id, data->attributes);
 
+  m_dashPattern.clear();
+
   if (data->attributes.keys().contains("gui-attributes")) {
     QVariantMap guiAttributes = data->attributes.value("gui-attributes").toMap();
 
     if (guiAttributes.contains("line_width")) {
       QString lineWidth = guiAttributes["line_width"].toString();
       m_width = lineWidth.toDouble();
+    }
+
+    if (guiAttributes.contains("dash")) {
+      QString dash = guiAttributes["dash"].toString();
+      if (dash == "solid") {
+//        m_dashPattern.append(1.0);
+      }
+      else if (dash == "dash") {
+        m_dashPattern.append(3.0);
+        m_dashPattern.append(2.0);
+      }
+      else if (dash == "dot") {
+        m_dashPattern.append(1.0);
+        m_dashPattern.append(2.0);
+      }
     }
   }
 }
@@ -153,6 +170,7 @@ void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
   QPen pen = this->pen();
   pen.setWidthF(m_width);
+  pen.setDashPattern(m_dashPattern);
 
   if (isSelected()) {
     QVector<qreal> dashPattern;
@@ -162,10 +180,10 @@ void RelationItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     pen.setColor(Qt::blue);
   }
   else if (m_dataController->isRelationChanged(m_id)) {
-    QVector<qreal> dashPattern;
-    dashPattern.append(2.0);
-    dashPattern.append(2.0);
-    pen.setDashPattern(dashPattern);
+//    QVector<qreal> dashPattern;
+//    dashPattern.append(2.0);
+//    dashPattern.append(2.0);
+//    pen.setDashPattern(dashPattern);
     pen.setColor(Qt::red);
   }
 
@@ -190,5 +208,12 @@ void RelationItem::setAttributesFromData(const QByteArray &data) {
 
   RelationData *relationData = relatedDataController()->getRelationById(m_id);
   relationData->setAttributesFromData(data);
+  attributesChanged();
+}
+
+void RelationItem::setAttributes(const QVariantMap &attributes) {
+
+  RelationData *relationData = relatedDataController()->getRelationById(m_id);
+  relationData->attributes = attributes;
   attributesChanged();
 }

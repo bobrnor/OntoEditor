@@ -86,6 +86,15 @@ void OntologyWidget::showContextMenuSlot(const QPoint &pos) {
     else if (selectedItem->data(kIDTType).toInt() == kITRelation) {
       QAction *editRelationAction = contextMenu.addAction(tr("Edit relation..."));
       connect(editRelationAction, SIGNAL(triggered()), SLOT(editRelationSlot()));
+
+      QMenu *dashMenu = contextMenu.addMenu("Dash");
+      QAction *solidDashAction = dashMenu->addAction("Solid");
+      QAction *dashDashAction = dashMenu->addAction("Dash");
+      QAction *dotDashAction = dashMenu->addAction("Dot");
+
+      connect(solidDashAction, SIGNAL(triggered()), SLOT(setSolidDashPatternSlot()));
+      connect(dashDashAction, SIGNAL(triggered()), SLOT(setDashDashPatternSlot()));
+      connect(dotDashAction, SIGNAL(triggered()), SLOT(setDotDashPatternSlot()));
     }
   }
   else {
@@ -404,6 +413,39 @@ void OntologyWidget::editAttrsSlot() {
   if (dialog->exec() == QDialog::Accepted) {
     element->setAttributesFromData(editor.textEdit->toPlainText().toLocal8Bit());
   }
+}
+
+void OntologyWidget::setSolidDashPatternSlot() {
+
+  QGraphicsItem *selectedItem = m_ontologyView->scene()->selectedItems().at(0);
+  OntologyGraphElement *element = static_cast<OntologyGraphElement *>(static_cast<RelationItem *>(selectedItem));
+  QVariantMap attributesMap = element->attributes();
+  QVariantMap dashMap;
+  dashMap["dash"] = "solid";
+  attributesMap["gui-attributes"] = dashMap;
+  element->setAttributes(attributesMap);
+}
+
+void OntologyWidget::setDashDashPatternSlot() {
+
+  QGraphicsItem *selectedItem = m_ontologyView->scene()->selectedItems().at(0);
+  OntologyGraphElement *element = static_cast<OntologyGraphElement *>(static_cast<RelationItem *>(selectedItem));
+  QVariantMap attributesMap = element->attributes();
+  QVariantMap dashMap;
+  dashMap["dash"] = "dash";
+  attributesMap["gui-attributes"] = dashMap;
+  element->setAttributes(attributesMap);
+}
+
+void OntologyWidget::setDotDashPatternSlot() {
+
+  QGraphicsItem *selectedItem = m_ontologyView->scene()->selectedItems().at(0);
+  OntologyGraphElement *element = static_cast<OntologyGraphElement *>(static_cast<RelationItem *>(selectedItem));
+  QVariantMap attributesMap = element->attributes();
+  QVariantMap dashMap;
+  dashMap["dash"] = "dot";
+  attributesMap["gui-attributes"] = dashMap;
+  element->setAttributes(attributesMap);
 }
 
 void OntologyWidget::sceneSelectionChangedSlot() {

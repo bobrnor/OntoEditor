@@ -15,6 +15,7 @@ class RelationItem : public QGraphicsLineItem, public OntologyGraphElement {
     NodeItem *m_destinationNode;
 
     double m_width;
+    QVector<qreal> m_dashPattern;
 
   protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -42,6 +43,7 @@ class RelationItem : public QGraphicsLineItem, public OntologyGraphElement {
     QString attributesAsText() const;
     QVariantMap attributes() const;
     void setAttributesFromData(const QByteArray &data);
+    void setAttributes(const QVariantMap &attributes);
 };
 
 #endif // RELATIONITEM_H

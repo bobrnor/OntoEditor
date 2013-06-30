@@ -60,6 +60,10 @@ class OntologyWidget : public QWidget {
     void removeSelectedSlot();
     void editAttrsSlot();
 
+    void setSolidDashPatternSlot();
+    void setDashDashPatternSlot();
+    void setDotDashPatternSlot();
+
     void sceneSelectionChangedSlot();
 
     void ontologyViewMousePositionChangedSlot(const QPoint &pos);

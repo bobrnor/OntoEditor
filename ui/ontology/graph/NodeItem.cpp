@@ -178,3 +178,10 @@ void NodeItem::setAttributesFromData(const QByteArray &data) {
   nodeData->setAttributesFromData(data);
   attributesChanged();
 }
+
+void NodeItem::setAttributes(const QVariantMap &attributes) {
+
+  NodeData *relationData = relatedDataController()->getNodeById(m_id);
+  relationData->attributes = attributes;
+  attributesChanged();
+}
