@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QBrush>
 #include <QPainter>
+#include <QFontMetrics>
 
 #include "RelationItem.h"
 
@@ -13,8 +14,7 @@ NodeItem::NodeItem(QGraphicsItem *parent) :
   m_textColor = Qt::black;
   m_shapeName = "rect";
 
-  QRectF rect(QPointF(-75, -40), QSizeF(150, 80));
-  setRect(rect);
+  setRect(QRectF());
 
   setFlag(ItemIsMovable);
   setFlag(ItemIsSelectable);
@@ -49,6 +49,12 @@ void NodeItem::removeAllRelations() {
   foreach (RelationItem *item, m_relations) {
     item->removeFromNodes();
   }
+}
+
+void NodeItem::setName(const QString &name) {
+
+  OntologyGraphElement::setName(name);
+  setRect(QRectF());
 }
 
 QVariant NodeItem::itemChange(GraphicsItemChange change, const QVariant &value) {
@@ -93,6 +99,16 @@ void NodeItem::attributesChanged() {
 }
 
 void NodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+
+  if (this->rect().isNull()) {
+    if (m_name.length() > 0) {
+      QFontMetrics metrics = painter->fontMetrics();
+      setRect(metrics.boundingRect(m_name));
+    }
+    else {
+      setRect(QRectF(-60.0, -35.0, 120.0, 70.0));
+    }
+  }
 
   QPen shapePen = this->pen();
   QPen textPen = this->pen();
@@ -140,7 +156,7 @@ void NodeItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     painter->drawRect(this->rect());
   }
 
-  painter->setPen(textPen);
+  painter->setPen(textPen);  
   painter->drawText(boundingRect(), m_name, textOption);
 }
 

@@ -25,8 +25,8 @@ class OntologyGraphElement {
     virtual QVariantMap attributes() const = 0;
     virtual void setAttributesFromData(const QByteArray &data) = 0;
 
-    void setName(const QString &name);
-    QString name() const;
+    virtual void setName(const QString &name);
+    virtual QString name() const;
 
     void setRelatedDataController(OntologyDataController *dataController);
     OntologyDataController *relatedDataController() const;

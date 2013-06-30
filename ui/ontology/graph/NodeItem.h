@@ -33,6 +33,8 @@ class NodeItem : public QObject, public QGraphicsRectItem, public OntologyGraphE
 
     void removeAllRelations();
 
+    void setName(const QString &name);
+
     QString attributesAsText() const;
     QVariantMap attributes() const;
     void setAttributesFromData(const QByteArray &data);
