@@ -56,6 +56,7 @@ class MainWindow : public QMainWindow {
   private slots:
     void importSourceFileSlot();
 
+    void createOntologyFileSlot();
     void openOntologyFileSlot();
     void saveOntologyFileSlot();
 

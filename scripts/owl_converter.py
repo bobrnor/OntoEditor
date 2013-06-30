@@ -241,7 +241,7 @@ if __name__ == '__main__':
 	elif methodName == 'import':
 		path = (item[1] for item in opts if item[0] == '--source-path').next()
 		convertToInternalFormat(path)
-	elif  metreehodName == 'export':
+	elif  methodName == 'export':
 		path = (item[1] for item in opts if item[0] == '--source-path').next()
 		convertToExternalFormat(path)
 	else:

@@ -140,6 +140,7 @@ void MainWindow::setupMenu() {
 
   fileMenu->addSeparator();
 
+  QAction *createOntologyFileAction = fileMenu->addAction(tr("Create ontology..."));
   QAction *openOntologyFileAction = fileMenu->addAction(tr("Open ontology..."));
   QAction *saveOntologyFileAction = fileMenu->addAction(tr("Save ontology..."));
 
@@ -162,6 +163,7 @@ void MainWindow::setupMenu() {
 
   connect(importSourceFileAction, SIGNAL(triggered()), SLOT(importSourceFileSlot()));
 
+  connect(createOntologyFileAction, SIGNAL(triggered()), SLOT(createOntologyFileSlot()));
   connect(openOntologyFileAction, SIGNAL(triggered()), SLOT(openOntologyFileSlot()));
   connect(saveOntologyFileAction, SIGNAL(triggered()), SLOT(saveOntologyFileSlot()));
 
@@ -208,6 +210,18 @@ void MainWindow::importSourceFileSlot() {
       updateOntologyTreeData();
       m_projectTreeViewController->updateData();
     }
+  }
+}
+
+void MainWindow::createOntologyFileSlot() {
+
+  ProjectFile *file = m_currentProject.createFile();
+  if (file != NULL) {
+    OntologyWidget *widget = createNewOntologyWidget(file);
+    widget->dataChangedSlot();
+
+    updateOntologyTreeData();
+    m_projectTreeViewController->updateData();
   }
 }
 

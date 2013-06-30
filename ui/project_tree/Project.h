@@ -18,6 +18,7 @@ class Project {
     Project();
     ~Project();
 
+    ProjectFile *createFile();
     ProjectFile *createFile(const QString &jsonString);
     ProjectFile *openFile(const QString &path);
     bool saveFile(ProjectFile *file, const QString &path);

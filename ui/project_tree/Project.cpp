@@ -13,6 +13,13 @@ Project::~Project() {
   }
 }
 
+ProjectFile *Project::createFile() {
+
+  ProjectFile *newFile = new ProjectFile();
+  m_files.append(newFile);
+  return newFile;
+}
+
 ProjectFile *Project::createFile(const QString &jsonString) {
 
   if (jsonString.length() > 0) {
